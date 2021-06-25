@@ -1,0 +1,17 @@
+{
+    "name": "zachwatkins/cla-user-page-access",
+    "description": "A boilerplate plugin for WordPress Websites.",
+    "license": "GPL-2.0+",
+    "authors": [
+        {
+            "name": "Zachary Watkins",
+            "email": "watkinza@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+    },
+    "require-dev": {
+        "wp-coding-standards/wpcs": "^1.0"
+    }
+}

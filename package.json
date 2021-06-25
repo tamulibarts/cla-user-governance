@@ -1,0 +1,46 @@
+{
+  "name": "cla-user-page-access",
+  "version": "1.0.1",
+  "description": "A boilerplate plugin for WordPress Websites.",
+  "main": "cla-user-page-access-slug.php",
+  "scripts": {
+    "start": "git config core.hooksPath hooks && chmod u+x ./hooks/pre-commit && composer install && npm install && grunt",
+    "checkphp": "npm run configphpcs && vendor/bin/phpcs --standard=WordPress ./*.php ./src ./fields ./templates",
+    "fixphp": "npm run configphpcs && vendor/bin/phpcbf --standard=WordPress ./*.php ./src ./fields ./templates",
+    "configphpcs": "vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs"
+  },
+  "author": "Zachary Watkins",
+  "license": "GPL-2.0+",
+  "bugs": {
+    "url": "https://github.com/zachwatkins/cla-user-page-access/issues",
+    "email": "watkinza@gmail.com"
+  },
+  "dependencies": {
+    "autoprefixer": "^9.2.1",
+    "foundation-sites": "^6.4.3",
+    "grunt": "^1.0.3",
+    "grunt-contrib-coffee": "^2.0.0",
+    "grunt-contrib-compress": "^1.4.3",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-postcss": "^0.9.0",
+    "grunt-sass": "^3.0.2",
+    "grunt-sass-lint": "^0.2.4",
+    "jquery": "^3.3.1",
+    "node-sass": "^4.12.0",
+    "underscore": "^1.9.1",
+    "what-input": "^5.1.2"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zachwatkins/cla-user-page-access.git"
+  },
+  "homepage": "https://github.com/zachwatkins/cla-user-page-access#readme",
+  "browserslist": [
+    "last 2 versions",
+    "ie > 9"
+  ]
+}

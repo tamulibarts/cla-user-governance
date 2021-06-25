@@ -1,0 +1,24 @@
+@charset "utf-8";
+
+@import "foundation";
+@import "settings";
+
+.nplist a.page-link[href="#"],
+.nplist a.page-link[href=""] {
+	color: #000;
+	cursor: default;
+	pointer-events: none;
+
+	~ .action-buttons {
+		display: none;
+	}
+}
+
+.nestedpages {
+	.np-bulk-checkbox,
+	.np-check-all,
+	.np-bulk-form,
+	.nestedpages-dropdown > .np-btn.toggle {
+		display: none!important;
+	}
+}
