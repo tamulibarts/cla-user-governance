@@ -5,10 +5,10 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       https://github.com/zachwatkins/cla-user-page-access/blob/master/src/class-cla-user-page-access.php
+ * @link       https://github.tamu.edu/liberalarts-web/cla-user-governance/blob/master/src/class-cla-user-governance.php
  * @since      1.0.0
- * @package    cla-user-page-access
- * @subpackage cla-user-page-access/src
+ * @package    cla-user-governance
+ * @subpackage cla-user-governance/src
  */
 
 /**
@@ -17,7 +17,7 @@
  * @since 1.0.0
  * @return void
  */
-class CLA_User_Page_Access {
+class CLA_User_Governance {
 
 	/**
 	 * File name
@@ -42,11 +42,15 @@ class CLA_User_Page_Access {
 	public function __construct() {
 
 		// Public asset files.
-		require_once CLA_USER_PAGE_ACCESS_DIR_PATH . 'src/class-assets.php';
-		new \CLA_User_Page_Access\Assets();
+		require_once CLA_USER_GOV_DIR_PATH . 'src/class-assets.php';
+		new \CLA_User_Governance\Assets();
+
+		// Settings page class.
+		require_once CLA_USER_GOV_DIR_PATH . 'src/class-menu-page-access.php';
+		new \CLA_User_Governance\Menu_Page_Access();
 
 		if ( class_exists( 'acf' ) ) {
-			require_once CLA_USER_PAGE_ACCESS_DIR_PATH . 'fields/user-page-access-fields.php';
+			require_once CLA_USER_GOV_DIR_PATH . 'fields/user-page-access-fields.php';
 		}
 
 		// Init hook.
@@ -57,9 +61,14 @@ class CLA_User_Page_Access {
 			add_filter( 'acf/prepare_field/key=field_5fd29a782bd03', array( $this, 'hide_field_for_non_master_users' ) );
 			add_action( 'acf/save_post', array( $this, 'update_option_user_page_access' ) );
 			// Action hooks specific to the Nested Pages plugin.
+			if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+				$server_uri = sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
+			} else {
+				$server_uri = '';
+			}
 			if (
-				( strpos( $_SERVER['REQUEST_URI'], '/wp-admin/admin.php' ) !== false && strpos( $_SERVER['REQUEST_URI'], 'page=nestedpages' ) !== false )
-				|| ( strpos( $_SERVER['REQUEST_URI'], '/wp-admin/edit.php' ) !== false && strpos( $_SERVER['REQUEST_URI'], 'page=nestedpages' ) !== false )
+				( strpos( $server_uri, '/wp-admin/admin.php' ) !== false && strpos( $server_uri, 'page=nestedpages' ) !== false )
+				|| ( strpos( $server_uri, '/wp-admin/edit.php' ) !== false && strpos( $server_uri, 'page=nestedpages' ) !== false )
 			) {
 				add_action( 'plugins_loaded', array( $this, 'np_init' ) );
 			}
@@ -74,17 +83,17 @@ class CLA_User_Page_Access {
 			add_filter( 'nestedpages_menu_autosync_enabled', '__return_false' );
 			add_filter( 'nestedpages_menus_disabled', '__return_true' );
 			add_filter( 'nestedpages_post_sortable', '__return_false' );
-			add_filter( "nestedpages_row_action_wpml", '__return_false' );
-			add_filter( "nestedpages_row_action_comments", '__return_false' );
-			add_filter( "nestedpages_row_action_insert_before", '__return_false' );
-			add_filter( "nestedpages_row_action_insert_after", '__return_false' );
-			add_filter( "nestedpages_row_action_push_to_top", '__return_false' );
-			add_filter( "nestedpages_row_action_push_to_bottom", '__return_false' );
-			add_filter( "nestedpages_row_action_clone", '__return_false' );
-			add_filter( "nestedpages_row_action_quickedit", '__return_false' );
-			add_filter( "nestedpages_row_action_trash", '__return_false' );
-			add_filter( "nestedpages_row_action_add_child_link", '__return_false' );
-			add_filter( "nestedpages_row_action_add_child_page", '__return_false' );
+			add_filter( 'nestedpages_row_action_wpml', '__return_false' );
+			add_filter( 'nestedpages_row_action_comments', '__return_false' );
+			add_filter( 'nestedpages_row_action_insert_before', '__return_false' );
+			add_filter( 'nestedpages_row_action_insert_after', '__return_false' );
+			add_filter( 'nestedpages_row_action_push_to_top', '__return_false' );
+			add_filter( 'nestedpages_row_action_push_to_bottom', '__return_false' );
+			add_filter( 'nestedpages_row_action_clone', '__return_false' );
+			add_filter( 'nestedpages_row_action_quickedit', '__return_false' );
+			add_filter( 'nestedpages_row_action_trash', '__return_false' );
+			add_filter( 'nestedpages_row_action_add_child_link', '__return_false' );
+			add_filter( 'nestedpages_row_action_add_child_page', '__return_false' );
 			add_filter( 'nestedpages_edit_link_text', array( $this, 'np_remove_edit_link_text' ), 11, 2 );
 			add_filter( 'nestedpages_quickedit', array( $this, 'np_disable_quickedit' ), 11, 2 );
 			add_filter( 'option_nestedpages_allowsorting', '__return_false' );
@@ -101,6 +110,7 @@ class CLA_User_Page_Access {
 	 *
 	 * @param mixed $post_type The post type.
 	 * @param int   $post_id   The post ID.
+	 * @param int   $user_id   The user ID.
 	 *
 	 * @return boolean
 	 */
@@ -118,13 +128,13 @@ class CLA_User_Page_Access {
 
 			$limited = array_key_exists( strval( $user_id ), $user_page_access );
 
-			if ( $limited ){
+			if ( $limited ) {
 
 				if ( $post_type ) {
 
 					$limited_post_types = array( 'page', 'post', array( 'post' ), array( 'page' ), array( 'page', 'np-redirect' ), array( 'post', 'np-redirect' ) );
 
-					if ( in_array( $post_type, $limited_post_types ) ) {
+					if ( in_array( $post_type, $limited_post_types, true ) ) {
 
 						$limited = true;
 
@@ -139,7 +149,7 @@ class CLA_User_Page_Access {
 
 					$user_key           = strval( $user_id );
 					$exclusive_page_ids = $user_page_access[ $user_key ];
-					$limited            = ! in_array( $post_id, $exclusive_page_ids );
+					$limited            = ! in_array( $post_id, $exclusive_page_ids, true );
 
 				}
 			}
@@ -153,7 +163,7 @@ class CLA_User_Page_Access {
 	 * Exclude posts from query not in a restricted user's list of allowed posts.
 	 * Note: The post type array check using 'np-redirect' is part of the Nested Pages WordPress plugin.
 	 *
-	 * @param $query WP_Query The current page query.
+	 * @param object $query The current page query.
 	 *
 	 * @return void;
 	 */
@@ -164,7 +174,7 @@ class CLA_User_Page_Access {
 		$post_type = $query->query_vars['post_type'];
 		$limited   = $this->is_user_limited( $post_type );
 
-		if ( $limited && in_array( $pagenow, array( 'edit.php', 'admin.php' ) ) ) {
+		if ( $limited && in_array( $pagenow, array( 'edit.php', 'admin.php' ), true ) ) {
 
 			$user_page_access    = get_option( 'cla_user_page_access' );
 			$user_id             = get_current_user_id();
@@ -186,12 +196,15 @@ class CLA_User_Page_Access {
 			// If the post type is for its Nested Pages admin page, and the post type is hierarchical, and the post type is handled by Nested Pages, and the custom indentation is active, then add ancestors of allowed posts to the query.
 			$true_post_type        = is_array( $post_type ) ? $post_type[0] : $post_type;
 			$nestedpages_page_slug = 'page' === $true_post_type ? 'nestedpages' : 'nestedpages-' . $true_post_type;
-			if ( isset( $_GET['page'] ) && $nestedpages_page_slug === $_GET['page'] ) {
+			error_log(serialize($_GET));
+			error_log(serialize($_REQUEST));
+			$get_page              = isset( $_GET['page'] ) ? $_GET['page'] : '';
+			if ( $get_page && $nestedpages_page_slug === $get_page ) {
 
 				// Is the Classic (non-indented) display option enabled
-				$np_ui_option    = get_option('nestedpages_ui', false);
-				$np_notindented  = $np_ui_option && isset($np_ui_option['non_indent']) && $np_ui_option['non_indent'] == 'true' ? true : false;
-				$np_types        = get_option('nestedpages_posttypes');
+				$np_ui_option    = get_option( 'nestedpages_ui', false );
+				$np_notindented  = $np_ui_option && isset( $np_ui_option['non_indent'] ) && $np_ui_option['non_indent'] == 'true' ? true : false;
+				$np_types        = get_option( 'nestedpages_posttypes' );
 				$is_hierarchical = is_post_type_hierarchical( $true_post_type );
 
 				if ( ! $np_notindented && array_key_exists( $true_post_type, $np_types ) && $is_hierarchical ) {
@@ -226,12 +239,12 @@ class CLA_User_Page_Access {
 		}
 
 		// Lock down page for master user and other authorized users only.
-		if ( function_exists( 'acf_add_options_page' ) && defined( 'CLA_USER_PAGE_ACCESS_MASTER_USER' ) ) {
+		if ( function_exists( 'acf_add_options_page' ) && defined( 'CLA_USER_GOV_MASTER_USER' ) ) {
 
 			$current_user      = wp_get_current_user();
 			$current_user_data = $current_user->data;
 			$current_user_name = $current_user_data->user_login;
-			$authorized_users  = array( CLA_USER_PAGE_ACCESS_MASTER_USER );
+			$authorized_users  = array( CLA_USER_GOV_MASTER_USER );
 			$auth_user_field   = get_field( 'who_can_see_settings_page', 'option' );
 			if ( $auth_user_field ) {
 
@@ -244,7 +257,7 @@ class CLA_User_Page_Access {
 			}
 
 			// Show the settings page if the current username is authorized.
-			if ( in_array( $current_user_name, $authorized_users ) ) {
+			if ( in_array( $current_user_name, $authorized_users, true ) ) {
 
 				acf_add_options_page(
 					array(
@@ -306,7 +319,7 @@ class CLA_User_Page_Access {
 
 		$current_user     = wp_get_current_user();
 		$current_username = (string) $current_user->data->user_nicename;
-		if ( ! defined( 'CLA_USER_PAGE_ACCESS_MASTER_USER' ) || CLA_USER_PAGE_ACCESS_MASTER_USER !== $current_username ) {
+		if ( ! defined( 'CLA_USER_GOV_MASTER_USER' ) || CLA_USER_GOV_MASTER_USER !== $current_username ) {
 			$field = false;
 		}
 		return $field;
@@ -346,7 +359,7 @@ class CLA_User_Page_Access {
 
 	}
 
-	public function np_restricted_id_empty_string( $actions, $post ){
+	public function np_restricted_id_empty_string( $actions, $post ) {
 
 		$limited = $this->is_user_limited( $post->post_type, $post->ID );
 		if ( $limited ) {
@@ -371,46 +384,46 @@ class CLA_User_Page_Access {
 
 	}
 
-	public function np_disable_caps( $allcaps, $caps, $args, $user ){
+	public function np_disable_caps( $allcaps, $caps, $args, $user ) {
 
 		$limited = $this->is_user_limited();
 
 		if ( $limited ) {
-			unset($allcaps['delete_pages']);
-			unset($allcaps['delete_page']);
-			unset($allcaps['delete_posts']);
-			unset($allcaps['delete_post']);
-			unset($allcaps['nestedpages_sorting_page']);
-			unset($allcaps['nestedpages_sorting_post']);
+			unset( $allcaps['delete_pages'] );
+			unset( $allcaps['delete_page'] );
+			unset( $allcaps['delete_posts'] );
+			unset( $allcaps['delete_post'] );
+			unset( $allcaps['nestedpages_sorting_page'] );
+			unset( $allcaps['nestedpages_sorting_post'] );
 		}
 
 		return $allcaps;
 
 	}
 
-  /**
-   * Filters the primitive capabilities required of the given user to satisfy the
-   * capability being checked.
-   *
-   * @param string[] $caps    Primitive capabilities required of the user.
-   * @param string   $cap     Capability being checked.
-   * @param int      $user_id The user ID.
-   * @param array    $args    Adds context to the capability check, typically
-   *                          starting with an object ID.
-   */
+	/**
+	 * Filters the primitive capabilities required of the given user to satisfy the
+	 * capability being checked.
+	 *
+	 * @param string[] $caps    Primitive capabilities required of the user.
+	 * @param string   $cap     Capability being checked.
+	 * @param int      $user_id The user ID.
+	 * @param array    $args    Adds context to the capability check, typically
+	 *                          starting with an object ID.
+	 */
 	public function unmap_caps_by_post_id( $caps, $cap, $user_id, $args ) {
 
 		global $post, $post_type;
 		// List the capabilities a Post ID would be checked against that we want to disallow when the Post ID isn't in the list of the user's allowed Post IDs.
 		$disallowed_capabilities = array( 'edit_post', 'edit_page', 'delete_posts', 'delete_pages' );
-		$post_id = $args && is_int( $args[0] ) ? $args[0] : 0;
+		$post_id                 = $args && is_int( $args[0] ) ? $args[0] : 0;
 		if ( ! $post_id && is_object( $post ) ) {
 			$post_id = $post->ID;
 		}
 		if ( ! $post_type ) {
 			$post_type = get_post_type( $post_id );
 		}
-		if ( $post_id && $this->is_user_limited( $post_type, $post_id, $user_id ) && in_array( $cap, $disallowed_capabilities ) ) {
+		if ( $post_id && $this->is_user_limited( $post_type, $post_id, $user_id ) && in_array( $cap, $disallowed_capabilities, true ) ) {
 			$caps = false;
 		}
 		return $caps;

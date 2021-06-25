@@ -19,7 +19,7 @@ You may repurpose code from this repository for your own WordPress development s
 ## Features
 
 * Settings page for configuring user page access
-* "CLA_USER_PAGE_ACCESS_MASTER_USER" global constant to define a master user name in wp-config.php
+* "CLA_USER_GOV_MASTER_USER" global constant to define a master user name in wp-config.php
 
 ## Development Installation
 

@@ -89,7 +89,7 @@
                 {
                     "param": "options_page",
                     "operator": "==",
-                    "value": "cla-user-page-access"
+                    "value": "cla-user-governance"
                 }
             ]
         ],
