@@ -80,7 +80,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				array(
 					'key'               => 'field_5fd29a782bd03',
 					'label'             => 'Who can see this settings page',
-					'name'              => 'who_can_see_settings_page',
+					'name'              => 'ugov_who_can_see_settings_page',
 					'type'              => 'user',
 					'instructions'      => '',
 					'required'          => 0,
