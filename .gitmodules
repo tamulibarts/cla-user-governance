@@ -1,3 +1,4 @@
-[submodule "wp-masquerade"]
-	path = wp-masquerade
-	url = https://github.com/wp-plugins/wp-masquerade
+[submodule "cla-wp-masquerade"]
+	path = cla-wp-masquerade
+	url = https://github.tamu.edu/liberalarts-web/cla-wp-masquerade
+	branch = master
