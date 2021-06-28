@@ -10,6 +10,7 @@
  * @package    cla-user-page-access
  * @subpackage cla-user-page-access/src
  */
+
 namespace CLA_User_Governance;
 
 /**
@@ -56,15 +57,24 @@ class User_Page_Access {
 			add_action( 'parse_query', array( $this, 'exclude_pages_from_admin' ), 999 );
 			add_action( 'acf/save_post', array( $this, 'update_option_user_page_access' ) );
 			// Action hooks specific to the Nested Pages plugin.
+			$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 			if (
-				( strpos( $_SERVER['REQUEST_URI'], '/wp-admin/admin.php' ) !== false && strpos( $_SERVER['REQUEST_URI'], 'page=nestedpages' ) !== false )
-				|| ( strpos( $_SERVER['REQUEST_URI'], '/wp-admin/edit.php' ) !== false && strpos( $_SERVER['REQUEST_URI'], 'page=nestedpages' ) !== false )
+				( strpos( $request_uri, '/wp-admin/admin.php' ) !== false && strpos( $request_uri, 'page=nestedpages' ) !== false )
+				|| ( strpos( $request_uri, '/wp-admin/edit.php' ) !== false && strpos( $request_uri, 'page=nestedpages' ) !== false )
 			) {
 				add_action( 'plugins_loaded', array( $this, 'np_init' ) );
 			}
 		}
 	}
 
+	/**
+	 * Hide the ACF settings page field that defines who can access it.
+	 * Only super admins should be able to see this field, or admins if the network is not multisite.
+	 *
+	 * @param array $field The field settings.
+	 *
+	 * @return array
+	 */
 	public function acf_who_can_restrict( $field ) {
 
 		$user_role = ( is_multisite() ) ? 'superadmin' : 'administrator';
@@ -78,9 +88,7 @@ class User_Page_Access {
 	}
 
 	/**
-	 * Init action hook
-	 *
-	 * @since 1.0.0
+	 * Initialize the user page access admin menu.
 	 *
 	 * @return void
 	 */
@@ -109,7 +117,7 @@ class User_Page_Access {
 			}
 
 			// Show the settings page if the current username is authorized.
-			if ( in_array( $current_user_name, $authorized_users ) ) {
+			if ( in_array( $current_user_name, $authorized_users, true ) ) {
 
 				acf_add_options_page(
 					array(
@@ -128,6 +136,8 @@ class User_Page_Access {
 
 	/**
 	 * Disable editing options on the nested pages view.
+	 *
+	 * @return void
 	 */
 	public function np_init() {
 		if ( $this->is_user_limited() ) {
@@ -161,6 +171,7 @@ class User_Page_Access {
 	 *
 	 * @param mixed $post_type The post type.
 	 * @param int   $post_id   The post ID.
+	 * @param int   $user_id   The user ID.
 	 *
 	 * @return boolean
 	 */
@@ -184,7 +195,7 @@ class User_Page_Access {
 
 					$limited_post_types = array( 'page', 'post', array( 'post' ), array( 'page' ), array( 'page', 'np-redirect' ), array( 'post', 'np-redirect' ) );
 
-					if ( in_array( $post_type, $limited_post_types ) ) {
+					if ( in_array( $post_type, $limited_post_types, true ) ) {
 
 						$limited = true;
 
@@ -199,7 +210,7 @@ class User_Page_Access {
 
 					$user_key           = strval( $user_id );
 					$exclusive_page_ids = $user_page_access[ $user_key ];
-					$limited            = ! in_array( $post_id, $exclusive_page_ids );
+					$limited            = ! in_array( $post_id, $exclusive_page_ids, true );
 
 				}
 			}
@@ -213,7 +224,7 @@ class User_Page_Access {
 	 * Exclude posts from query not in a restricted user's list of allowed posts.
 	 * Note: The post type array check using 'np-redirect' is part of the Nested Pages WordPress plugin.
 	 *
-	 * @param $query WP_Query The current page query.
+	 * @param WP_Query $query The current page query.
 	 *
 	 * @return void;
 	 */
@@ -224,7 +235,7 @@ class User_Page_Access {
 		$post_type = $query->query_vars['post_type'];
 		$limited   = $this->is_user_limited( $post_type );
 
-		if ( $limited && in_array( $pagenow, array( 'edit.php', 'admin.php' ) ) ) {
+		if ( $limited && in_array( $pagenow, array( 'edit.php', 'admin.php' ), true ) ) {
 
 			$user_page_access    = get_option( 'cla_user_page_access' );
 			$user_id             = get_current_user_id();
@@ -246,9 +257,16 @@ class User_Page_Access {
 			// If the post type is for its Nested Pages admin page, and the post type is hierarchical, and the post type is handled by Nested Pages, and the custom indentation is active, then add ancestors of allowed posts to the query.
 			$true_post_type        = is_array( $post_type ) ? $post_type[0] : $post_type;
 			$nestedpages_page_slug = 'page' === $true_post_type ? 'nestedpages' : 'nestedpages-' . $true_post_type;
-			if ( isset( $_GET['page'] ) && $nestedpages_page_slug === $_GET['page'] ) {
+			$query                 = isset( $_SERVER['QUERY_STRING'] ) ? '' : sanitize_text_field( wp_unslash( $_SERVER['QUERY_STRING'] ) );
+			if ( $query ) {
+				parse_str( $query, $params );
+				$get_page = $params['page'];
+			} else {
+				$get_page = '';
+			}
+			if ( $nestedpages_page_slug === $get_page ) {
 
-				// Is the Classic (non-indented) display option enabled
+				// Is the Classic (non-indented) display option enabled.
 				$np_ui_option    = get_option( 'nestedpages_ui', false );
 				$np_notindented  = $np_ui_option && isset( $np_ui_option['non_indent'] ) && $np_ui_option['non_indent'] == 'true' ? true : false;
 				$np_types        = get_option( 'nestedpages_posttypes' );
@@ -391,7 +409,7 @@ class User_Page_Access {
 		if ( ! $post_type ) {
 			$post_type = get_post_type( $post_id );
 		}
-		if ( $post_id && $this->is_user_limited( $post_type, $post_id, $user_id ) && in_array( $cap, $disallowed_capabilities ) ) {
+		if ( $post_id && $this->is_user_limited( $post_type, $post_id, $user_id ) && in_array( $cap, $disallowed_capabilities, true ) ) {
 			$caps = array();
 		}
 		return $caps;
