@@ -7,7 +7,9 @@
     "start": "git config core.hooksPath hooks && chmod u+x ./hooks/pre-commit && composer install && npm install && grunt",
     "checkphp": "npm run configphpcs && vendor/bin/phpcs --standard=WordPress ./*.php ./src ./fields",
     "fixphp": "npm run configphpcs && vendor/bin/phpcbf --standard=WordPress ./*.php ./src ./fields",
-    "configphpcs": "vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs"
+    "configphpcs": "vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs",
+    "checkmasq": "npm run configphpcs && vendor/bin/phpcs --standard=WordPress ./wp-masquerade",
+    "fixmasq": "npm run configphpcs && vendor/bin/phpcbf --standard=WordPress ./wp-masquerade"
   },
   "author": "Zachary Watkins",
   "license": "GPL-2.0+",

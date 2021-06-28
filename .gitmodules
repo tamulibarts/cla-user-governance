@@ -1,0 +1,3 @@
+[submodule "wp-masquerade"]
+	path = wp-masquerade
+	url = https://github.com/wp-plugins/wp-masquerade
