@@ -55,7 +55,6 @@ class User_Page_Access {
 			// Access Restriction Logic.
 			add_filter( 'map_meta_cap', array( $this, 'unmap_caps_by_post_id' ), 11, 4 );
 			add_action( 'parse_query', array( $this, 'exclude_pages_from_admin' ), 999 );
-			add_action( 'acf/save_post', array( $this, 'update_option_user_page_access' ) );
 			// Action hooks specific to the Nested Pages plugin.
 			$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 			if (
@@ -93,10 +92,6 @@ class User_Page_Access {
 	 * @return void
 	 */
 	public static function user_menu_init() {
-
-		if ( ! is_user_logged_in() ) {
-			return;
-		}
 
 		// Lock down page for master user and other authorized users only.
 		if ( function_exists( 'acf_add_options_page' ) && defined( 'CLA_USER_GOV_MASTER_USER' ) ) {
@@ -182,13 +177,19 @@ class User_Page_Access {
 		}
 
 		$limited          = false;
-		$user_id          = ! $user_id ? get_current_user_id() : $user_id;
-		$user_page_access = get_option( 'cla_user_page_access' );
-		$try_it           = get_field( 'user_page_access', 'option' );
+		$user_id          = $user_id ? $user_id : get_current_user_id();
+		$user_page_access = get_field( 'user_page_access', 'option', false );
 
-		if ( is_array( $user_page_access ) ) {
+		if ( $user_page_access ) {
 
-			$limited = array_key_exists( strval( $user_id ), $user_page_access );
+			// Integer if user is found, boolean if not found.
+			$key_of_user = array_search( strval( $user_id ), array_column( $user_page_access, 'field_5fd299652bd00' ), true );
+
+			if ( is_int( $key_of_user ) ) {
+
+				$limited = true;
+
+			}
 
 			if ( $limited ) {
 
@@ -209,8 +210,7 @@ class User_Page_Access {
 
 				if ( $post_id ) {
 
-					$user_key           = strval( $user_id );
-					$exclusive_page_ids = $user_page_access[ $user_key ];
+					$exclusive_page_ids = $user_page_access[ $key_of_user ]['field_5fd2996d2bd01'];
 					$limited            = ! in_array( strval( $post_id ), $exclusive_page_ids, true );
 
 				}
@@ -238,12 +238,17 @@ class User_Page_Access {
 
 		if ( $limited && in_array( $pagenow, array( 'edit.php', 'admin.php' ), true ) ) {
 
-			$user_page_access    = get_option( 'cla_user_page_access' );
-			$try_it              = get_field( 'user_page_access', 'option' );
+			$user_page_access    = get_field( 'user_page_access', 'option', false );
 			$user_id             = get_current_user_id();
-			$user_key            = strval( $user_id );
-			$exclusive_page_ids  = $user_page_access[ $user_key ];
+			$user_id_string      = strval( $user_id );
+			$index_of_user       = array_search( $user_id_string, array_column( $user_page_access, 'field_5fd299652bd00' ), true );
+			$exclusive_page_ids  = $user_page_access[ $index_of_user ]['field_5fd2996d2bd01'];
 			$current_post_in_var = $query->query_vars['post__in'];
+
+			// Convert array of post ID strings to array of integers.
+			foreach ( $exclusive_page_ids as $key => $value ) {
+				$exclusive_page_ids[ $key ] = intval( $value );
+			}
 
 			if ( $current_post_in_var ) {
 
@@ -263,7 +268,9 @@ class User_Page_Access {
 			$get_page              = '';
 			if ( $server_query_string ) {
 				parse_str( $server_query_string, $query_params );
-				$get_page = $query_params['page'];
+				if ( array_key_exists( 'page', $query_params ) ) {
+					$get_page = $query_params['page'];
+				}
 			}
 			if ( $nestedpages_page_slug === $get_page ) {
 				// Is the Classic (non-indented) display option enabled.
@@ -288,27 +295,7 @@ class User_Page_Access {
 			$query->query_vars['post__in'] = $new_post_in_var;
 
 		}
-	}
 
-	/**
-	 * Hook that saves user page access variables to a custom options table.
-	 *
-	 * @param int $post_id The post ID.
-	 *
-	 * @return void
-	 */
-	public function update_option_user_page_access( $post_id ) {
-
-		if ( isset( $_POST['acf'] ) && isset( $_POST['acf']['field_5fd299302bcff'] ) && ( isset( $_POST['_acf_post_id'] ) && 'options' === $_POST['_acf_post_id'] ) ) {
-			$users       = $_POST['acf']['field_5fd299302bcff'];
-			$user_access = array();
-			foreach ( $users as $user ) {
-				$user_id                 = strval( $user['field_5fd299652bd00'] );
-				$page_ids                = $user['field_5fd2996d2bd01'];
-				$user_access[ $user_id ] = $page_ids;
-			}
-			update_option( 'cla_user_page_access', $user_access );
-		}
 
 	}
 
