@@ -184,6 +184,7 @@ class User_Page_Access {
 		$limited          = false;
 		$user_id          = ! $user_id ? get_current_user_id() : $user_id;
 		$user_page_access = get_option( 'cla_user_page_access' );
+		$try_it           = get_field( 'user_page_access', 'option' );
 
 		if ( is_array( $user_page_access ) ) {
 
@@ -238,6 +239,7 @@ class User_Page_Access {
 		if ( $limited && in_array( $pagenow, array( 'edit.php', 'admin.php' ), true ) ) {
 
 			$user_page_access    = get_option( 'cla_user_page_access' );
+			$try_it              = get_field( 'user_page_access', 'option' );
 			$user_id             = get_current_user_id();
 			$user_key            = strval( $user_id );
 			$exclusive_page_ids  = $user_page_access[ $user_key ];
@@ -259,6 +261,7 @@ class User_Page_Access {
 			$nestedpages_page_slug = 'page' === $true_post_type ? 'nestedpages' : 'nestedpages-' . $true_post_type;
 			$query                 = isset( $_SERVER['QUERY_STRING'] ) ? '' : sanitize_text_field( wp_unslash( $_SERVER['QUERY_STRING'] ) );
 			if ( $query ) {
+				// Get the contents of the "page" query parameter.
 				parse_str( $query, $params );
 				$get_page = $params['page'];
 			} else {
@@ -268,7 +271,7 @@ class User_Page_Access {
 
 				// Is the Classic (non-indented) display option enabled.
 				$np_ui_option    = get_option( 'nestedpages_ui', false );
-				$np_notindented  = $np_ui_option && isset( $np_ui_option['non_indent'] ) && $np_ui_option['non_indent'] == 'true' ? true : false;
+				$np_notindented  = $np_ui_option && isset( $np_ui_option['non_indent'] ) && 'true' === $np_ui_option['non_indent'] ? true : false;
 				$np_types        = get_option( 'nestedpages_posttypes' );
 				$is_hierarchical = is_post_type_hierarchical( $true_post_type );
 
@@ -312,6 +315,14 @@ class User_Page_Access {
 
 	}
 
+	/**
+	 * Nested Pages compatibility function to disable row actions.
+	 *
+	 * @param boolean $enabled   Whether the row actions are enabled or not.
+	 * @param string  $post_type The post type.
+	 *
+	 * @return boolean
+	 */
 	public function np_disable_row_actions( $enabled, $post_type ) {
 
 		$limited = $this->is_user_limited( $post_type );
@@ -323,6 +334,14 @@ class User_Page_Access {
 
 	}
 
+	/**
+	 * Nested Pages compatibility function to disable quick edit.
+	 *
+	 * @param boolean $enabled Whether the row actions are enabled or not.
+	 * @param WP_Post $post    The post object.
+	 *
+	 * @return boolean
+	 */
 	public function np_disable_quickedit( $enabled, $post ) {
 
 		$limited = $this->is_user_limited( $post->post_type, $post->ID );
@@ -334,6 +353,14 @@ class User_Page_Access {
 
 	}
 
+	/**
+	 * Nested Pages compatibility function to change the edit link text.
+	 *
+	 * @param string  $text The edit link text.
+	 * @param WP_Post $post The post object.
+	 *
+	 * @return string
+	 */
 	public function np_remove_edit_link_text( $text, $post ) {
 
 		$limited = $this->is_user_limited( $post->post_type, $post->ID );
@@ -345,6 +372,14 @@ class User_Page_Access {
 
 	}
 
+	/**
+	 * Nested Pages compatibility function to return an empty string if the user is restricted.
+	 *
+	 * @param string  $actions The actions.
+	 * @param WP_Post $post    The post object.
+	 *
+	 * @return string
+	 */
 	public function np_restricted_id_empty_string( $actions, $post ) {
 
 		$limited = $this->is_user_limited( $post->post_type, $post->ID );
@@ -356,6 +391,15 @@ class User_Page_Access {
 
 	}
 
+	/**
+	 * Nested Pages compatibility function to return an empty link if the user is restricted.
+	 *
+	 * @param string $link    The link.
+	 * @param int    $post_id The post ID.
+	 * @param string $context The context.
+	 *
+	 * @return string
+	 */
 	public function np_empty_post_link( $link, $post_id, $context ) {
 
 		$limited = $this->is_user_limited( '', $post_id );
@@ -370,6 +414,16 @@ class User_Page_Access {
 
 	}
 
+	/**
+	 * Nested Pages compatibility function to disable capabilities if a user is restricted.
+	 *
+	 * @param array   $allcaps All of the user's capabilities.
+	 * @param array   $caps    All possible capabilities?.
+	 * @param array   $args    Arguments.
+	 * @param WP_User $user    The user.
+	 *
+	 * @return string
+	 */
 	public function np_disable_caps( $allcaps, $caps, $args, $user ) {
 
 		$limited = $this->is_user_limited();
@@ -403,13 +457,14 @@ class User_Page_Access {
 		// List the capabilities a Post ID would be checked against that we want to disallow when the Post ID isn't in the list of the user's allowed Post IDs.
 		$disallowed_capabilities = array( 'edit_post', 'edit_page', 'delete_posts', 'delete_pages' );
 		$post_id                 = $args && is_int( $args[0] ) ? $args[0] : 0;
+		$test_post_type          = $post_type;
 		if ( ! $post_id && is_object( $post ) ) {
 			$post_id = $post->ID;
 		}
-		if ( ! $post_type ) {
-			$post_type = get_post_type( $post_id );
+		if ( ! $test_post_type ) {
+			$test_post_type = get_post_type( $post_id );
 		}
-		if ( $post_id && $this->is_user_limited( $post_type, $post_id, $user_id ) && in_array( $cap, $disallowed_capabilities, true ) ) {
+		if ( $post_id && $this->is_user_limited( $test_post_type, $post_id, $user_id ) && in_array( $cap, $disallowed_capabilities, true ) ) {
 			$caps = array();
 		}
 		return $caps;
