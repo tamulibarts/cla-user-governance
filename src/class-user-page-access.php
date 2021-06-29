@@ -231,6 +231,9 @@ class User_Page_Access {
 	 */
 	public function exclude_pages_from_admin( $query ) {
 
+		// Remove this action temporarily to avoid an infinite loop due to the ACF function "get_field" calling "get_posts".
+		remove_action( 'parse_query', array( $this, 'exclude_pages_from_admin' ), 999 );
+
 		global $pagenow;
 
 		$post_type = $query->query_vars['post_type'];
@@ -296,6 +299,8 @@ class User_Page_Access {
 
 		}
 
+		// Reinstate this action.
+		add_action( 'parse_query', array( $this, 'exclude_pages_from_admin' ), 999 );
 
 	}
 
