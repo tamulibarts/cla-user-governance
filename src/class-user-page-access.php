@@ -211,7 +211,7 @@ class User_Page_Access {
 
 					$user_key           = strval( $user_id );
 					$exclusive_page_ids = $user_page_access[ $user_key ];
-					$limited            = ! in_array( $post_id, $exclusive_page_ids, true );
+					$limited            = ! in_array( strval( $post_id ), $exclusive_page_ids, true );
 
 				}
 			}
@@ -259,16 +259,13 @@ class User_Page_Access {
 			// If the post type is for its Nested Pages admin page, and the post type is hierarchical, and the post type is handled by Nested Pages, and the custom indentation is active, then add ancestors of allowed posts to the query.
 			$true_post_type        = is_array( $post_type ) ? $post_type[0] : $post_type;
 			$nestedpages_page_slug = 'page' === $true_post_type ? 'nestedpages' : 'nestedpages-' . $true_post_type;
-			$query                 = isset( $_SERVER['QUERY_STRING'] ) ? '' : sanitize_text_field( wp_unslash( $_SERVER['QUERY_STRING'] ) );
-			if ( $query ) {
-				// Get the contents of the "page" query parameter.
-				parse_str( $query, $params );
-				$get_page = $params['page'];
-			} else {
-				$get_page = '';
+			$server_query_string   = isset( $_SERVER['QUERY_STRING'] ) ? sanitize_text_field( wp_unslash( $_SERVER['QUERY_STRING'] ) ) : '';
+			$get_page              = '';
+			if ( $server_query_string ) {
+				parse_str( $server_query_string, $query_params );
+				$get_page = $query_params['page'];
 			}
 			if ( $nestedpages_page_slug === $get_page ) {
-
 				// Is the Classic (non-indented) display option enabled.
 				$np_ui_option    = get_option( 'nestedpages_ui', false );
 				$np_notindented  = $np_ui_option && isset( $np_ui_option['non_indent'] ) && 'true' === $np_ui_option['non_indent'] ? true : false;
