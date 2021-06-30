@@ -1,1 +1,80 @@
-.nplist a.page-link[href="#"],.nplist a.page-link[href=""]{color:#000;cursor:default;pointer-events:none}.nplist a.page-link[href="#"] ~ .action-buttons,.nplist a.page-link[href=""] ~ .action-buttons{display:none}.nestedpages .np-bulk-checkbox,.nestedpages .np-check-all,.nestedpages .np-bulk-form,.nestedpages .nestedpages-dropdown>.np-btn.toggle{display:none !important}
+/**
+ * Foundation for Sites
+ * Version 6.6.3
+ * https://get.foundation
+ * Licensed under MIT Open Source
+ */
+/* Breakpoints
+--------------------------------------------- */
+/* Colors
+--------------------------------------------- */
+/* Fonts
+--------------------------------------------- */
+/* Global
+--------------------------------------------- */
+/* Header
+--------------------------------------------- */
+/* Navigation
+--------------------------------------------- */
+/* Title Bar
+--------------------------------------------- */
+/* Content
+--------------------------------------------- */
+/* Buttons
+--------------------------------------------- */
+/* Footer
+--------------------------------------------- */
+/* END copy from github.com/agrilife/agriflex4/css/src/_settings.scss */
+/* Copy from github.com/agrilife/af4-college/css/src/_settings.scss */
+/* END copy from github.com/agrilife/af4-college/css/src/_settings.scss */
+.wpug-policy-user-body th:after {
+  content: "Policy for website users.";
+  display: block;
+  font-weight: normal;
+  margin-top: 1rem;
+  font-size: 0.9em; }
+
+.wpug-policy-visitor-body th:after {
+  content: "Policy for website visitors.";
+  display: block;
+  font-weight: normal;
+  margin-top: 1rem;
+  font-size: 0.9em; }
+
+.wpug-policy-copyright-body th:after {
+  content: "Policy regarding copyrighted, patented, or trademarked material.";
+  display: block;
+  font-weight: normal;
+  margin-top: 1rem;
+  font-size: 0.9em; }
+
+.wpug-policy-pii-body th:after {
+  content: "Policy regarding PII (Personally Identifying Information).";
+  display: block;
+  font-weight: normal;
+  margin-top: 1rem;
+  font-size: 0.9em; }
+
+.wpug-onboarding-email-body th:after {
+  content: "You may use the following templates:\A{{login_name}}\A{{first_name}}\A{{last_name}}\A{{email}}\A{{login_link}}\A{{site_url}}\A{{site_link}}\A{{site_title}}\A{{network_title}} ";
+  white-space: pre;
+  display: block;
+  font-weight: normal;
+  margin-top: 1rem;
+  font-size: 0.9em; }
+
+.nplist a.page-link[href="#"],
+.nplist a.page-link[href=""] {
+  color: #000;
+  cursor: default;
+  pointer-events: none; }
+  .nplist a.page-link[href="#"] ~ .action-buttons,
+  .nplist a.page-link[href=""] ~ .action-buttons {
+    display: none; }
+
+.nestedpages .np-bulk-checkbox,
+.nestedpages .np-check-all,
+.nestedpages .np-bulk-form,
+.nestedpages .nestedpages-dropdown > .np-btn.toggle {
+  display: none !important; }
+/*# sourceMappingURL=admin.css.map */

@@ -2,10 +2,10 @@
 /**
  * The file that defines the Author post type custom fields
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-user-governance/blob/master/fields/author-fields.php
+ * @link       https://github.tamu.edu/liberalarts-web/wp-user-governance/blob/master/fields/author-fields.php
  * @since      1.0.0
- * @package    cla-user-governance
- * @subpackage cla-user-governance/fields
+ * @package    wp-user-governance
+ * @subpackage wp-user-governance/fields
  */
 
 if ( function_exists( 'acf_add_local_field_group' ) ) :

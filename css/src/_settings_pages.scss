@@ -1,0 +1,40 @@
+.wpug-policy-user-body th:after {
+	content: "Policy for website users.";
+	display: block;
+	font-weight: normal;
+	margin-top: 1rem;
+	font-size: 0.9em;
+}
+
+.wpug-policy-visitor-body th:after {
+	content: "Policy for website visitors.";
+	display: block;
+	font-weight: normal;
+	margin-top: 1rem;
+	font-size: 0.9em;
+}
+
+.wpug-policy-copyright-body th:after {
+	content: "Policy regarding copyrighted, patented, or trademarked material.";
+	display: block;
+	font-weight: normal;
+	margin-top: 1rem;
+	font-size: 0.9em;
+}
+
+.wpug-policy-pii-body th:after {
+	content: "Policy regarding PII (Personally Identifying Information).";
+	display: block;
+	font-weight: normal;
+	margin-top: 1rem;
+	font-size: 0.9em;
+}
+
+.wpug-onboarding-email-body th:after {
+	content: "You may use the following templates:\A{{login_name}}\A{{first_name}}\A{{last_name}}\A{{email}}\A{{login_link}}\A{{site_url}}\A{{site_link}}\A{{site_title}}\A{{network_title}} ";
+	white-space: pre;
+	display: block;
+	font-weight: normal;
+	margin-top: 1rem;
+	font-size: 0.9em;
+}

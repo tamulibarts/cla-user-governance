@@ -5,13 +5,13 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       https://github.com/zachwatkins/cla-user-page-access/blob/master/src/class-cla-user-page-access.php
+ * @link       https://github.com/zachwatkins/wp-user-governance/blob/master/src/class-user-page-access.php
  * @since      1.0.0
- * @package    cla-user-page-access
- * @subpackage cla-user-page-access/src
+ * @package    wp-user-governance
+ * @subpackage wp-user-governance/src
  */
 
-namespace CLA_User_Governance;
+namespace User_Governance;
 
 /**
  * The user page access restriction class.
@@ -45,7 +45,7 @@ class User_Page_Access {
 
 		if ( is_admin() ) {
 			if ( class_exists( 'acf' ) ) {
-				require_once CLA_USER_GOV_DIR_PATH . 'fields/user-page-access-fields.php';
+				require_once WP_USER_GOV_DIR_PATH . 'fields/user-page-access-fields.php';
 			}
 
 			// Admin menus.
@@ -94,12 +94,12 @@ class User_Page_Access {
 	public static function user_menu_init() {
 
 		// Lock down page for master user and other authorized users only.
-		if ( function_exists( 'acf_add_options_page' ) && defined( 'CLA_USER_GOV_MASTER_USER' ) ) {
+		if ( function_exists( 'acf_add_options_page' ) && defined( 'WP_USER_GOV_MASTER_USER' ) ) {
 
 			$current_user      = wp_get_current_user();
 			$current_user_data = $current_user->data;
 			$current_user_name = $current_user_data->user_login;
-			$authorized_users  = array( CLA_USER_GOV_MASTER_USER );
+			$authorized_users  = array( WP_USER_GOV_MASTER_USER );
 			$auth_user_field   = get_field( 'ugov_who_can_see_settings_page', 'option' );
 			if ( $auth_user_field ) {
 
@@ -117,8 +117,8 @@ class User_Page_Access {
 				acf_add_options_page(
 					array(
 						'page_title'  => 'User Page Access',
-						'menu_title'  => 'User Page Access',
-						'menu_slug'   => 'cla-user-page-access',
+						'menu_title'  => 'Page Access',
+						'menu_slug'   => 'wpug-user-page-access',
 						'parent_slug' => 'users.php',
 						'position'    => 2,
 						'redirect'    => false,

@@ -1,8 +1,8 @@
 {
-  "name": "cla-user-governance",
+  "name": "wp-user-governance",
   "version": "1.0.1",
   "description": "A boilerplate plugin for WordPress Websites.",
-  "main": "cla-user-governance-slug.php",
+  "main": "wp-user-governance.php",
   "scripts": {
     "start": "git config core.hooksPath hooks && chmod u+x ./hooks/pre-commit && composer install && npm install && grunt",
     "checkphp": "npm run configphpcs && vendor/bin/phpcs --standard=WordPress ./*.php ./src ./fields",
@@ -12,7 +12,7 @@
   "author": "Zachary Watkins",
   "license": "GPL-2.0+",
   "bugs": {
-    "url": "https://github.tamu.edu/liberalarts-web/cla-user-governance/issues",
+    "url": "https://github.tamu.edu/liberalarts-web/wp-user-governance/issues",
     "email": "watkinza@gmail.com"
   },
   "dependencies": {
@@ -36,9 +36,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.tamu.edu/liberalarts-web/cla-user-governance.git"
+    "url": "https://github.tamu.edu/liberalarts-web/wp-user-governance.git"
   },
-  "homepage": "https://github.tamu.edu/liberalarts-web/cla-user-governance#readme",
+  "homepage": "https://github.tamu.edu/liberalarts-web/wp-user-governance#readme",
   "browserslist": [
     "last 2 versions",
     "ie > 9"

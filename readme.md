@@ -1,4 +1,4 @@
-# Page-level User Access
+# WP User Governance
 
 This plugin adds a settings page which allows a user (defined as a constant in wp-config.php) to restrict other users' access to posts and pages individually.
 

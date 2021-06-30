@@ -5,13 +5,13 @@
  * A class definition that includes css and js files used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-user-governance/blob/master/src/class-assets.php
+ * @link       https://github.tamu.edu/liberalarts-web/wp-user-governance/blob/master/src/class-assets.php
  * @since      1.0.0
- * @package    cla-user-governance
- * @subpackage cla-user-governance/src
+ * @package    wp-user-governance
+ * @subpackage wp-user-governance/src
  */
 
-namespace CLA_User_Governance;
+namespace User_Governance;
 
 /**
  * Add assets
@@ -45,10 +45,10 @@ class Assets {
 	public static function register_styles() {
 
 		wp_register_style(
-			'cla-user-governance-admin-styles',
-			CLA_USER_GOV_DIR_URL . 'css/admin.css',
+			'wp-user-governance-admin-styles',
+			WP_USER_GOV_DIR_URL . 'css/admin.css',
 			false,
-			filemtime( CLA_USER_GOV_DIR_PATH . 'css/admin.css' ),
+			filemtime( WP_USER_GOV_DIR_PATH . 'css/admin.css' ),
 			'screen'
 		);
 
@@ -62,7 +62,7 @@ class Assets {
 	 */
 	public static function enqueue_styles() {
 
-		wp_enqueue_style( 'cla-user-governance-admin-styles' );
+		wp_enqueue_style( 'wp-user-governance-admin-styles' );
 
 	}
 
