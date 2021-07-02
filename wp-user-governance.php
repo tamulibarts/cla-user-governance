@@ -66,7 +66,7 @@ function wordpress_plugin_activation() {
 		update_option( 'wordpress_plugin_permalinks_flushed', 0 );
 
 		// Add default options.
-		require_once WP_USER_GOV_DIR_PATH . 'fields/options-default.php';
+		require WP_USER_GOV_DIR_PATH . 'fields/options-default.php';
 
 		// Add default policy options.
 		$current_policy_option = get_site_option( 'wpug_policy_option' );

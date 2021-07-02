@@ -28,26 +28,33 @@ class User_Onboarding {
 	 */
 	function customize_new_user_email( $wp_new_user_notification_email, $user, $blogname ) {
 
+		$translate = array(
+			'{{login_name}}'     => $user->user_login,
+			'{{first_name}}'     => '',
+			'{{last_name}}'      => '',
+			'{{user_email}}'     => $user->user_email,
+			'{{login_link}}'     => wp_login_url(),
+			'{{site_url}}'       => site_url(),
+			'{{site_link}}'      => '<a href="' . site_url() . '">' . site_url() . '</a>',
+			'{{site_title}}'     => $blogname,
+			'{{network_title}}'  => get_network()->site_name,
+			'{{network_domain}}' => get_network()->domain,
+		);
+
 		$option = get_site_option( 'wpug_user_onboarding_option' );
+
 		if ( is_array( $option ) && array_key_exists( 'email_override', $option ) && 'on' === $option['email_override'] ) {
-			// Email override enabled.
-			if ( array_key_exists( 'email_body', $option ) && $option['email_body'] ) {
-				// Custom email body present.
-				// Filter template tags.
-				$email_body                                = $option['email_body'];
-				$translate                                 = array(
-					'{{login_name}}'     => $user->user_login,
-					'{{first_name}}'     => '',
-					'{{last_name}}'      => '',
-					'{{email}}'          => $user->user_email,
-					'{{login_link}}'     => wp_login_url(),
-					'{{site_url}}'       => site_url(),
-					'{{site_link}}'      => '<a href="' . site_url() . '">' . site_url() . '</a>',
-					'{{site_title}}'     => get_bloginfo( 'name' ),
-					'{{network_title}}'  => get_network()->site_name,
-					'{{network_domain}}' => get_network()->domain,
-				);
-				$wp_new_user_notification_email['message'] = strtr( $email_body, $translate );
+
+			if ( array_key_exists( 'email_message', $option ) && $option['email_message'] ) {
+				$wp_new_user_notification_email['message'] = strtr( $option['email_message'], $translate );
+			}
+
+			if ( array_key_exists( 'email_subject', $option ) && $option['email_subject'] ) {
+				$wp_new_user_notification_email['subject'] = strtr( $option['email_subject'], $translate );
+			}
+
+			if ( array_key_exists( 'email_headers', $option ) && $option['email_headers'] ) {
+				$wp_new_user_notification_email['headers'] = strtr( $option['email_headers'], $translate );
 			}
 		}
 

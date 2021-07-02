@@ -40,6 +40,13 @@ class Menu_User_Onboarding {
 	private $page_slug = 'new-user-onboarding';
 
 	/**
+	 * Default Option Values
+	 *
+	 * @var default_option
+	 */
+	private $default_option = array();
+
+	/**
 	 * Initialize the class
 	 *
 	 * @since 1.0.0
@@ -47,23 +54,23 @@ class Menu_User_Onboarding {
 	 */
 	public function __construct() {
 
-		if ( is_admin() ) {
+		require WP_USER_GOV_DIR_PATH . 'fields/options-default.php';
+		$this->default_option = $default_site_options['wpug_user_onboarding_option'];
 
-			// Admin menus.
-			add_action( 'admin_init', array( $this, 'register_settings' ) );
-			if ( is_multisite() ) {
+		// Admin menus.
+		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		if ( is_multisite() ) {
 
-				// Advanced Custom Fields cannot add a network-level admin menu.
-				add_action( 'network_admin_menu', array( $this, 'add_menu' ) );
-				add_action( 'network_admin_edit_wpug_user_onboarding_options', array( $this, 'save_site_option' ) );
+			// Advanced Custom Fields cannot add a network-level admin menu.
+			add_action( 'network_admin_menu', array( $this, 'add_menu' ) );
+			add_action( 'network_admin_edit_wpug_user_onboarding_options', array( $this, 'save_site_option' ) );
 
-			} else {
+		} else {
 
-				// Todo: Confirm single-site support.
-				add_action( 'admin_menu', array( $this, 'add_menu' ) );
-				add_action( 'admin_edit_wpug_user_onboarding_options', array( $this, 'save_site_option' ) );
+			// Todo: Confirm single-site support.
+			add_action( 'admin_menu', array( $this, 'add_menu' ) );
+			add_action( 'admin_edit_wpug_user_onboarding_options', array( $this, 'save_site_option' ) );
 
-			}
 		}
 	}
 
@@ -89,7 +96,7 @@ class Menu_User_Onboarding {
 		?>
 	<div class="wrap">
 	  <h1>New User Onboarding</h1>
-	  <form method="post" action="edit.php?action=wpug_user_onboarding_options">
+	  <form id="wpug_user_onboarding_form" method="post" action="edit.php?action=wpug_user_onboarding_options">
 		<?php
 		// This prints out all hidden setting fields.
 		settings_fields( 'wpug_user_onboarding' );
@@ -139,18 +146,44 @@ class Menu_User_Onboarding {
 		);
 
 		add_settings_field(
-			'email_body',
-			'Email Body',
+			'email_subject',
+			'Email Subject',
+			array( $this, 'text_field' ),
+			$this->page_slug,
+			'wpug_new_user_setting_section',
+			array(
+				'class'       => 'wpug-onboarding-email-subject',
+				'option_name' => 'wpug_user_onboarding_option',
+				'field_name'  => 'email_subject',
+			)
+		);
+
+		add_settings_field(
+			'email_message',
+			'Email Message',
 			array( $this, 'wp_editor_field' ),
 			$this->page_slug,
 			'wpug_new_user_setting_section',
 			array(
-				'class'       => 'wpug-onboarding-email-body',
+				'class'       => 'wpug-onboarding-email-message',
 				'option_name' => 'wpug_user_onboarding_option',
-				'field_name'  => 'email_body',
+				'field_name'  => 'email_message',
 				'editor_args' => array(
 					'textarea_rows' => '30',
 				),
+			)
+		);
+
+		add_settings_field(
+			'email_headers',
+			'Email Headers',
+			array( $this, 'text_field' ),
+			$this->page_slug,
+			'wpug_new_user_setting_section',
+			array(
+				'class'       => 'wpug-onboarding-email-headers',
+				'option_name' => 'wpug_user_onboarding_option',
+				'field_name'  => 'email_headers',
 			)
 		);
 
@@ -168,8 +201,11 @@ class Menu_User_Onboarding {
 		if ( isset( $input['email_override'] ) ) {
 			$output['email_override'] = 'on' === $input['email_override'] ? 'on' : 'off';
 		}
-		if ( isset( $input['email_body'] ) ) {
-			$output['email_body'] = wp_kses_post( $input['email_body'] );
+		if ( isset( $input['email_subject'] ) ) {
+			$output['email_subject'] = sanitize_text_field( $input['email_subject'] );
+		}
+		if ( isset( $input['email_message'] ) ) {
+			$output['email_message'] = wp_kses_post( $input['email_message'] );
 		}
 
 		return $output;
@@ -181,7 +217,8 @@ class Menu_User_Onboarding {
 	 */
 	public function print_new_user_section_info() {
 
-		print 'You may wish to inform new users of policy, guidelines, resources, and contact information.';
+		$output = '<p>You may wish to inform new users of policy, guidelines, resources, and contact information.</p><p>You can use template tags in the Subject and Message fields for dynamic content</p><table><tbody><tr><td><strong>{{login_name}}</strong></td></tr><tr><td><strong>{{first_name}}</strong></td></tr><tr><td><strong>{{last_name}}</strong></td></tr><tr><td><strong>{{user_email}}</strong></td></tr><tr><td><strong>{{login_link}}</strong></td></tr><tr><td><strong>{{site_url}}</strong></td></tr><tr><td><strong>{{site_link}}</strong></td></tr><tr><td><strong>{{site_title}}</strong></td></tr><tr><td><strong>{{network_title}}</strong></td></tr><tr><td><strong>{{network_domain}}</strong></td></tr></tbody></table>';
+		echo wp_kses_post( $output );
 
 	}
 
@@ -194,9 +231,10 @@ class Menu_User_Onboarding {
 	 */
 	public function wp_editor_field( $args ) {
 
-		$option_name = $args['option_name'];
-		$field_name  = $args['field_name'];
-		$editor_args = array(
+		$option_name   = $args['option_name'];
+		$field_name    = $args['field_name'];
+		$default_value = $this->default_option[ $field_name ];
+		$editor_args   = array(
 			'textarea_name' => "{$option_name}[{$field_name}]",
 			'tinymce'       => array(
 				'content_css' => '',
@@ -207,7 +245,7 @@ class Menu_User_Onboarding {
 		}
 
 		$option  = get_site_option( $option_name );
-		$content = isset( $option[ $field_name ] ) ? $option[ $field_name ] : '';
+		$content = isset( $option[ $field_name ] ) ? $option[ $field_name ] : $default_value;
 		$content = stripslashes( $content );
 
 		wp_editor( $content, $field_name, $editor_args );
@@ -223,12 +261,49 @@ class Menu_User_Onboarding {
 	 */
 	public function checkbox_field( $args ) {
 
-		$option_name = $args['option_name'];
-		$field_name  = $args['field_name'];
-		$option      = get_site_option( $option_name );
-		$is_checked  = isset( $option[ $field_name ] ) ? $option[ $field_name ] : 'off';
-		$checked     = 'on' === $is_checked ? ' checked' : '';
-		echo "<input type=\"checkbox\" name=\"{$option_name}[{$field_name}]\" id=\"{$option_name}[{$field_name}]\"{$checked} />";
+		$option_name   = $args['option_name'];
+		$field_name    = $args['field_name'];
+		$default_value = $this->default_option[ $field_name ];
+		$option        = get_site_option( $option_name );
+		$is_checked    = isset( $option[ $field_name ] ) ? $option[ $field_name ] : $default_value;
+		$checked       = 'on' === $is_checked ? ' checked' : '';
+		echo "<input type=\"checkbox\" name=\"{$option_name}[{$field_name}]\" id=\"{$option_name}[{$field_name}]\" class=\"settings-checkbox\"{$checked} />";
+
+	}
+
+	/**
+	 * Get the settings option array and print one of its values.
+	 *
+	 * @param array $args The arguments needed to render the setting field.
+	 *
+	 * @return void
+	 */
+	public function text_field( $args ) {
+
+		$option_name   = $args['option_name'];
+		$field_name    = $args['field_name'];
+		$default_value = $this->default_option[ $field_name ];
+		$option        = get_site_option( $option_name );
+		$value         = isset( $option[ $field_name ] ) ? $option[ $field_name ] : $default_value;
+		echo "<input type=\"text\" name=\"{$option_name}[{$field_name}]\" id=\"{$option_name}[{$field_name}]\" class=\"settings-text\" value=\"{$value}\" data-lpignore=\"true\" />";
+
+	}
+
+	/**
+	 * Get the settings option array and print one of its values.
+	 *
+	 * @param array $args The arguments needed to render the setting field.
+	 *
+	 * @return void
+	 */
+	public function textarea_field( $args ) {
+
+		$option_name   = $args['option_name'];
+		$field_name    = $args['field_name'];
+		$default_value = $this->default_option[ $field_name ];
+		$option        = get_site_option( $option_name );
+		$value         = isset( $option[ $field_name ] ) ? $option[ $field_name ] : $default_value;
+		echo "<textarea name=\"{$option_name}[{$field_name}]\" id=\"{$option_name}[{$field_name}]\" class=\"settings-textarea\" rows=\"5\">{$value}</textarea>";
 
 	}
 

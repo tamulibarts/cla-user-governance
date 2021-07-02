@@ -27,41 +27,51 @@
 /* END copy from github.com/agrilife/agriflex4/css/src/_settings.scss */
 /* Copy from github.com/agrilife/af4-college/css/src/_settings.scss */
 /* END copy from github.com/agrilife/af4-college/css/src/_settings.scss */
-.wpug-policy-user-body th:after {
+.users_page_new-user-onboarding .wpug-policy-user-body th:after {
   content: "Policy for website users.";
   display: block;
   font-weight: normal;
   margin-top: 1rem;
   font-size: 0.9em; }
 
-.wpug-policy-visitor-body th:after {
+.users_page_new-user-onboarding .wpug-policy-visitor-body th:after {
   content: "Policy for website visitors.";
   display: block;
   font-weight: normal;
   margin-top: 1rem;
   font-size: 0.9em; }
 
-.wpug-policy-copyright-body th:after {
+.users_page_new-user-onboarding .wpug-policy-copyright-body th:after {
   content: "Policy regarding copyrighted, patented, or trademarked material.";
   display: block;
   font-weight: normal;
   margin-top: 1rem;
   font-size: 0.9em; }
 
-.wpug-policy-pii-body th:after {
+.users_page_new-user-onboarding .wpug-policy-pii-body th:after {
   content: "Policy regarding PII (Personally Identifying Information).";
   display: block;
   font-weight: normal;
   margin-top: 1rem;
   font-size: 0.9em; }
 
-.wpug-onboarding-email-body th:after {
-  content: "You may use the following templates:\A{{login_name}}\A{{first_name}}\A{{last_name}}\A{{email}}\A{{login_link}}\A{{site_url}}\A{{site_link}}\A{{site_title}}\A{{network_title}} ";
+.users_page_new-user-onboarding .wpug-onboarding-email-headers th:after {
+  content: "Separate each header statement with a semicolon.";
   white-space: pre;
   display: block;
   font-weight: normal;
   margin-top: 1rem;
   font-size: 0.9em; }
+
+.users_page_new-user-onboarding #wpbody-content input.settings-text {
+  width: 100%; }
+
+.users_page_new-user-onboarding #wpug_user_onboarding_form,
+.users_page_new-user-onboarding #wpug_user_onboarding_form p {
+  font-size: 14px; }
+
+.users_page_new-user-onboarding #wpug_user_onboarding_form td {
+  vertical-align: top; }
 
 .nplist a.page-link[href="#"],
 .nplist a.page-link[href=""] {
