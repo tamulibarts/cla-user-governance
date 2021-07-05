@@ -213,21 +213,30 @@ class Menu_Policy {
 	 */
 	public function wp_editor_field( $args ) {
 
-		$option_name = $args['option_name'];
-		$field_name  = $args['field_name'];
-		$editor_args = array(
+		$option_name   = $args['option_name'];
+		$field_name    = $args['field_name'];
+		$default_value = $this->default_option[ $field_name ];
+		$editor_args   = array(
 			'textarea_name' => "{$option_name}[{$field_name}]",
 			'tinymce'       => array(
+				'toolbar1' => 'formatselect,bold,italic,underline,bullist,numlist,blockquote,hr,separator,alignleft,aligncenter,alignright,alignjustify,indent,outdent,charmap,link,unlink,undo,redo,fullscreen,wp_help',
+				'toolbar2' => '',
+				'paste_remove_styles' => true,
+				'paste_remove_spans' => true,
+				'paste_strip_class_attributes' => 'all',
 				'content_css' => '',
 			),
+			'default_editor' => '',
 		);
 		if ( isset( $args['editor_args'] ) ) {
 			$editor_args = array_merge( $editor_args, $args['editor_args'] );
 		}
 
 		$option  = get_site_option( $option_name );
-		$content = isset( $option[ $field_name ] ) ? $option[ $field_name ] : '';
+		$content = isset( $option[ $field_name ] ) ? $option[ $field_name ] : $default_value;
 		$content = stripslashes( $content );
+
+		add_filter( 'quicktags_settings', function( $qtInit ){ $qtInit['buttons'] = ','; return $qtInit; });
 		wp_editor( $content, $field_name, $editor_args );
 
 	}
