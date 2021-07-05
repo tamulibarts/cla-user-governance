@@ -104,6 +104,21 @@ class Menu_User_Onboarding {
 		submit_button();
 		?>
 	  </form>
+	  <h2 id="template_tags">Template Tags</h2>
+	  <table id="template_tags_table">
+		  <tbody>
+			  <tr><td><strong>{{user_name}}</strong></td><td>The user's username</td></tr>
+			  <tr><td><strong>{{first_name}}</strong></td><td>The user's first name</td></tr>
+			  <tr><td><strong>{{last_name}}</strong></td><td>The user's last name</td></tr>
+			  <tr><td><strong>{{user_email}}</strong></td><td>The user's email address</td></tr>
+			  <tr><td><strong>{{login_link}}</strong></td><td>A link to the site login page with the URL as the link text</td></tr>
+			  <tr><td><strong>{{site_url}}</strong></td><td>The site URL</td></tr>
+			  <tr><td><strong>{{site_link}}</strong></td><td>A link to the site with the URL as the link text</td></tr>
+			  <tr><td><strong>{{site_title}}</strong></td><td>The title of the site</td></tr>
+			  <tr><td><strong>{{network_title}}</strong></td><td>The title of the network</td></tr>
+			  <tr><td><strong>{{network_domain}}</strong></td><td>The domain of the network</td></tr>
+		  </tbody>
+	  </table>
 	</div>
 		<?php
 
@@ -169,7 +184,7 @@ class Menu_User_Onboarding {
 				'option_name' => 'wpug_user_onboarding_option',
 				'field_name'  => 'email_message',
 				'editor_args' => array(
-					'textarea_rows' => '30',
+					'textarea_rows' => '20',
 				),
 			)
 		);
@@ -217,7 +232,7 @@ class Menu_User_Onboarding {
 	 */
 	public function print_new_user_section_info() {
 
-		$output = '<p>You may wish to inform new users of policy, guidelines, resources, and contact information.</p><p>You can use template tags in the Subject and Message fields for dynamic content</p><table><tbody><tr><td><strong>{{login_name}}</strong></td></tr><tr><td><strong>{{first_name}}</strong></td></tr><tr><td><strong>{{last_name}}</strong></td></tr><tr><td><strong>{{user_email}}</strong></td></tr><tr><td><strong>{{login_link}}</strong></td></tr><tr><td><strong>{{site_url}}</strong></td></tr><tr><td><strong>{{site_link}}</strong></td></tr><tr><td><strong>{{site_title}}</strong></td></tr><tr><td><strong>{{network_title}}</strong></td></tr><tr><td><strong>{{network_domain}}</strong></td></tr></tbody></table>';
+		$output = '<p>Consider new user emails an opportunity to introduce your new users to the standard operating procedures they will be using in their day to day work. You may wish to inform them of policy, guidelines, resources, and contact information.</p><p>You can use <a href="#template_tags">template tags</a> in the Subject and Message fields for dynamic content.</p>';
 		echo wp_kses_post( $output );
 
 	}
@@ -235,10 +250,17 @@ class Menu_User_Onboarding {
 		$field_name    = $args['field_name'];
 		$default_value = $this->default_option[ $field_name ];
 		$editor_args   = array(
-			'textarea_name' => "{$option_name}[{$field_name}]",
-			'tinymce'       => array(
-				'content_css' => '',
+			'textarea_name'  => "{$option_name}[{$field_name}]",
+			'tinymce'        => array(
+				'toolbar1'                     => 'formatselect,bold,italic,underline,bullist,numlist,blockquote,hr,separator,alignleft,aligncenter,alignright,alignjustify,indent,outdent,charmap,link,unlink,undo,redo,fullscreen,wp_help',
+				'toolbar2'                     => '',
+				'paste_remove_styles'          => true,
+				'paste_remove_spans'           => true,
+				'paste_strip_class_attributes' => 'all',
+				'content_css'                  => '',
 			),
+			'default_editor' => '',
+			'wpautop'        => false,
 		);
 		if ( isset( $args['editor_args'] ) ) {
 			$editor_args = array_merge( $editor_args, $args['editor_args'] );
@@ -248,6 +270,13 @@ class Menu_User_Onboarding {
 		$content = isset( $option[ $field_name ] ) ? $option[ $field_name ] : $default_value;
 		$content = stripslashes( $content );
 
+		add_filter(
+			'quicktags_settings',
+			function( $qtInit ) {
+				$qtInit['buttons'] = ',';
+				return $qtInit;
+			}
+		);
 		wp_editor( $content, $field_name, $editor_args );
 
 	}
