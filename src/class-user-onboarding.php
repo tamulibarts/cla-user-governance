@@ -29,7 +29,7 @@ class User_Onboarding {
 	function customize_new_user_email( $wp_new_user_notification_email, $user, $blogname ) {
 
 		$translate = array(
-			'{{login_name}}'     => $user->user_login,
+			'{{user_name}}'      => $user->user_login,
 			'{{first_name}}'     => '',
 			'{{last_name}}'      => '',
 			'{{user_email}}'     => $user->user_email,
