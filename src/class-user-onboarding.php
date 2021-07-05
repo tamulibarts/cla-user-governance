@@ -33,7 +33,7 @@ class User_Onboarding {
 			'{{first_name}}'     => '',
 			'{{last_name}}'      => '',
 			'{{user_email}}'     => $user->user_email,
-			'{{login_link}}'     => wp_login_url(),
+			'{{login_link}}'     => '<a href="' . wp_login_url() . '">' . wp_login_url() . '</a>',
 			'{{site_url}}'       => site_url(),
 			'{{site_link}}'      => '<a href="' . site_url() . '">' . site_url() . '</a>',
 			'{{site_title}}'     => $blogname,
