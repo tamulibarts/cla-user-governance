@@ -352,7 +352,7 @@ class Menu_User_Onboarding {
 					'page'    => $this->page_slug,
 					'updated' => 'true',
 				),
-				( is_multisite() ? network_admin_url( 'admin.php' ) : admin_url( 'admin.php' ) )
+				( is_multisite() ? network_admin_url( 'users.php' ) : admin_url( 'users.php' ) )
 			)
 		);
 		exit;
