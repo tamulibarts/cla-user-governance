@@ -27,51 +27,57 @@
 /* END copy from github.com/agrilife/agriflex4/css/src/_settings.scss */
 /* Copy from github.com/agrilife/af4-college/css/src/_settings.scss */
 /* END copy from github.com/agrilife/af4-college/css/src/_settings.scss */
-.users_page_new-user-onboarding .wpug-policy-user-body th:after {
-  content: "Policy for website users.";
-  display: block;
-  font-weight: normal;
-  margin-top: 1rem;
-  font-size: 0.9em; }
-
-.users_page_new-user-onboarding .wpug-policy-visitor-body th:after {
-  content: "Policy for website visitors.";
-  display: block;
-  font-weight: normal;
-  margin-top: 1rem;
-  font-size: 0.9em; }
-
-.users_page_new-user-onboarding .wpug-policy-copyright-body th:after {
-  content: "Policy regarding copyrighted, patented, or trademarked material.";
-  display: block;
-  font-weight: normal;
-  margin-top: 1rem;
-  font-size: 0.9em; }
-
-.users_page_new-user-onboarding .wpug-policy-pii-body th:after {
-  content: "Policy regarding PII (Personally Identifying Information).";
-  display: block;
-  font-weight: normal;
-  margin-top: 1rem;
-  font-size: 0.9em; }
-
-.users_page_new-user-onboarding .wpug-onboarding-email-headers th:after {
-  content: "Separate each header statement with a semicolon.";
-  white-space: pre;
-  display: block;
-  font-weight: normal;
-  margin-top: 1rem;
-  font-size: 0.9em; }
-
-.users_page_new-user-onboarding #wpbody-content input.settings-text {
-  width: 100%; }
-
-.users_page_new-user-onboarding #wpug_user_onboarding_form,
-.users_page_new-user-onboarding #wpug_user_onboarding_form p {
-  font-size: 14px; }
-
-.users_page_new-user-onboarding #wpug_user_onboarding_form td {
-  vertical-align: top; }
+.users_page_new-user-onboarding {
+  font-size: 16px; }
+  .users_page_new-user-onboarding #wpug_user_onboarding_form,
+  .users_page_new-user-onboarding #wpug_user_onboarding_form p,
+  .users_page_new-user-onboarding #wpug_user_onboarding_form .form-table,
+  .users_page_new-user-onboarding #wpug_user_onboarding_form .form-table td,
+  .users_page_new-user-onboarding #wpug_user_onboarding_form .form-table td p,
+  .users_page_new-user-onboarding #wpug_user_onboarding_form .form-table th {
+    font-size: 16px; }
+  .users_page_new-user-onboarding #wpug_user_onboarding_form td {
+    vertical-align: top; }
+  .users_page_new-user-onboarding .wpug-policy-user-body th:after {
+    content: "Policy for website users.";
+    display: block;
+    font-weight: normal;
+    margin-top: 1rem;
+    font-size: 0.9em; }
+  .users_page_new-user-onboarding .wpug-policy-visitor-body th:after {
+    content: "Policy for website visitors.";
+    display: block;
+    font-weight: normal;
+    margin-top: 1rem;
+    font-size: 0.9em; }
+  .users_page_new-user-onboarding .wpug-policy-copyright-body th:after {
+    content: "Policy regarding copyrighted, patented, or trademarked material.";
+    display: block;
+    font-weight: normal;
+    margin-top: 1rem;
+    font-size: 0.9em; }
+  .users_page_new-user-onboarding .wpug-policy-pii-body th:after {
+    content: "Policy regarding PII (Personally Identifying Information).";
+    display: block;
+    font-weight: normal;
+    margin-top: 1rem;
+    font-size: 0.9em; }
+  .users_page_new-user-onboarding .wpug-onboarding-email-headers th:after {
+    content: "Separate each header statement with a semicolon ; character.";
+    display: block;
+    font-weight: normal;
+    margin-top: 1rem;
+    font-size: 0.9em; }
+  .users_page_new-user-onboarding #wpbody-content input.settings-text {
+    width: 100%; }
+  .users_page_new-user-onboarding h2#template_tags {
+    margin: 0.5rem 0 0.5rem -0.5rem;
+    padding: 0.5rem 0 0.5rem 0.5rem; }
+    .users_page_new-user-onboarding h2#template_tags:target {
+      border: 1px dashed #00F; }
+  .users_page_new-user-onboarding #template_tags_table td:first-child {
+    padding-right: 1rem;
+    text-align: right; }
 
 .nplist a.page-link[href="#"],
 .nplist a.page-link[href=""] {

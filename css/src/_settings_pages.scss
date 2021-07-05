@@ -1,4 +1,21 @@
 .users_page_new-user-onboarding {
+	font-size: 16px;
+
+	#wpug_user_onboarding_form {
+		&,
+		& p,
+		.form-table,
+		.form-table td,
+		.form-table td p,
+		.form-table th {
+			font-size: 16px;
+		}
+
+		td {
+			vertical-align: top;
+		}
+	}
+
 	.wpug-policy-user-body th:after {
 		content: "Policy for website users.";
 		display: block;
@@ -32,8 +49,7 @@
 	}
 
 	.wpug-onboarding-email-headers th:after {
-		content: "Separate each header statement with a semicolon.";
-		white-space: pre;
+		content: "Separate each header statement with a semicolon ; character.";
 		display: block;
 		font-weight: normal;
 		margin-top: 1rem;
@@ -44,14 +60,20 @@
 		width: 100%;
 	}
 
-	#wpug_user_onboarding_form {
-		&,
-		& p {
-			font-size: 14px;
-		}
+	h2#template_tags {
+		$space: 0.5rem;
+		margin: $space 0 $space -#{$space};
+		padding: $space 0 $space $space;
 
-		td {
-			vertical-align: top;
+		&:target {
+			border: 1px dashed #00F;
+		}
+	}
+
+	#template_tags_table {
+		td:first-child {
+			padding-right: 1rem;
+			text-align: right;
 		}
 	}
 }
