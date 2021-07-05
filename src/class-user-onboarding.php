@@ -54,7 +54,7 @@ class User_Onboarding {
 			}
 
 			if ( array_key_exists( 'email_headers', $option ) && $option['email_headers'] ) {
-				$wp_new_user_notification_email['headers'] = strtr( $option['email_headers'], $translate );
+				$wp_new_user_notification_email['headers'] = sanitize_text_field( $option['email_headers'] );
 			}
 		}
 
