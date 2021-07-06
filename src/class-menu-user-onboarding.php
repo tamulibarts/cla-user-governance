@@ -222,6 +222,9 @@ class Menu_User_Onboarding {
 		if ( isset( $input['email_message'] ) ) {
 			$output['email_message'] = wp_kses_post( $input['email_message'] );
 		}
+		if ( isset( $input['email_headers'] ) ) {
+			$output['email_headers'] = wp_check_invalid_utf8( $input['email_headers'], true );
+		}
 
 		return $output;
 
