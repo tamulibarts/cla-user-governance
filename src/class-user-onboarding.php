@@ -1,65 +1,98 @@
 <?php
+/**
+ * We generate our own email for new users because we are not given full control
+ * over WordPress's automatic new user emails, particularly headers.
+ */
 
-namespace WP_User_Governance;
+namespace User_Governance;
 
 class User_Onboarding {
 
 	public function __construct() {
 
-		add_filter( 'wp_new_user_notification_email', array( $this, 'customize_new_user_email' ) );
+		add_action( 'add_user_to_blog', array( $this, 'new_user_email' ), 11, 3 );
+		add_action( 'wp_header', array( $this, 'wp_header' ) );
+
+		$option = get_site_option( 'wpug_user_onboarding_option' );
+		if ( is_array( $option ) && array_key_exists( 'email_override', $option ) && 'on' === $option['email_override'] ) {
+
+			// Disable default new user emails.
+		  remove_action( 'register_new_user', 'wp_send_new_user_notifications' );
+		  remove_action( 'network_site_new_created_user', 'wp_send_new_user_notifications' );
+		  remove_action( 'network_site_users_created_user', 'wp_send_new_user_notifications' );
+		  remove_action( 'network_user_new_created_user', 'wp_send_new_user_notifications' );
+
+		}
 
 	}
 
 	/**
-	 * Filters the contents of the new user notification email sent to the new user.
+	 * Fires immediately after a new user is registered.
 	 *
-	 * @since 4.9.0
+	 * @since 1.0.0
 	 *
-	 * @param array   $wp_new_user_notification_email {
-	 *     Used to build wp_mail().
+	 * @param int $user_id
 	 *
-	 *     @type string $to      The intended recipient - New user email address.
-	 *     @type string $subject The subject of the email.
-	 *     @type string $message The body of the email.
-	 *     @type string $headers The headers of the email.
-	 * }
-	 * @param WP_User $user     User object for new user.
-	 * @param string  $blogname The site title.
+	 * @return void
 	 */
-	function customize_new_user_email( $wp_new_user_notification_email, $user, $blogname ) {
-
-		$translate = array(
-			'{{user_name}}'      => $user->user_login,
-			'{{first_name}}'     => '',
-			'{{last_name}}'      => '',
-			'{{user_email}}'     => $user->user_email,
-			'{{login_link}}'     => '<a href="' . wp_login_url() . '">' . wp_login_url() . '</a>',
-			'{{site_url}}'       => site_url(),
-			'{{site_link}}'      => '<a href="' . site_url() . '">' . site_url() . '</a>',
-			'{{site_title}}'     => $blogname,
-			'{{network_title}}'  => get_network()->site_name,
-			'{{network_domain}}' => get_network()->domain,
-		);
+	function new_user_email( $user_id, $role, $blog_id ) {
 
 		$option = get_site_option( 'wpug_user_onboarding_option' );
 
 		if ( is_array( $option ) && array_key_exists( 'email_override', $option ) && 'on' === $option['email_override'] ) {
 
-			if ( array_key_exists( 'email_message', $option ) && $option['email_message'] ) {
-				$wp_new_user_notification_email['message'] = strtr( $option['email_message'], $translate );
-			}
+			switch_to_blog( $blog_id );
+			$user      = get_user_by( 'ID', $user_id );
+			$blogname  = get_blog_option( $blog_id, 'blogname' );
+			$translate = array(
+				'{{user_name}}'      => $user->user_login,
+				'{{first_name}}'     => '',
+				'{{last_name}}'      => '',
+				'{{user_email}}'     => $user->user_email,
+				'{{login_link}}'     => '<a href="' . wp_login_url() . '">' . wp_login_url() . '</a>',
+				'{{site_url}}'       => site_url(),
+				'{{site_link}}'      => '<a href="' . site_url() . '">' . site_url() . '</a>',
+				'{{site_title}}'     => $blogname,
+				'{{network_title}}'  => get_network()->site_name,
+				'{{network_domain}}' => get_network()->domain,
+			);
+			$message   = '';
+			$subject   = '';
+			$headers   = '';
+			restore_current_blog();
 
 			if ( array_key_exists( 'email_subject', $option ) && $option['email_subject'] ) {
-				$wp_new_user_notification_email['subject'] = strtr( $option['email_subject'], $translate );
+				$subject = strtr( $option['email_subject'], $translate );
+			}
+
+			if ( array_key_exists( 'email_message', $option ) && $option['email_message'] ) {
+				$message = stripslashes( strtr( $option['email_message'], $translate ) );
+				$message = "<html><head><title>{$subject}</title><body>{$message}</body></html>";
 			}
 
 			if ( array_key_exists( 'email_headers', $option ) && $option['email_headers'] ) {
-				$wp_new_user_notification_email['headers'] = sanitize_text_field( $option['email_headers'] );
+				$headers = wp_check_invalid_utf8( $option['email_headers'] );
+				$headers = preg_split('/;\s?/', $headers);
+			}
+
+			if ( $message && $subject && $headers ) {
+				wp_mail( $user->user_email, $subject, $message, $headers );
 			}
 		}
 
-		return $wp_new_user_notification_email;
+	}
 
+	/**
+	 * Hide the password field on the activation page since we use NetID authentication.
+	 *
+	 * @param string $name Name of the specific header file to use.
+	 *
+	 * @return void
+	 */
+	public function wp_header( $name ) {
+		// if ( 'wp-activate' === $name ) {
+			echo "<style id=\"wpug\">#signup-welcome p + p { display: none; }</style>";
+		// }
 	}
 
 }

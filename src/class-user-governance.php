@@ -52,6 +52,8 @@ class User_Governance {
 		// New user email settings.
 		require_once WP_USER_GOV_DIR_PATH . 'src/class-menu-user-onboarding.php';
 		new \User_Governance\Menu_User_Onboarding();
+		require_once WP_USER_GOV_DIR_PATH . 'src/class-user-onboarding.php';
+		new \User_Governance\User_Onboarding();
 
 		// New user email settings.
 		require_once WP_USER_GOV_DIR_PATH . 'src/class-menu-policy.php';
