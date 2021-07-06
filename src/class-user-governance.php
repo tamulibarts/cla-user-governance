@@ -57,5 +57,8 @@ class User_Governance {
 		require_once WP_USER_GOV_DIR_PATH . 'src/class-menu-policy.php';
 		new \User_Governance\Menu_Policy();
 
+		// Disallow users from self-registering on multisite.
+		add_filter( 'option_users_can_register', '__return_false' );
+
 	}
 }
