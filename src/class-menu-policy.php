@@ -58,25 +58,23 @@ class Menu_Policy {
 	 */
 	public function __construct() {
 
-		if ( is_admin() ) {
 		require WP_USER_GOV_DIR_PATH . 'fields/options-default.php';
 		$this->default_option = $default_site_options['wpug_policy_option'];
 
-			// Admin menus.
-			add_action( 'admin_init', array( $this, 'register_settings' ) );
-			if ( is_multisite() ) {
+		// Admin menus.
+		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		if ( is_multisite() ) {
 
-				// Advanced Custom Fields cannot add a network-level admin menu.
-				add_action( 'network_admin_menu', array( $this, 'add_menu' ) );
-				add_action( 'network_admin_edit_wpug_site_policy', array( $this, 'save_site_option' ) );
+			// Advanced Custom Fields cannot add a network-level admin menu.
+			add_action( 'network_admin_menu', array( $this, 'add_menu' ) );
+			add_action( 'network_admin_edit_wpug_site_policy', array( $this, 'save_site_option' ) );
 
-			} else {
+		} else {
 
-				// Todo: Confirm single-site support.
-				add_action( 'admin_menu', array( $this, 'add_menu' ) );
-				add_action( 'admin_edit_wpug_site_policy', array( $this, 'save_site_option' ) );
+			// Todo: Confirm single-site support.
+			add_action( 'admin_menu', array( $this, 'add_menu' ) );
+			add_action( 'admin_edit_wpug_site_policy', array( $this, 'save_site_option' ) );
 
-			}
 		}
 	}
 
