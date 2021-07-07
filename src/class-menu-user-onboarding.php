@@ -203,6 +203,52 @@ class Menu_User_Onboarding {
 			)
 		);
 
+		/**
+		 * Register the User Sandbox Site fields.
+		 */
+		add_settings_section(
+			'wpug_sandbox_setting_section',
+			'Sandbox Site',
+			array( $this, 'print_sandbox_section_info' ),
+			$this->page_slug
+		);
+
+		add_settings_field(
+			'sandbox_id',
+			'Site ID',
+			array( $this, 'number_field' ),
+			$this->page_slug,
+			'wpug_sandbox_setting_section',
+			array(
+				'option_name' => 'wpug_user_onboarding_option',
+				'field_name'  => 'sandbox_id',
+			)
+		);
+
+		add_settings_field(
+			'sandbox_auto_add_user',
+			'Add New Users',
+			array( $this, 'checkbox_field' ),
+			$this->page_slug,
+			'wpug_sandbox_setting_section',
+			array(
+				'option_name' => 'wpug_user_onboarding_option',
+				'field_name'  => 'sandbox_auto_add_user',
+			)
+		);
+
+		add_settings_field(
+			'sandbox_reset_daily',
+			'Reset Sandbox Daily',
+			array( $this, 'checkbox_field' ),
+			$this->page_slug,
+			'wpug_sandbox_setting_section',
+			array(
+				'option_name' => 'wpug_user_onboarding_option',
+				'field_name'  => 'sandbox_reset_daily',
+			)
+		);
+
 	}
 
 	/**
@@ -226,6 +272,15 @@ class Menu_User_Onboarding {
 		if ( isset( $input['email_headers'] ) ) {
 			$output['email_headers'] = wp_check_invalid_utf8( $input['email_headers'], true );
 		}
+		if ( isset( $input['sandbox_id'] ) ) {
+			$output['sandbox_id'] = intval( $input['sandbox_id'] );
+		}
+		if ( isset( $input['sandbox_auto_add_user'] ) ) {
+			$output['sandbox_auto_add_user'] = 'on' === $input['sandbox_auto_add_user'] ? 'on' : 'off';
+		}
+		if ( isset( $input['sandbox_reset_daily'] ) ) {
+			$output['sandbox_reset_daily'] = 'on' === $input['sandbox_reset_daily'] ? 'on' : 'off';
+		}
 
 		return $output;
 
@@ -237,6 +292,16 @@ class Menu_User_Onboarding {
 	public function print_new_user_section_info() {
 
 		$output = '<p>Consider new user emails an opportunity to introduce your new users to the standard operating procedures they will be using in their day to day work. You may wish to inform them of policy, guidelines, resources, and contact information.</p><p>You can use <a href="#template_tags">template tags</a> in the Subject and Message fields for dynamic content.</p>';
+		echo wp_kses_post( $output );
+
+	}
+
+	/**
+	 * Print the Section text
+	 */
+	public function print_sandbox_section_info() {
+
+		$output = '<p>The sandbox site is a place where users can learn how to use WordPress and the theme and plugin features they will have access to on their public site.</p>';
 		echo wp_kses_post( $output );
 
 	}
@@ -319,6 +384,27 @@ class Menu_User_Onboarding {
 		$option        = get_site_option( $option_name );
 		$value         = isset( $option[ $field_name ] ) ? $option[ $field_name ] : $default_value;
 		echo "<input type=\"text\" name=\"{$option_name}[{$field_name}]\" id=\"{$option_name}[{$field_name}]\" class=\"settings-text\" value=\"{$value}\" data-lpignore=\"true\" />";
+		if ( isset( $args['after'] ) ) {
+			echo $args['after'];
+		}
+
+	}
+
+	/**
+	 * Get the settings option array and print one of its values.
+	 *
+	 * @param array $args The arguments needed to render the setting field.
+	 *
+	 * @return void
+	 */
+	public function number_field( $args ) {
+
+		$option_name   = $args['option_name'];
+		$field_name    = $args['field_name'];
+		$default_value = $this->default_option[ $field_name ];
+		$option        = get_site_option( $option_name );
+		$value         = isset( $option[ $field_name ] ) ? $option[ $field_name ] : $default_value;
+		echo "<input type=\"number\" min=\"1\" name=\"{$option_name}[{$field_name}]\" id=\"{$option_name}[{$field_name}]\" class=\"settings-number\" value=\"{$value}\" data-lpignore=\"true\" />";
 		if ( isset( $args['after'] ) ) {
 			echo $args['after'];
 		}
