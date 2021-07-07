@@ -162,7 +162,7 @@ class Menu_User_Onboarding {
 
 		add_settings_field(
 			'email_subject',
-			'Email Subject',
+			'Subject',
 			array( $this, 'text_field' ),
 			$this->page_slug,
 			'wpug_new_user_setting_section',
@@ -175,7 +175,7 @@ class Menu_User_Onboarding {
 
 		add_settings_field(
 			'email_message',
-			'Email Message',
+			'Message',
 			array( $this, 'wp_editor_field' ),
 			$this->page_slug,
 			'wpug_new_user_setting_section',
@@ -191,7 +191,7 @@ class Menu_User_Onboarding {
 
 		add_settings_field(
 			'email_headers',
-			'Email Headers',
+			'Headers',
 			array( $this, 'text_field' ),
 			$this->page_slug,
 			'wpug_new_user_setting_section',
