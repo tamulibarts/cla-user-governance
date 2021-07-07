@@ -44,6 +44,13 @@ class Menu_Policy {
 	private $page_slug = 'wpug-site-policy';
 
 	/**
+	 * Default Option Values
+	 *
+	 * @var default_option
+	 */
+	private $default_option = array();
+
+	/**
 	 * Initialize the class
 	 *
 	 * @since 1.0.0
@@ -52,6 +59,8 @@ class Menu_Policy {
 	public function __construct() {
 
 		if ( is_admin() ) {
+		require WP_USER_GOV_DIR_PATH . 'fields/options-default.php';
+		$this->default_option = $default_site_options['wpug_policy_option'];
 
 			// Admin menus.
 			add_action( 'admin_init', array( $this, 'register_settings' ) );
