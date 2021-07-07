@@ -48,14 +48,6 @@
 		font-size: 0.9em;
 	}
 
-	.wpug-onboarding-email-headers th:after {
-		content: "Separate each header statement with a semicolon ; character.";
-		display: block;
-		font-weight: normal;
-		margin-top: 1rem;
-		font-size: 0.9em;
-	}
-
 	#wpbody-content input.settings-text {
 		width: 100%;
 	}
@@ -75,5 +67,12 @@
 			padding-right: 1rem;
 			text-align: right;
 		}
+	}
+
+	.wpug-form-field-footnote {
+		display: inline-block;
+		padding: 1px 10px;
+		font-size: 14px;
+		line-height: 28px;
 	}
 }

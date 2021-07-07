@@ -199,6 +199,7 @@ class Menu_User_Onboarding {
 				'class'       => 'wpug-onboarding-email-headers',
 				'option_name' => 'wpug_user_onboarding_option',
 				'field_name'  => 'email_headers',
+				'after'       => '<span class="wpug-form-field-footnote">Separate each header statement with a semicolon ; character.</span>',
 			)
 		);
 
@@ -318,6 +319,9 @@ class Menu_User_Onboarding {
 		$option        = get_site_option( $option_name );
 		$value         = isset( $option[ $field_name ] ) ? $option[ $field_name ] : $default_value;
 		echo "<input type=\"text\" name=\"{$option_name}[{$field_name}]\" id=\"{$option_name}[{$field_name}]\" class=\"settings-text\" value=\"{$value}\" data-lpignore=\"true\" />";
+		if ( isset( $args['after'] ) ) {
+			echo $args['after'];
+		}
 
 	}
 

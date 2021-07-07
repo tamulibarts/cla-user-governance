@@ -62,12 +62,6 @@
     font-weight: normal;
     margin-top: 1rem;
     font-size: 0.9em; }
-  .users_page_new-user-onboarding .wpug-onboarding-email-headers th:after {
-    content: "Separate each header statement with a semicolon ; character.";
-    display: block;
-    font-weight: normal;
-    margin-top: 1rem;
-    font-size: 0.9em; }
   .users_page_new-user-onboarding #wpbody-content input.settings-text {
     width: 100%; }
   .users_page_new-user-onboarding h2#template_tags {
@@ -78,6 +72,11 @@
   .users_page_new-user-onboarding #template_tags_table td:first-child {
     padding-right: 1rem;
     text-align: right; }
+  .users_page_new-user-onboarding .wpug-form-field-footnote {
+    display: inline-block;
+    padding: 1px 10px;
+    font-size: 14px;
+    line-height: 28px; }
 
 .nplist a.page-link[href="#"],
 .nplist a.page-link[href=""] {
