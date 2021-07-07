@@ -233,7 +233,7 @@ class Menu_Policy {
 		}
 
 		$option  = get_site_option( $option_name );
-		$content = isset( $option[ $field_name ] ) ? $option[ $field_name ] : $default_value;
+		$content = isset( $option[ $field_name ] ) && $option[ $field_name ] ? $option[ $field_name ] : $default_value;
 		$content = stripslashes( $content );
 
 		add_filter( 'quicktags_settings', function( $qtInit ){ $qtInit['buttons'] = ','; return $qtInit; });
