@@ -46,6 +46,10 @@ class Menu_User_Onboarding {
 	 */
 	private $default_option = array();
 
+	private $all_tables        = array();
+	private $tables_to_exclude = array( 'posts', 'postmeta' );
+	private $sandbox_id;
+
 	/**
 	 * Initialize the class
 	 *
@@ -54,8 +58,28 @@ class Menu_User_Onboarding {
 	 */
 	public function __construct() {
 
+		// Get the default and site option values for wpug_user_onboarding_option.
 		require WP_USER_GOV_DIR_PATH . 'fields/options-default.php';
-		$this->default_option = $default_site_options['wpug_user_onboarding_option'];
+		$this->default_option        = $default_site_options['wpug_user_onboarding_option'];
+		$wpug_user_onboarding_option = get_site_option( 'wpug_user_onboarding_option' );
+		$this->sandbox_id            = $this->default_option['sandbox_id'];
+		if ( isset( $wpug_user_onboarding_option['sandbox_id'] ) && $wpug_user_onboarding_option['sandbox_id'] ) {
+			$this->sandbox_id = $wpug_user_onboarding_option['sandbox_id'];
+		}
+
+		// Set up the $tables_to_exclude variable with the correct prefixes.
+		global $table_prefix;
+		foreach ( $this->tables_to_exclude as $key => $value ) {
+			$this->tables_to_exclude[ $key ] = $table_prefix . $this->sandbox_id . '_' . $value;
+		}
+
+		// Store all tables for the sandbox site in a variable to use later in the table select field.
+		global $wpdb;
+		$command = 'SHOW TABLES';
+		if ( $sandbox_id ) {
+			$command .= " LIKE 'wp%{$this->sandbox_id}%'";
+		}
+		$this->all_tables = $wpdb->get_results( $command );
 
 		// Admin menus.
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
@@ -249,6 +273,30 @@ class Menu_User_Onboarding {
 			)
 		);
 
+		add_settings_field(
+			'sandbox_tables_empty',
+			'Tables to Empty',
+			array( $this, 'db_table_field' ),
+			$this->page_slug,
+			'wpug_sandbox_setting_section',
+			array(
+				'option_name' => 'wpug_user_onboarding_option',
+				'field_name'  => 'sandbox_tables_empty',
+			)
+		);
+
+		add_settings_field(
+			'sandbox_tables_clone',
+			'Tables to Clone',
+			array( $this, 'db_table_field' ),
+			$this->page_slug,
+			'wpug_sandbox_setting_section',
+			array(
+				'option_name' => 'wpug_user_onboarding_option',
+				'field_name'  => 'sandbox_tables_clone',
+			)
+		);
+
 	}
 
 	/**
@@ -280,6 +328,12 @@ class Menu_User_Onboarding {
 		}
 		if ( isset( $input['sandbox_reset_daily'] ) ) {
 			$output['sandbox_reset_daily'] = 'on' === $input['sandbox_reset_daily'] ? 'on' : 'off';
+		}
+		if ( isset( $input['sandbox_tables_empty'] ) ) {
+			$output['sandbox_tables_empty'] = is_array( $input['sandbox_tables_empty'] ) ? $input['sandbox_tables_empty'] : array( $input['sandbox_tables_empty'] );
+		}
+		if ( isset( $input['sandbox_tables_clone'] ) ) {
+			$output['sandbox_tables_clone'] = is_array( $input['sandbox_tables_clone'] ) ? $input['sandbox_tables_clone'] : array( $input['sandbox_tables_clone'] );
 		}
 
 		return $output;
@@ -426,6 +480,38 @@ class Menu_User_Onboarding {
 		$option        = get_site_option( $option_name );
 		$value         = isset( $option[ $field_name ] ) ? $option[ $field_name ] : $default_value;
 		echo "<textarea name=\"{$option_name}[{$field_name}]\" id=\"{$option_name}[{$field_name}]\" class=\"settings-textarea\" rows=\"5\">{$value}</textarea>";
+
+	}
+
+	/**
+	 * Get the settings option array and print one of its values.
+	 *
+	 * @param array $args The arguments needed to render the setting field.
+	 *
+	 * @return void
+	 */
+	public function db_table_field( $args ) {
+
+		global $table_prefix;
+		$option_name    = $args['option_name'];
+		$field_name     = $args['field_name'];
+		$default_value  = $this->default_option[ $field_name ];
+		$option         = get_site_option( $option_name );
+		$value          = isset( $option[ $field_name ] ) ? $option[ $field_name ] : $default_value;
+		$select_options = array();
+		foreach ( $this->all_tables as $table ) {
+			foreach ( $table as $t ) {
+				if ( ! in_array( $t, $this->tables_to_exclude ) ) {
+					$selected = '';
+					if ( in_array( $t, $value, true ) ) {
+						$selected = ' selected';
+					}
+					$select_options[] = "<option value=\"{$t}\"{$selected}>{$t}</option>";
+				}
+			}
+		}
+		$select_options = implode( '', $select_options );
+		echo "<select style=\"width:50%;\" multiple size=\"10\" name=\"{$option_name}[{$field_name}][]\" id=\"{$option_name}[{$field_name}]\" class=\"settings-select\">{$select_options}</select>";
 
 	}
 

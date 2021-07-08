@@ -21,6 +21,12 @@ You may repurpose code from this repository for your own WordPress development s
 * Settings page for configuring user page access
 * "CLA_USER_GOV_MASTER_USER" global constant to define a master user name in wp-config.php
 
+### Sandbox Site
+
+The sandbox site is where users can get hands-on experience with WordPress core features and any plugins or theme features enabled on the site.
+
+Before upgrading this installation, you must reset the Sandbox site to its default state.
+
 ## Development Installation
 
 1. Copy this repo to the desired location.

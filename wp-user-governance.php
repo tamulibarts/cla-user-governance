@@ -41,8 +41,7 @@ new User_Governance();
  * The Masquerade third party plugin which was abandoned.
  * We monitor its security with the WPCS Composer module.
  */
-require WP_USER_GOV_DIR_PATH . 'cla-wp-masquerade/class-wpmasquerade.php';
-
+// require WP_USER_GOV_DIR_PATH . 'cla-wp-masquerade/class-wpmasquerade.php';
 register_activation_hook( WP_USER_GOV_DIR_FILE, 'wordpress_plugin_activation' );
 function wordpress_plugin_activation() {
 

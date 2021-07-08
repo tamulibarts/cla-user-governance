@@ -20,8 +20,10 @@ $default_site_options = array(
 		'email_subject'         => 'Your Login Details for {{site_name}}',
 		'email_headers'         => 'Content-type: text/html; charset=UTF-8',
 		'email_message'         => '<p>Howdy,</p><p>You now have access to {{site_url}}!</p><p>Before you begin creating or editing web content, you must complete an accessibility course. To sign up for this course, or for additional support, email helpdesk@{{network_domain}}. Files uploaded to your website are public and some content may not be suitable for storage there.</p><p>To log in using your NetID email address, password, and Duo for two-factor authentication (<a href="https://it.tamu.edu/duo/">enroll here</a>), go to {{login_url}}.</p><p>Thanks and Gig\'em!</p><p>- The web team at {{network_title}}</p>',
-		'sandbox_id'            => 2,
+		'sandbox_id'            => 0,
 		'sandbox_auto_add_user' => 'on',
 		'sandbox_reset_daily'   => 'off',
+		'sandbox_tables_empty'  => array(),
+		'sandbox_tables_clone'  => array(),
 	),
 );
