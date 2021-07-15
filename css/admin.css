@@ -78,6 +78,29 @@
     font-size: 14px;
     line-height: 28px; }
 
+#wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg {
+  margin-right: 4px;
+  vertical-align: middle; }
+  #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg,
+  #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg #browser {
+    width: 28px;
+    height: 22px; }
+  #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg #browser {
+    opacity: 0.6; }
+  #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg #browser-screen {
+    width: 24px;
+    height: 15px; }
+  #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg #lightbulb {
+    opacity: 0.9; }
+
+#wpadminbar #wp-admin-bar-wpug_network_sandbox_link:hover svg #browser {
+  opacity: 1;
+  fill: #72AEE6; }
+
+#wpadminbar #wp-admin-bar-wpug_network_sandbox_link:hover svg #lightbulb {
+  opacity: 1;
+  fill: #72AEE6; }
+
 .nplist a.page-link[href="#"],
 .nplist a.page-link[href=""] {
   color: #000;
