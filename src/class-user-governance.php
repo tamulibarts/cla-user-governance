@@ -56,6 +56,10 @@ class User_Governance {
 		new \User_Governance\User_Onboarding();
 		require_once WP_USER_GOV_DIR_PATH . 'src/class-user-sandbox.php';
 		new \User_Governance\User_Sandbox();
+		require_once WP_USER_GOV_DIR_PATH . 'src/class-menu-network-sandbox.php';
+		new \User_Governance\Menu_Network_Sandbox();
+		require_once WP_USER_GOV_DIR_PATH . 'src/class-network-sandbox.php';
+		new \User_Governance\Network_Sandbox();
 
 		// New user email settings.
 		require_once WP_USER_GOV_DIR_PATH . 'src/class-menu-policy.php';

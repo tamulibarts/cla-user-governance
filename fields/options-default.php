@@ -23,4 +23,11 @@ $default_site_options = array(
 		'sandbox_id'       => 2,
 		'sandbox_lifetime' => DAY_IN_SECONDS,
 	),
+	'wpug_network_sandbox_option' => array(
+		'enable'            => 'off',
+		'sandbox_link_text' => 'Switch To The Sandbox Site',
+		'sandbox_url'       => 'https://sandbox.example.com/',
+		'live_link_text'    => 'Switch To The Live Site',
+		'live_url'          => 'https://example.com/',
+	),
 );
