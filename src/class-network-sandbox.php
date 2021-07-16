@@ -21,8 +21,14 @@ class Network_Sandbox {
 		'live_icon'         => 'live-icon.svg',
 	);
 
+	/**
+	 * Class constructor function.
+	 *
+	 * @return void
+	 */
 	public function __construct () {
 
+		// Add the admin bar link.
 		add_action( 'admin_bar_menu', array( $this, 'admin_bar_link' ), 31 );
 
 	}
@@ -41,16 +47,23 @@ class Network_Sandbox {
 
 	}
 
+	/**
+	 * Add the Switch to Site link to the admin bar.
+	 *
+	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
+	 *
+	 * @return void
+	 */
 	public function admin_bar_link ( $wp_admin_bar ) {
 
-		$option         = get_site_option( $this->option_key );
-		$option         = array_merge( $this->default_option, $option );
-		$sandbox_url    = $option['sandbox_url'];
-		$live_url       = $option['live_url'];
-		$switch_link    = '';
-		$switch_title   = '';
-		$uri            = preg_replace( '/^\/?/', '', $_SERVER['REQUEST_URI'] );
+		$option       = get_site_option( $this->option_key );
+		$option       = array_merge( $this->default_option, $option );
 		$base_url     = $this->get_base_url();
+		$sandbox_url  = $option['sandbox_url'];
+		$live_url     = $option['live_url'];
+		$switch_link  = '';
+		$switch_title = '';
+		$uri          = preg_replace( '/^\/?/', '', $_SERVER['REQUEST_URI'] );
 
 		if ( $sandbox_url === $base_url ) {
 			$switch_link  = $live_url . $uri;
