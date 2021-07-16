@@ -18,19 +18,17 @@
 			height: 15px;
 		}
 
-		#lightbulb {
+		#lightbulb,
+		#globe {
 			opacity: 0.9;
 		}
 	}
 
 	&:hover {
 		svg {
-			#browser {
-				opacity: 1;
-				fill: #72AEE6;
-			}
-
-			#lightbulb {
+			#browser,
+			#lightbulb,
+			#globe {
 				opacity: 1;
 				fill: #72AEE6;
 			}

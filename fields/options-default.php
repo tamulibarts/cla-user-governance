@@ -27,7 +27,9 @@ $default_site_options = array(
 		'enable'            => 'off',
 		'sandbox_link_text' => 'Switch To The Sandbox Site',
 		'sandbox_url'       => 'https://sandbox.example.com/',
+		'sandbox_icon'      => 'sandbox-icon.svg',
 		'live_link_text'    => 'Switch To The Live Site',
 		'live_url'          => 'https://example.com/',
+		'live_icon'         => 'live-icon.svg',
 	),
 );

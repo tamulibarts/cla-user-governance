@@ -29,10 +29,16 @@ class Assets {
 	public function __construct() {
 
 		// Register global styles used in the theme.
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_styles' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_styles' ) );
 
 		// Enqueue extension styles.
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_styles' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
+
+		// Register global styles used in the theme.
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_styles' ) );
+
+		// Enqueue extension styles.
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 
 	}
 
@@ -42,7 +48,7 @@ class Assets {
 	 * @since 1.0.0
 	 * @return void
 	 */
-	public static function register_styles() {
+	public static function register_admin_styles() {
 
 		wp_register_style(
 			'wp-user-governance-admin-styles',
@@ -60,9 +66,39 @@ class Assets {
 	 * @since 1.0.0
 	 * @return void
 	 */
-	public static function enqueue_styles() {
+	public static function enqueue_admin_styles() {
 
 		wp_enqueue_style( 'wp-user-governance-admin-styles' );
+
+	}
+
+	/**
+	 * Registers all styles used within the plugin
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public static function register_styles() {
+
+		wp_register_style(
+			'wp-user-governance-public-styles',
+			WP_USER_GOV_DIR_URL . 'css/style.css',
+			false,
+			filemtime( WP_USER_GOV_DIR_PATH . 'css/style.css' ),
+			'screen'
+		);
+
+	}
+
+	/**
+	 * Enqueues extension styles
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public static function enqueue_styles() {
+
+		wp_enqueue_style( 'wp-user-governance-public-styles' );
 
 	}
 

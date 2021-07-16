@@ -90,14 +90,13 @@
   #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg #browser-screen {
     width: 24px;
     height: 15px; }
-  #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg #lightbulb {
+  #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg #lightbulb,
+  #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg #globe {
     opacity: 0.9; }
 
-#wpadminbar #wp-admin-bar-wpug_network_sandbox_link:hover svg #browser {
-  opacity: 1;
-  fill: #72AEE6; }
-
-#wpadminbar #wp-admin-bar-wpug_network_sandbox_link:hover svg #lightbulb {
+#wpadminbar #wp-admin-bar-wpug_network_sandbox_link:hover svg #browser,
+#wpadminbar #wp-admin-bar-wpug_network_sandbox_link:hover svg #lightbulb,
+#wpadminbar #wp-admin-bar-wpug_network_sandbox_link:hover svg #globe {
   opacity: 1;
   fill: #72AEE6; }
 

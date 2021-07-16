@@ -15,34 +15,43 @@ class Network_Sandbox {
 		'enable'            => 'off',
 		'sandbox_link_text' => 'Switch To The Sandbox Site',
 		'sandbox_url'       => 'https://sandbox.example.com/',
+		'sandbox_icon'      => 'sandbox-icon.svg',
 		'live_link_text'    => 'Switch To The Live Site',
 		'live_url'          => 'https://example.com/',
+		'live_icon'         => 'live-icon.svg',
 	);
+
+	private $base_url;
 
 	public function __construct () {
 
-		add_action('admin_bar_menu', array( $this, 'admin_bar_link' ), 31);
+		// Get the current page's base URL.
+		$domain         = $_SERVER['HTTP_HOST'];
+		$protocol       = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+		$this->base_url = $protocol . $domain . '/';
+
+		add_action( 'admin_bar_menu', array( $this, 'admin_bar_link' ), 31 );
+
 	}
 
 	public function admin_bar_link ( $wp_admin_bar ) {
 
 		$option         = get_site_option( $this->option_key );
 		$option         = array_merge( $this->default_option, $option );
-		$sandbox_url    = preg_replace( '/\/$/', '', $option['sandbox_url'] );
-		$live_url       = preg_replace( '/\/$/', '', $option['live_url'] );
-		$domain         = $_SERVER['HTTP_HOST'];
-		$uri            = $_SERVER['REQUEST_URI'];
-		$protocol       = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-		$current_root   = $protocol . $domain;
+		$sandbox_url    = $option['sandbox_url'];
+		$live_url       = $option['live_url'];
 		$switch_link    = '';
 		$switch_title   = '';
+		$uri            = $_SERVER['REQUEST_URI'];
 
-		if ( $sandbox_url === $current_root ) {
+		if ( $sandbox_url === $this->base_url ) {
 			$switch_link  = $live_url . $uri;
 			$switch_title = $option['live_link_text'];
-		} elseif ( $live_url === $current_root ) {
+			$switch_icon  = WP_USER_GOV_DIR_PATH . '/img/' . $option['live_icon'];
+		} elseif ( $live_url === $this->base_url ) {
 			$switch_link  = $sandbox_url . $uri;
 			$switch_title = $option['sandbox_link_text'];
+			$switch_icon  = WP_USER_GOV_DIR_PATH . '/img/' . $option['sandbox_icon'];
 		}
 
 		/**
@@ -64,8 +73,7 @@ class Network_Sandbox {
 		 * }
 		 */
 		if ( $switch_link ) {
-			$icon_path = WP_USER_GOV_DIR_PATH . '/img/sandbox-icon.svg';
-			$icon = file_get_contents($icon_path);
+			$icon = file_get_contents( $switch_icon );
 			$switch_title = $icon . $switch_title;
 			$wp_admin_bar->add_node( array(
 				'id'		=> 'wpug_network_sandbox_link',
