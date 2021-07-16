@@ -21,16 +21,23 @@ class Network_Sandbox {
 		'live_icon'         => 'live-icon.svg',
 	);
 
-	private $base_url;
-
 	public function __construct () {
 
-		// Get the current page's base URL.
-		$domain         = $_SERVER['HTTP_HOST'];
-		$protocol       = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-		$this->base_url = $protocol . $domain . '/';
-
 		add_action( 'admin_bar_menu', array( $this, 'admin_bar_link' ), 31 );
+
+	}
+
+	/**
+	 * Get the current page's base URL.
+	 *
+	 * @return string
+	 */
+	private function get_base_url() {
+
+		$domain   = $_SERVER['HTTP_HOST'];
+		$protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+
+		return $protocol . $domain . '/';
 
 	}
 
@@ -43,12 +50,13 @@ class Network_Sandbox {
 		$switch_link    = '';
 		$switch_title   = '';
 		$uri            = preg_replace( '/^\/?/', '', $_SERVER['REQUEST_URI'] );
+		$base_url     = $this->get_base_url();
 
-		if ( $sandbox_url === $this->base_url ) {
+		if ( $sandbox_url === $base_url ) {
 			$switch_link  = $live_url . $uri;
 			$switch_title = $option['live_link_text'];
 			$switch_icon  = WP_USER_GOV_DIR_PATH . '/img/' . $option['live_icon'];
-		} elseif ( $live_url === $this->base_url ) {
+		} elseif ( $live_url === $base_url ) {
 			$switch_link  = $sandbox_url . $uri;
 			$switch_title = $option['sandbox_link_text'];
 			$switch_icon  = WP_USER_GOV_DIR_PATH . '/img/' . $option['sandbox_icon'];
