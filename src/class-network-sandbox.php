@@ -63,7 +63,7 @@ class Network_Sandbox {
 
 	public function admin_notice_sandbox_site() {
 
-		if ( ! PAnD::is_admin_notice_active( 'disable-wpug-network-sandbox-notice-forever' ) ) {
+		if ( ! \PAnD::is_admin_notice_active( 'disable-wpug-network-sandbox-notice-forever' ) ) {
 			return;
 		}
 
