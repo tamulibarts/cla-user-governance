@@ -78,45 +78,77 @@
     font-size: 14px;
     line-height: 28px; }
 
-.wpug-network-sandbox-notice {
-  background-color: #FF0; }
-
-.wpug-network-is-sandbox.wp-admin .interface-interface-skeleton__header .edit-post-header,
-.wpug-network-is-sandbox #wpadminbar {
-  background-color: #FF0; }
-
-.wpug-network-is-sandbox #wpadminbar {
-  border-bottom: 1px solid #000; }
-  .wpug-network-is-sandbox #wpadminbar .ab-empty-item,
-  .wpug-network-is-sandbox #wpadminbar a.ab-item,
-  .wpug-network-is-sandbox #wpadminbar > #wp-toolbar span.ab-label,
-  .wpug-network-is-sandbox #wpadminbar > #wp-toolbar span.noticon,
-  .wpug-network-is-sandbox #wpadminbar #adminbarsearch:before,
-  .wpug-network-is-sandbox #wpadminbar .ab-icon:before,
-  .wpug-network-is-sandbox #wpadminbar .ab-item:before {
-    color: #000; }
-
-#wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg {
+.wpug-network-is-sandbox #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg {
   margin-right: 4px;
   vertical-align: middle; }
-  #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg,
-  #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg #browser {
+  .wpug-network-is-sandbox #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg,
+  .wpug-network-is-sandbox #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg #browser {
     width: 28px;
     height: 22px; }
-  #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg #browser {
+  .wpug-network-is-sandbox #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg #browser {
     opacity: 0.6; }
-  #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg #browser-screen {
+  .wpug-network-is-sandbox #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg #browser-screen {
     width: 24px;
     height: 15px; }
-  #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg #lightbulb,
-  #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg #globe {
+  .wpug-network-is-sandbox #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg #lightbulb,
+  .wpug-network-is-sandbox #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg #globe {
     opacity: 0.9; }
 
-#wpadminbar #wp-admin-bar-wpug_network_sandbox_link:hover svg #browser,
-#wpadminbar #wp-admin-bar-wpug_network_sandbox_link:hover svg #lightbulb,
-#wpadminbar #wp-admin-bar-wpug_network_sandbox_link:hover svg #globe {
+.wpug-network-is-sandbox #wpadminbar #wp-admin-bar-wpug_network_sandbox_link:hover svg #browser,
+.wpug-network-is-sandbox #wpadminbar #wp-admin-bar-wpug_network_sandbox_link:hover svg #lightbulb,
+.wpug-network-is-sandbox #wpadminbar #wp-admin-bar-wpug_network_sandbox_link:hover svg #globe {
   opacity: 1;
   fill: #72AEE6; }
+
+.wpug-network-is-sandbox.sandbox-a .wpug-network-sandbox-notice {
+  background-color: #FF0; }
+
+.wpug-network-is-sandbox.sandbox-a.wp-admin .interface-interface-skeleton__header .edit-post-header {
+  background-color: #FF0; }
+
+.wpug-network-is-sandbox.sandbox-a #adminmenu,
+.wpug-network-is-sandbox.sandbox-a #adminmenu .wp-submenu,
+.wpug-network-is-sandbox.sandbox-a #adminmenuback,
+.wpug-network-is-sandbox.sandbox-a #adminmenuwrap,
+.wpug-network-is-sandbox.sandbox-a #wpadminbar {
+  background-color: #220;
+  text-shadow: 2px 2px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000; }
+
+.wpug-network-is-sandbox.sandbox-a #adminmenu .wp-has-current-submenu .wp-submenu,
+.wpug-network-is-sandbox.sandbox-a #adminmenu .wp-has-current-submenu .wp-submenu.sub-open,
+.wpug-network-is-sandbox.sandbox-a #adminmenu .wp-has-current-submenu.opensub .wp-submenu,
+.wpug-network-is-sandbox.sandbox-a #adminmenu a.wp-has-current-submenu:focus + .wp-submenu,
+.wpug-network-is-sandbox.sandbox-a .no-js li.wp-has-current-submenu:hover .wp-submenu {
+  background-color: #330; }
+
+.wpug-network-is-sandbox.sandbox-a #wpadminbar {
+  background-color: #330;
+  border-bottom: 1px solid #000; }
+
+.wpug-network-is-sandbox.sandbox-a .wpug-network-sandbox-notice {
+  background-color: #FF0; }
+
+.wpug-network-is-sandbox.sandbox-a.wp-admin .interface-interface-skeleton__header .edit-post-header {
+  background-color: #FF0; }
+
+.wpug-network-is-sandbox.sandbox-a #adminmenu,
+.wpug-network-is-sandbox.sandbox-a #adminmenu .wp-submenu,
+.wpug-network-is-sandbox.sandbox-a #adminmenuback,
+.wpug-network-is-sandbox.sandbox-a #adminmenuwrap,
+.wpug-network-is-sandbox.sandbox-a #wpadminbar {
+  background-color: #220;
+  text-shadow: 2px 2px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000; }
+
+.wpug-network-is-sandbox.sandbox-a #adminmenu .wp-has-current-submenu .wp-submenu,
+.wpug-network-is-sandbox.sandbox-a #adminmenu .wp-has-current-submenu .wp-submenu.sub-open,
+.wpug-network-is-sandbox.sandbox-a #adminmenu .wp-has-current-submenu.opensub .wp-submenu,
+.wpug-network-is-sandbox.sandbox-a #adminmenu a.wp-has-current-submenu:focus + .wp-submenu,
+.wpug-network-is-sandbox.sandbox-a .no-js li.wp-has-current-submenu:hover .wp-submenu {
+  background-color: #330; }
+
+.wpug-network-is-sandbox.sandbox-a #wpadminbar {
+  background-color: #330;
+  border-bottom: 1px solid #000; }
 
 .nplist a.page-link[href="#"],
 .nplist a.page-link[href=""] {

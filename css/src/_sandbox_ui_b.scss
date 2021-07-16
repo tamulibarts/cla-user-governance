@@ -1,0 +1,39 @@
+.wpug-network-is-sandbox.sandbox-b {
+	.wpug-network-sandbox-notice {
+		background-color: #FF0;
+	}
+	&.wp-admin .interface-interface-skeleton__header .edit-post-header {
+		background-color: #FF0;
+	}
+	#adminmenu,
+	#adminmenu .wp-submenu,
+	#adminmenuback,
+	#adminmenuwrap,
+	#wpadminbar {
+		background-color: #220;
+		text-shadow: 2px 2px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+	}
+
+	#adminmenu .wp-has-current-submenu .wp-submenu,
+	#adminmenu .wp-has-current-submenu .wp-submenu.sub-open,
+	#adminmenu .wp-has-current-submenu.opensub .wp-submenu,
+	#adminmenu a.wp-has-current-submenu:focus+.wp-submenu,
+	.no-js li.wp-has-current-submenu:hover .wp-submenu {
+		background-color: #330;
+	}
+
+	#wpadminbar {
+		background-color: #330;
+		border-bottom: 1px solid #000;
+
+		.ab-empty-item,
+		a.ab-item,
+		&>#wp-toolbar span.ab-label,
+		&>#wp-toolbar span.noticon,
+		#adminbarsearch:before,
+		.ab-icon:before,
+		.ab-item:before {
+			// color: #000
+		}
+	}
+}
