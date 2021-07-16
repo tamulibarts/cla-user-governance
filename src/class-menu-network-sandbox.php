@@ -24,11 +24,14 @@ class Menu_Network_Sandbox {
 	 * @var default_option
 	 */
 	private $default_option = array(
-		'enable'            => 'off',
+		'sandbox_show_link' => 'off',
 		'sandbox_link_text' => 'Switch To The Sandbox Site',
 		'sandbox_url'       => 'https://sandbox.example.com/',
+		'sandbox_icon'      => 'sandbox-icon.svg',
+		'live_show_link'    => 'off',
 		'live_link_text'    => 'Switch To The Live Site',
 		'live_url'          => 'https://example.com/',
+		'live_icon'         => 'live-icon.svg',
 	);
 
 	private $submenu_parent_slug = 'settings.php';
@@ -141,14 +144,14 @@ class Menu_Network_Sandbox {
 		);
 
 		add_settings_field(
-			'enable',
-			'Enable Admin Bar Link',
+			'sandbox_show_link',
+			'Show Sandbox Link',
 			array( $this, 'checkbox_field' ),
 			$this->page_slug,
 			$this->settings_group_slug . '_setting_section',
 			array(
 				'option_name' => $this->option_key,
-				'field_name'  => 'enable',
+				'field_name'  => 'sandbox_show_link',
 			)
 		);
 
@@ -173,6 +176,18 @@ class Menu_Network_Sandbox {
 			array(
 				'option_name' => $this->option_key,
 				'field_name'  => 'sandbox_url',
+			)
+		);
+
+		add_settings_field(
+			'live_show_link',
+			'Show Live Link',
+			array( $this, 'checkbox_field' ),
+			$this->page_slug,
+			$this->settings_group_slug . '_setting_section',
+			array(
+				'option_name' => $this->option_key,
+				'field_name'  => 'live_show_link',
 			)
 		);
 
@@ -260,14 +275,17 @@ class Menu_Network_Sandbox {
 
 		$output = array();
 
-		if ( isset( $input['enable'] ) ) {
-			$output['enable'] = 'on' === $input['enable'] ? 'on' : 'off';
+		if ( isset( $input['sandbox_show_link'] ) ) {
+			$output['sandbox_show_link'] = 'on' === $input['sandbox_show_link'] ? 'on' : 'off';
 		}
 		if ( isset( $input['sandbox_link_text'] ) ) {
 			$output['sandbox_link_text'] = sanitize_text_field( $input['sandbox_link_text'] );
 		}
 		if ( isset( $input['sandbox_url'] ) ) {
 			$output['sandbox_url'] = sanitize_text_field( $input['sandbox_url'] );
+		}
+		if ( isset( $input['live_show_link'] ) ) {
+			$output['live_show_link'] = 'on' === $input['live_show_link'] ? 'on' : 'off';
 		}
 		if ( isset( $input['live_link_text'] ) ) {
 			$output['live_link_text'] = sanitize_text_field( $input['live_link_text'] );
