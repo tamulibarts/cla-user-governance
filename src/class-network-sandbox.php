@@ -31,6 +31,9 @@ class Network_Sandbox {
 		// Add the admin bar link.
 		add_action( 'admin_bar_menu', array( $this, 'admin_bar_link' ), 31 );
 
+		// Add a sandbox class to the body.
+		add_filter( 'body_class', array( $this, 'body_class' ) );
+
 	}
 
 	/**
@@ -44,6 +47,28 @@ class Network_Sandbox {
 		$protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
 
 		return $protocol . $domain . '/';
+
+	}
+
+	/**
+	 * Add a sandbox class to the body.
+	 *
+	 * @param array $classes The current body classes.
+	 *
+	 * @return array
+	 */
+	public function body_class( $classes ){
+
+		$option      = get_site_option( $this->option_key );
+		$option      = array_merge( $this->default_option, $option );
+		$base_url    = $this->get_base_url();
+		$sandbox_url = $option['sandbox_url'];
+
+		if ( $sandbox_url === $base_url ) {
+			$classes[] = 'wpug-network-sandbox';
+		}
+
+		return $classes;
 
 	}
 
