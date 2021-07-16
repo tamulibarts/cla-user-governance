@@ -1,3 +1,24 @@
+.wpug-network-sandbox-notice {
+	background-color: #FF0;
+}
+.wpug-network-is-sandbox.wp-admin .interface-interface-skeleton__header .edit-post-header,
+.wpug-network-is-sandbox #wpadminbar {
+	background-color: #FF0;
+}
+.wpug-network-is-sandbox #wpadminbar {
+	border-bottom: 1px solid #000;
+
+	.ab-empty-item,
+	a.ab-item,
+	&>#wp-toolbar span.ab-label,
+	&>#wp-toolbar span.noticon,
+	#adminbarsearch:before,
+	.ab-icon:before,
+	.ab-item:before {
+		color: #000
+	}
+}
+
 #wpadminbar #wp-admin-bar-wpug_network_sandbox_link {
 	svg {
 		margin-right: 4px;

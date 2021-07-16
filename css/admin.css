@@ -78,6 +78,24 @@
     font-size: 14px;
     line-height: 28px; }
 
+.wpug-network-sandbox-notice {
+  background-color: #FF0; }
+
+.wpug-network-is-sandbox.wp-admin .interface-interface-skeleton__header .edit-post-header,
+.wpug-network-is-sandbox #wpadminbar {
+  background-color: #FF0; }
+
+.wpug-network-is-sandbox #wpadminbar {
+  border-bottom: 1px solid #000; }
+  .wpug-network-is-sandbox #wpadminbar .ab-empty-item,
+  .wpug-network-is-sandbox #wpadminbar a.ab-item,
+  .wpug-network-is-sandbox #wpadminbar > #wp-toolbar span.ab-label,
+  .wpug-network-is-sandbox #wpadminbar > #wp-toolbar span.noticon,
+  .wpug-network-is-sandbox #wpadminbar #adminbarsearch:before,
+  .wpug-network-is-sandbox #wpadminbar .ab-icon:before,
+  .wpug-network-is-sandbox #wpadminbar .ab-item:before {
+    color: #000; }
+
 #wpadminbar #wp-admin-bar-wpug_network_sandbox_link svg {
   margin-right: 4px;
   vertical-align: middle; }
