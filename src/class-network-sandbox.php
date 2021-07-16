@@ -111,10 +111,13 @@ class Network_Sandbox {
 		$option      = array_merge( $this->default_option, $option );
 		$base_url    = $this->get_base_url();
 		$sandbox_url = $option['sandbox_url'];
+		$live_url    = $option['live_url'];
 
 		// Add class name if this is a sandbox site.
 		if ( $sandbox_url === $base_url ) {
 			$classes[] = 'wpug-network-is-sandbox';
+		} elseif ( $live_url === $base_url ) {
+			$classes[] = 'wpug-network-is-live';
 		}
 
 		// Return $classes to a string if it was a string before.
@@ -147,14 +150,14 @@ class Network_Sandbox {
 		$uri          = preg_replace( '/^\/?/', '', $_SERVER['REQUEST_URI'] );
 
 		if ( $sandbox_url === $base_url ) {
-			if ( 'on' !== $sandbox_show ) {
+			if ( 'on' !== $live_show ) {
 				return;
 			}
 			$switch_link  = $live_url . $uri;
 			$switch_title = $option['live_link_text'];
 			$switch_icon  = WP_USER_GOV_DIR_PATH . '/img/' . $option['live_icon'];
 		} elseif ( $live_url === $base_url ) {
-			if ( 'on' !== $live_show ) {
+			if ( 'on' !== $sandbox_show ) {
 				return;
 			}
 			$switch_link  = $sandbox_url . $uri;
