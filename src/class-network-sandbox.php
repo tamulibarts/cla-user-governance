@@ -35,6 +35,15 @@ class Network_Sandbox {
 		add_filter( 'body_class', array( $this, 'body_class' ) );
 		add_filter( 'admin_body_class', array( $this, 'body_class' ) );
 
+		// Hooks for the sandbox network only.
+		$option      = get_site_option( $this->option_key );
+		$option      = array_merge( $this->default_option, $option );
+		$base_url    = $this->get_base_url();
+		$sandbox_url = $option['sandbox_url'];
+		if ( $sandbox_url === $base_url ) {
+			add_action( 'admin_notices', array( $this, 'admin_notice_sandbox_site' ) );
+		}
+
 	}
 
 	/**
@@ -48,6 +57,21 @@ class Network_Sandbox {
 		$protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
 
 		return $protocol . $domain . '/';
+
+	}
+
+	public function admin_notice_sandbox_site() {
+
+		$option        = get_site_option( $this->option_key );
+		$option        = array_merge( $this->default_option, $option );
+		$live_url      = $option['live_url'];
+		$uri           = preg_replace( '/^\/?/', '', $_SERVER['REQUEST_URI'] );
+		$live_page_url = $live_url . $uri;
+		?>
+		<div class="notice wpug-network-sandbox-notice notice-error is-dismissible">
+	    	<p><?php _e( "You are now editing the Sandbox site! <a href=\"$live_page_url\">Click here to go back to the live site.</a>", 'wp-user-governance' ); ?></p>
+		</div>
+		<?php
 
 	}
 
