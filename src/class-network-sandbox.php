@@ -41,6 +41,7 @@ class Network_Sandbox {
 		$base_url    = $this->get_base_url();
 		$sandbox_url = $option['sandbox_url'];
 		if ( $sandbox_url === $base_url ) {
+			add_action( 'admin_init', array( 'PAnD', 'init' ) );
 			add_action( 'admin_notices', array( $this, 'admin_notice_sandbox_site' ) );
 		}
 
@@ -62,13 +63,17 @@ class Network_Sandbox {
 
 	public function admin_notice_sandbox_site() {
 
+		if ( ! PAnD::is_admin_notice_active( 'disable-wpug-network-sandbox-notice-forever' ) ) {
+			return;
+		}
+
 		$option        = get_site_option( $this->option_key );
 		$option        = array_merge( $this->default_option, $option );
 		$live_url      = $option['live_url'];
 		$uri           = preg_replace( '/^\/?/', '', $_SERVER['REQUEST_URI'] );
 		$live_page_url = $live_url . $uri;
 		?>
-		<div class="notice wpug-network-sandbox-notice notice-error is-dismissible">
+		<div data-dismissible="disable-wpug-network-sandbox-notice-forever" class="notice wpug-network-sandbox-notice notice-error is-dismissible">
 	    	<p><?php _e( "You are now editing the Sandbox site! <a href=\"$live_page_url\">Click here to go back to the live site.</a>", 'wp-user-governance' ); ?></p>
 		</div>
 		<?php

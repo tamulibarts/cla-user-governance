@@ -24,6 +24,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
+// Composer autoload.
+require __DIR__ . '/vendor/autoload.php';
+
 /* Define some useful constants */
 define( 'WP_USER_GOV_DIRNAME', 'wp-user-governance' );
 define( 'WP_USER_GOV_TEXTDOMAIN', 'wp-user-governance' );

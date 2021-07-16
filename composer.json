@@ -10,6 +10,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
+        "collizo4sky/persist-admin-notices-dismissal": "^1.4"
     },
     "require-dev": {
         "wp-coding-standards/wpcs": "^1.0"
