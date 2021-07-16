@@ -33,6 +33,7 @@ class Network_Sandbox {
 
 		// Add a sandbox class to the body.
 		add_filter( 'body_class', array( $this, 'body_class' ) );
+		add_filter( 'admin_body_class', array( $this, 'body_class' ) );
 
 	}
 
@@ -53,19 +54,36 @@ class Network_Sandbox {
 	/**
 	 * Add a sandbox class to the body.
 	 *
-	 * @param array $classes The current body classes.
+	 * @param array|string $classes The current body classes.
 	 *
-	 * @return array
+	 * @return array|string
 	 */
 	public function body_class( $classes ){
 
+		// If $classes is a string convert to an array and remember it was a string.
+		$type = gettype( $classes );
+		if ( 'string' === $type ) {
+			if ( ! $classes ) {
+				$classes = array();
+			} else {
+				$classes = explode( ' ', $classes );
+			}
+		}
+
+		// Get URLs for comparison.
 		$option      = get_site_option( $this->option_key );
 		$option      = array_merge( $this->default_option, $option );
 		$base_url    = $this->get_base_url();
 		$sandbox_url = $option['sandbox_url'];
 
+		// Add class name if this is a sandbox site.
 		if ( $sandbox_url === $base_url ) {
-			$classes[] = 'wpug-network-sandbox';
+			$classes[] = 'wpug-network-is-sandbox';
+		}
+
+		// Return $classes to a string if it was a string before.
+		if ( 'string' === $type ) {
+			$classes = implode( ' ', $classes );
 		}
 
 		return $classes;
