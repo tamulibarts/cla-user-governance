@@ -42,7 +42,7 @@ class Network_Sandbox {
 		$live_url       = $option['live_url'];
 		$switch_link    = '';
 		$switch_title   = '';
-		$uri            = $_SERVER['REQUEST_URI'];
+		$uri            = preg_replace( '/^\/?/', '', $_SERVER['REQUEST_URI'] );
 
 		if ( $sandbox_url === $this->base_url ) {
 			$switch_link  = $live_url . $uri;
