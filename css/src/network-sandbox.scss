@@ -2,53 +2,90 @@
 
 @import "foundation";
 @import "settings";
-$yellow: #787A00; // WCAG-AA compliant with white text in front.
-$body-background: #F0F0F1;
-$base-color: darken( $yellow, 10% );
-$icon-color: #E5F8FF;
+// $yellow: #787A00; // WCAG-AA compliant with white text in front.
+$yellow: #FF0;
+$base-color: $yellow;
+$text-color: #000;
+$icon-color: hsl( hue( $base-color ), 7%, 5% );
+// $menu-submenu-text: #000;
 $highlight-color: $yellow; // default: 199deg, 100%, 33%
 $notification-color: #918318;
 $button-color: #918318;
 $menu-collapse-text: #B3B3B3;
-$menu-submenu-text: #E2ECF1;
-$menu-submenu-focus-text: #FFF;
-$menu-submenu-background: darken( $yellow, 7% ); // default: 196deg, 43%, 49%
-@import "wp-admin/_admin.scss";
+$menu-submenu-focus-text: #000;
+// @import "wp-admin/_admin.scss";
+@import "wp-admin/_adminbar.scss";
 // @import "sandbox_ui_a";
 
-#wpadminbar #wp-admin-bar-wpug_network_sandbox_link {
-	svg {
-		margin-right: 4px;
-		vertical-align: middle;
+#wpadminbar {
+	box-shadow: 0 1px 0 #000;
 
-		&,
-		#browser {
-			width: 28px;
-			height: 22px;
+	#wp-admin-bar-wpug_network_sandbox_link {
+		%switch-handle {
+			content: "";
+			display: inline-block;
+			width: 16px;
+			height: 16px;
+			line-height: 16px;
+			background: #AAA;
+			border-radius: 8px;
+			vertical-align: text-bottom;
 		}
 
-		#browser {
-			opacity: 0.6;
+		.wpug-adminbar-network-sandbox-switch {
+			border-radius: 10px;
+			padding: 2px;
+			height: 20px;
+			line-height: 16px;
+			box-sizing: border-box;
 		}
 
-		#browser-screen {
-			width: 24px;
-			height: 15px;
+		&.wpug-network-sandbox-link-to-live .wpug-adminbar-network-sandbox-switch {
+			padding-right: 6px;
+			margin-right: 6px;
+			background-color: #000;
+			color: #FFF;
+
+			&::before {
+				@extend %switch-handle;
+				margin-right: 6px;
+			}
 		}
 
-		#lightbulb,
-		#globe {
-			opacity: 0.9;
-		}
-	}
-
-	&:hover {
 		svg {
-			#browser,
+			margin-right: 4px;
+			vertical-align: middle;
+
+			&,
+			#browser {
+				width: 28px;
+				height: 22px;
+			}
+
+			#browser {
+				opacity: 0.6;
+				fill: $icon-color;
+			}
+
+			#browser-screen {
+				width: 24px;
+				height: 15px;
+			}
+
 			#lightbulb,
 			#globe {
-				opacity: 1;
-				fill: #72AEE6;
+				opacity: 0.9;
+			}
+		}
+
+		&:hover {
+			svg {
+				#browser,
+				#lightbulb,
+				#globe {
+					opacity: 1;
+					fill: #72AEE6;
+				}
 			}
 		}
 	}
