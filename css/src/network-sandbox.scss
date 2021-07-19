@@ -21,34 +21,40 @@ $menu-submenu-focus-text: #000;
 	box-shadow: 0 1px 0 #000;
 
 	#wp-admin-bar-wpug_network_sandbox_link {
-		%switch-handle {
-			content: "";
-			display: inline-block;
-			width: 16px;
-			height: 16px;
-			line-height: 16px;
-			background: #AAA;
-			border-radius: 8px;
-			vertical-align: text-bottom;
-		}
-
 		.wpug-adminbar-network-sandbox-switch {
 			border-radius: 10px;
-			padding: 2px;
+			padding: 2px 8px;
 			height: 20px;
 			line-height: 16px;
 			box-sizing: border-box;
+			margin-right: 6px;
+			position: relative;
+
+			.toggle {
+				display: inline-block;
+				width: 16px;
+				height: 16px;
+				line-height: 16px;
+				background: #AAA;
+				border-radius: 8px;
+				vertical-align: text-bottom;
+				margin: 0 6px;
+			}
 		}
 
-		&.wpug-network-sandbox-link-to-live .wpug-adminbar-network-sandbox-switch {
-			padding-right: 6px;
-			margin-right: 6px;
-			background-color: #000;
-			color: #FFF;
+		&.wpug-network-sandbox-link-to-live {
+			.wpug-adminbar-network-sandbox-switch {
+				padding-right: 6px;
+				background-color: #000;
+				color: #FFF;
+			}
+		}
 
-			&::before {
-				@extend %switch-handle;
-				margin-right: 6px;
+		&.wpug-network-sandbox-link-to-sandbox {
+			.wpug-adminbar-network-sandbox-switch {
+				padding-left: 6px;
+				background-color: #000;
+				color: #FFF;
 			}
 		}
 

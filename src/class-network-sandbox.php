@@ -238,7 +238,7 @@ class Network_Sandbox {
 		 */
 		if ( $switch_link ) {
 			// $icon         = file_get_contents( $switch_icon );
-			$icon         = '<span class="wpug-adminbar-network-sandbox-switch">Go</span>';
+			$icon         = '<span class="wpug-adminbar-network-sandbox-switch">Go<span class="toggle"></span>Go</span>';
 			$switch_title = $icon . $switch_title;
 			$wp_admin_bar->add_node(
 				array(
