@@ -2,9 +2,11 @@
 	.wpug-network-sandbox-notice {
 		background-color: #FF0;
 	}
+
 	&.wp-admin .interface-interface-skeleton__header .edit-post-header {
 		background-color: #FF0;
 	}
+
 	#adminmenu,
 	#adminmenu .wp-submenu,
 	#adminmenuback,
@@ -25,15 +27,5 @@
 	#wpadminbar {
 		background-color: #330;
 		border-bottom: 1px solid #000;
-
-		.ab-empty-item,
-		a.ab-item,
-		&>#wp-toolbar span.ab-label,
-		&>#wp-toolbar span.noticon,
-		#adminbarsearch:before,
-		.ab-icon:before,
-		.ab-item:before {
-			// color: #000
-		}
 	}
 }

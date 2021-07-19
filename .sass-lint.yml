@@ -8,6 +8,7 @@ files:
   include: 'css/src/**/*.s+(a|c)ss'
   ignore:
     - 'sass/vendor/**/*.*'
+    - 'css/src/wp-admin/*.*'
 # Rule Configuration
 rules:
   brace-style:

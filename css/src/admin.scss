@@ -3,9 +3,6 @@
 @import "foundation";
 @import "settings";
 @import "settings_pages";
-@import "adminbar";
-@import "sandbox_ui_a";
-@import "sandbox_ui_b";
 
 .nplist a.page-link[href="#"],
 .nplist a.page-link[href=""] {
@@ -23,6 +20,6 @@
 	.np-check-all,
 	.np-bulk-form,
 	.nestedpages-dropdown > .np-btn.toggle {
-		display: none!important;
+		display: none!important; // sass-lint:disable-line no-important
 	}
 }
