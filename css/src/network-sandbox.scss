@@ -3,97 +3,49 @@
 @import "foundation";
 @import "settings";
 // $yellow: #787A00; // WCAG-AA compliant with white text in front.
-$yellow: #FF0;
-$base-color: $yellow;
-$text-color: #000;
-$icon-color: hsl( hue( $base-color ), 7%, 5% );
-// $menu-submenu-text: #000;
-$highlight-color: $yellow; // default: 199deg, 100%, 33%
-$notification-color: #918318;
-$button-color: #918318;
-$menu-collapse-text: #B3B3B3;
-$menu-submenu-focus-text: #000;
 
 .wpug-network-is-sandbox {
+	$yellow: #FF0;
+	$base-color: $yellow;
+	$text-color: #000;
+	$icon-color: hsl( hue( $base-color ), 7%, 5% );
+	// $menu-submenu-text: #000;
+	$highlight-color: $yellow; // default: 199deg, 100%, 33%
+	$notification-color: #918318;
+	$button-color: #918318;
+	$menu-collapse-text: #B3B3B3;
+	$menu-submenu-focus-text: #000;
+
 	@import "wp-admin/_adminbar.scss";
+
+	#wpadminbar {
+		box-shadow: 0 1px 0 #000;
+
+		// User testing, delete when done.
+		.wpug-network-sandbox-switch-toggle-style .ab-item {
+			color: #000!important;//sass-lint:disable-line no-important
+		}
+	}
 }
 
 #wpadminbar {
-	box-shadow: 0 1px 0 #000;
+	@import "a";
+	@import "b";
+	@import "c";
+	@import "d";
+
+	// User testing, delete when done.
+	.wpug-network-sandbox-switch-toggle-style .ab-item {
+		color: #F0F0F1!important;//sass-lint:disable-line no-important
+	}
 
 	#wp-admin-bar-wpug_network_sandbox_link {
-		.wpug-adminbar-network-sandbox-switch {
-			border-radius: 10px;
-			padding: 2px 8px;
-			height: 20px;
-			line-height: 16px;
-			box-sizing: border-box;
-			margin-right: 6px;
-			position: relative;
+		// User testing, delete when done.
+		position: relative;
+		z-index: 999999;
 
-			.toggle {
-				display: inline-block;
-				width: 16px;
-				height: 16px;
-				line-height: 16px;
-				background: #AAA;
-				border-radius: 8px;
-				vertical-align: text-bottom;
-				margin: 0 6px;
-			}
-		}
-
-		&.wpug-network-sandbox-link-to-live {
-			.wpug-adminbar-network-sandbox-switch {
-				padding-right: 6px;
-				background-color: #000;
-				color: #FFF;
-			}
-		}
-
-		&.wpug-network-sandbox-link-to-sandbox {
-			.wpug-adminbar-network-sandbox-switch {
-				padding-left: 6px;
-				background-color: #000;
-				color: #FFF;
-			}
-		}
-
-		svg {
-			margin-right: 4px;
-			vertical-align: middle;
-
-			&,
-			#browser {
-				width: 28px;
-				height: 22px;
-			}
-
-			#browser {
-				opacity: 0.6;
-				fill: $icon-color;
-			}
-
-			#browser-screen {
-				width: 24px;
-				height: 15px;
-			}
-
-			#lightbulb,
-			#globe {
-				opacity: 0.9;
-			}
-		}
-
-		&:hover {
-			svg {
-				#browser,
-				#lightbulb,
-				#globe {
-					opacity: 1;
-					fill: #72AEE6;
-				}
-			}
+		.ab-empty-item > a {
+			display: inline-block;
 		}
 	}
 }

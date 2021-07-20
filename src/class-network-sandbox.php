@@ -86,6 +86,14 @@ class Network_Sandbox {
 			'screen'
 		);
 
+		wp_register_script(
+			'wp-user-governance-network-sandbox-scripts',
+			WP_USER_GOV_DIR_URL . 'js/network-sandbox.js',
+			'jquery',
+			filemtime( WP_USER_GOV_DIR_PATH . 'js/network-sandbox.js' ),
+			true
+		);
+
 	}
 
 	/**
@@ -97,6 +105,7 @@ class Network_Sandbox {
 	public static function enqueue_sandbox_assets() {
 
 		wp_enqueue_style( 'wp-user-governance-network-sandbox-styles' );
+		wp_enqueue_script( 'wp-user-governance-network-sandbox-scripts' );
 
 	}
 
@@ -237,17 +246,32 @@ class Network_Sandbox {
 		 * }
 		 */
 		if ( $switch_link ) {
-			// $icon         = file_get_contents( $switch_icon );
-			$icon         = '<span class="wpug-adminbar-network-sandbox-switch">Go<span class="toggle"></span>Go</span>';
-			$switch_title = $icon . $switch_title;
+			$icon         = file_get_contents( $switch_icon );
+			$switch_title = '<a class="switch-a ab-item" href="' . $switch_link . '">' . $icon . $switch_title . '</a>';
 			$wp_admin_bar->add_node(
 				array(
 					'id'    => 'wpug_network_sandbox_link',
 					'title' => $switch_title,
-					'href'  => $switch_link,
 					'meta'  => array(
 						'class' => $switch_class,
-					)
+					),
+				)
+			);
+
+			$radio_options = array( 'a', 'b', 'c', 'd' );
+			$radio_html    = ' Option %s <input autocomplete="off" style="box-sizing: border-box;width:16px; height:16px; border-radius:8px" type="radio" id="%s" name="sandbox_toggle" value="%s"%s>';
+			$radio_output  = '';
+			foreach ( $radio_options as $key => $value ) {
+				$selected      = $key === 0 ? ' checked' : '';
+				$radio_output .= sprintf( $radio_html, strtoupper( $value ), $value, $value, $selected );
+			}
+			$wp_admin_bar->add_node(
+				array(
+					'id'    => 'wpug_network_sandbox_style_switcher',
+					'title' => $radio_output,
+					'meta'  => array(
+						'class' => 'wpug-network-sandbox-switch-toggle-style',
+					),
 				)
 			);
 

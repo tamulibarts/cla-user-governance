@@ -5,8 +5,10 @@ module.exports = (grunt) ->
     watch:
       files: [
         'css/src/**/*.scss'
+        'src/*.php'
+        'js/*'
       ]
-      tasks: ['develop', 'copycsstostaging']
+      tasks: ['develop', 'copytostaging']
     postcss:
       pkg:
         options:
@@ -78,10 +80,10 @@ module.exports = (grunt) ->
   @registerTask 'default', ['sass:pkg', 'postcss:pkg']
   @registerTask 'develop', ['sasslint', 'sass:dev', 'postcss:dev']
   @registerTask 'release', ['compress', 'makerelease']
-  @registerTask 'copycsstostaging', 'Copy all CSS files to this plugin in the libartstest.local server', ->
+  @registerTask 'copytostaging', 'Copy all relevant files to this plugin in the libartstest.local server', ->
     done = @async()
     css_files = grunt.file
-      .expand {filter: 'isFile' }, 'css/*'
+      .expand {filter: 'isFile' }, ['css/*','src/*','js/*']
       .forEach (filePath) ->
         grunt.file.copy filePath, '../../../../../../libartstest/app/public/wp-content/plugins/wp-user-governance/' + filePath
     return
