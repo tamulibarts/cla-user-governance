@@ -14,7 +14,9 @@ $button-color: #918318;
 $menu-collapse-text: #B3B3B3;
 $menu-submenu-focus-text: #000;
 // @import "wp-admin/_admin.scss";
-@import "wp-admin/_adminbar.scss";
+.wpug-network-is-sandbox {
+	@import "wp-admin/_adminbar.scss";
+}
 // @import "sandbox_ui_a";
 
 #wpadminbar {
