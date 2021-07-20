@@ -13,11 +13,10 @@ $notification-color: #918318;
 $button-color: #918318;
 $menu-collapse-text: #B3B3B3;
 $menu-submenu-focus-text: #000;
-// @import "wp-admin/_admin.scss";
+
 .wpug-network-is-sandbox {
 	@import "wp-admin/_adminbar.scss";
 }
-// @import "sandbox_ui_a";
 
 #wpadminbar {
 	box-shadow: 0 1px 0 #000;
