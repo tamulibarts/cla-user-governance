@@ -21,6 +21,7 @@
 	#wpadminbar {
 		box-shadow: 0 1px 0 #000;
 
+
 		// User testing, delete when done.
 		.wpug-network-sandbox-switch-toggle-style .ab-item {
 			color: #000!important;//sass-lint:disable-line no-important
@@ -30,9 +31,6 @@
 
 #wpadminbar {
 	@import "a";
-	@import "b";
-	@import "c";
-	@import "d";
 
 	// User testing, delete when done.
 	.wpug-network-sandbox-switch-toggle-style .ab-item {

@@ -213,57 +213,36 @@ class Network_Sandbox {
 			if ( 'on' !== $live_show ) {
 				return;
 			}
-			$switch_class = 'wpug-network-sandbox-link-to-live';
 			$switch_link  = $live_url . $uri;
-			$switch_title = $option['live_link_text'];
-			$switch_icon  = WP_USER_GOV_DIR_PATH . '/img/' . $option['live_icon'];
+			$switch_class = 'wpug-network-sandbox-link-to-live';
+			$switch_title = '<div class="switch-a" data-checked="true"><span class="env" title="Your public website">Live site</span> <label class="switch"><input type="checkbox" checked data-live="'.$live_url.'" data-sandbox="'.$sandbox_url.'"><div class="slider round"></div></label> <span class="env" title="Your private website for testing and learning">Sandbox site</span></div>';
 		} elseif ( $live_url === $base_url ) {
 			if ( 'on' !== $sandbox_show ) {
 				return;
 			}
-			$switch_class = 'wpug-network-sandbox-link-to-sandbox';
 			$switch_link  = $sandbox_url . $uri;
-			$switch_title = $option['sandbox_link_text'];
-			$switch_icon  = WP_USER_GOV_DIR_PATH . '/img/' . $option['sandbox_icon'];
+			$switch_class = 'wpug-network-sandbox-link-to-sandbox';
+			$switch_title = '<div class="switch-a" data-checked="false"><span class="env" title="Your public website">Live site</span> <label class="switch"><input type="checkbox" data-live="'.$live_url.'" data-sandbox="'.$sandbox_url.'"><div class="slider round"></div></label> <span class="env env-sandbox" title="Your private website for testing and learning">Go to Sandbox site</g></svg>
+</span></div>';
 		}
 
-		/**
-		 * Adds a node to the menu.
-		 *
-		 * @since 3.1.0
-		 * @since 4.5.0 Added the ability to pass 'lang' and 'dir' meta data.
-		 *
-		 * @param array $args {
-		 *     Arguments for adding a node.
-		 *
-		 *     @type string $id     ID of the item.
-		 *     @type string $title  Title of the node.
-		 *     @type string $parent Optional. ID of the parent node.
-		 *     @type string $href   Optional. Link for the item.
-		 *     @type bool   $group  Optional. Whether or not the node is a group. Default false.
-		 *     @type array  $meta   Meta data including the following keys: 'html', 'class', 'rel', 'lang', 'dir',
-		 *                          'onclick', 'target', 'title', 'tabindex'. Default empty.
-		 * }
-		 */
 		if ( $switch_link ) {
-			$icon         = file_get_contents( $switch_icon );
-			$switch_title = '<a class="switch-a ab-item" href="' . $switch_link . '">' . $icon . $switch_title . '</a>';
 			$wp_admin_bar->add_node(
 				array(
-					'id'    => 'wpug_network_sandbox_link',
+					'id' => 'wpug_network_sandbox_link',
 					'title' => $switch_title,
-					'meta'  => array(
+					'meta' => array(
 						'class' => $switch_class,
-					),
+					)
 				)
 			);
 
 			$radio_options = array( 'a', 'b', 'c', 'd' );
-			$radio_html    = ' Option %s <input autocomplete="off" style="box-sizing: border-box;width:16px; height:16px; border-radius:8px" type="radio" id="%s" name="sandbox_toggle" value="%s"%s>';
+			$radio_html    = '<label for="%s"> Option %s </label><input autocomplete="off" style="box-sizing: border-box;width:16px; height:16px; border-radius:8px" type="radio" id="%s" name="sandbox_toggle" value="%s"%s>';
 			$radio_output  = '';
 			foreach ( $radio_options as $key => $value ) {
 				$selected      = $key === 0 ? ' checked' : '';
-				$radio_output .= sprintf( $radio_html, strtoupper( $value ), $value, $value, $selected );
+				$radio_output .= sprintf( $radio_html, $value, strtoupper( $value ), $value, $value, $selected );
 			}
 			$wp_admin_bar->add_node(
 				array(
