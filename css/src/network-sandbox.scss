@@ -30,7 +30,11 @@
 }
 
 #wpadminbar {
-	@import "a";
+	@import "switch";
+
+	.switch-a {
+		@extend %switch;
+	}
 
 	// User testing, delete when done.
 	.wpug-network-sandbox-switch-toggle-style .ab-item {

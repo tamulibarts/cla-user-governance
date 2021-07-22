@@ -9,6 +9,51 @@
 	}
 	var environment = current_home === sandbox_home ? 'sandbox' : 'live';
 
+	// Add event listeners.
+	var live = "Live site";
+	var live_slug = "live";
+	var sandbox = "Sandbox site";
+	var sandbox_slug = "sandbox";
+
+	// Add event listeners.
+	document.getElementById(live_slug).addEventListener("change", function (e) {
+		var input = this;
+		var live_label = this.parentNode.parentNode.querySelector(
+			"label[for=" + live_slug + "]"
+		);
+		var sandbox_label = this.parentNode.parentNode.querySelector(
+			"label[for=" + sandbox_slug + "]"
+		);
+		window.setTimeout(function () {
+			if (input.checked) {
+				live_label.innerHTML = live;
+				sandbox_label.innerHTML = "Go to " + sandbox;
+			} else {
+				live_label.innerHTML = "Go to " + live;
+				sandbox_label.innerHTML = sandbox;
+			}
+		}, 400);
+	});
+	document.getElementById(sandbox_slug).addEventListener("change", function (e) {
+		var input = this;
+		var live_label = this.parentNode.parentNode.querySelector(
+			"label[for=" + live_slug + "]"
+		);
+		var sandbox_label = this.parentNode.parentNode.querySelector(
+			"label[for=" + sandbox_slug + "]"
+		);
+		window.setTimeout(function () {
+			if (input.checked) {
+				live_label.innerHTML = "Go to " + live;
+				sandbox_label.innerHTML = sandbox;
+			} else {
+				live_label.innerHTML = live;
+				sandbox_label.innerHTML = "Go to " + sandbox;
+			}
+		}, 400);
+	});
+
+
 	// Reset the radio button selection.
 	jQuery('#wp-admin-bar-wpug_network_sandbox_style_switcher').on('click', 'input', function(e){
 		var newClass = 'toggle-' + e.target.value;

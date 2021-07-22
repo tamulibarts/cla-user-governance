@@ -215,15 +215,14 @@ class Network_Sandbox {
 			}
 			$switch_link  = $live_url . $uri;
 			$switch_class = 'wpug-network-sandbox-link-to-live';
-			$switch_title = '<div class="switch-a" data-checked="true"><span class="env" title="Your public website">Live site</span> <label class="switch"><input type="checkbox" checked data-live="'.$live_url.'" data-sandbox="'.$sandbox_url.'"><div class="slider round"></div></label> <span class="env" title="Your private website for testing and learning">Sandbox site</span></div>';
+			$switch_title = '<div class="switch-a"><fieldset aria-label="switch between the live website and the sandbox website" role="radiogroup"><!-- 	<legend><h1>Live and Sandbox Website Switching Toggle</h1></legend> --><div class="c-toggle"><label for="live">Go to Live Site</label><span class="c-toggle__wrapper"><input type="radio" name="environment" id="live"><input type="radio" name="environment" id="sandbox" checked><span aria-hidden="true" class="c-toggle__background"></span><span aria-hidden="true" class="c-toggle__switcher"></span></span><label for="sandbox">Sandbox site</label></div></fieldset></div>';
 		} elseif ( $live_url === $base_url ) {
 			if ( 'on' !== $sandbox_show ) {
 				return;
 			}
 			$switch_link  = $sandbox_url . $uri;
 			$switch_class = 'wpug-network-sandbox-link-to-sandbox';
-			$switch_title = '<div class="switch-a" data-checked="false"><span class="env" title="Your public website">Live site</span> <label class="switch"><input type="checkbox" data-live="'.$live_url.'" data-sandbox="'.$sandbox_url.'"><div class="slider round"></div></label> <span class="env env-sandbox" title="Your private website for testing and learning">Go to Sandbox site</g></svg>
-</span></div>';
+			$switch_title = '<div class="switch-a"><fieldset aria-label="switch between the live website and the sandbox website" role="radiogroup"><!-- 	<legend><h1>Live and Sandbox Website Switching Toggle</h1></legend> --><div class="c-toggle"><label for="live">Live Site</label><span class="c-toggle__wrapper"><input type="radio" name="environment" id="live" checked><input type="radio" name="environment" id="sandbox"><span aria-hidden="true" class="c-toggle__background"></span><span aria-hidden="true" class="c-toggle__switcher"></span></span><label for="sandbox">Go to Sandbox site</label></div></fieldset></div>';
 		}
 
 		if ( $switch_link ) {
@@ -236,24 +235,6 @@ class Network_Sandbox {
 					)
 				)
 			);
-
-			$radio_options = array( 'a', 'b', 'c', 'd' );
-			$radio_html    = '<label for="%s"> Option %s </label><input autocomplete="off" style="box-sizing: border-box;width:16px; height:16px; border-radius:8px" type="radio" id="%s" name="sandbox_toggle" value="%s"%s>';
-			$radio_output  = '';
-			foreach ( $radio_options as $key => $value ) {
-				$selected      = $key === 0 ? ' checked' : '';
-				$radio_output .= sprintf( $radio_html, $value, strtoupper( $value ), $value, $value, $selected );
-			}
-			$wp_admin_bar->add_node(
-				array(
-					'id'    => 'wpug_network_sandbox_style_switcher',
-					'title' => $radio_output,
-					'meta'  => array(
-						'class' => 'wpug-network-sandbox-switch-toggle-style',
-					),
-				)
-			);
-
 		}
 	}
 }
