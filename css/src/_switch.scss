@@ -3,12 +3,24 @@
 // Demo: https://codepen.io/SaraSoueidan/pen/jpBbrq
 $text-color: #F0F0F1;
 
+%hidden-text {
+	white-space: nowrap;
+	overflow: hidden;
+	text-indent: 100%;
+}
+
 %switch {
+	$width: 50px;
+	$height: 20px;
+	$font-size: 13px;
+
+	font-size: $font-size;
+
 	&::before,
 	&::after {
 		content: "";
 		display: inline-block;
-		height: 20px;
+		height: $height;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
 	}
@@ -23,26 +35,25 @@ $text-color: #F0F0F1;
 	.c-toggle {
 		label {
 			display: inline-block;
-			padding: 0 6px;
-			height: 20px;
-			line-height: 20px;
+			padding: 0 8px;
+			height: $height;
+			line-height: $height;
 			cursor: pointer;
-
-			&:hover,
-			&:focus {
-				outline: 1px dashed fade-out($text-color, 0.15);
-			}
+			position: relative;
 		}
 
 		input[type="radio"] {
 			display: inline-block;
-			margin-right: -2px;
-			width: 50%;
+			width: $width - $height;
 			height: 100%;
 			opacity: 0;
 			position: relative;
 			z-index: 1;
 			cursor: pointer;
+
+			&:checked {
+				width: $height;
+			}
 
 			&:focus,
 			&:hover {
@@ -50,34 +61,19 @@ $text-color: #F0F0F1;
 					box-shadow: 0 0 2px 2px #FFF;
 				}
 			}
-
-			// & ~ .c-toggle__background::before {
-			// 	content: "";
-			// 	display: block;
-			// 	width: 50px;
-			// 	height: 20px;
-			// 	border-radius: 20px;
-			// 	position: absolute;
-			// 	top: -1px;
-			// 	left: -1px;
-			// 	box-shadow: 0 0 1px 1px #FFF;
-			// 	border: 1px solid rgba(255, 255, 255, 0.9);
-			// }
 		}
 	}
 
 	.c-toggle__wrapper {
-		font-size: var(--baseSize);
 		display: inline-block;
 		vertical-align: bottom;
-		width: 50px;
-		height: 20px;
-		border-radius: 20px; /* = height */
-		position: relative; // create positioning context for ::after
+		width: $width;
+		height: $height;
+		border-radius: $height;
+		position: relative;
 	}
 
 	.c-toggle__switcher {
-		// the toggle
 		display: block;
 		position: absolute;
 		top: 2px;
@@ -89,6 +85,7 @@ $text-color: #F0F0F1;
 		background-color: #FFF;
 		transition: all 0.1s ease-out;
 		z-index: 2;
+		pointer-events: none;
 	}
 
 	.c-toggle__background {
@@ -101,10 +98,124 @@ $text-color: #F0F0F1;
 		z-index: 0;
 		background-color: #0C0;
 		border-radius: 20px;
+	}
 
-		svg {
-			transition: all 0.1s ease-out;
+	.c-toggle__tooltip {
+		$font-size: $font-size + 2;
+		$background: #000;
+
+		display: none;
+		background: $background;
+		color: #FFF;
+		font-size: $font-size;
+		width: auto;
+		padding: 16px;
+		position: absolute;
+		left: 50%;
+		top: $height + 19px;
+		transform: translateX(-50%);
+		border-radius: 13px;
+		letter-spacing: 0.3px;
+
+		&::before {
+			content: "";
+			width: 16px;
+			height: 16px;
+			background: $background;
+			position: absolute;
+			left: 50%;
+			top: -8px;
+			transform: translateX(-50%) rotate(45deg);
 		}
+
+		div {
+			line-height: $font-size + 2;
+			white-space: nowrap;
+		}
+
+		div:first-child {
+			font-weight: bold;
+			font-size: $font-size + 4;
+			text-align: center;
+			margin-bottom: 0.5em;
+			line-height: 1;
+		}
+
+		.big {
+			font-size: 16px;
+			font-weight: 700;
+			line-height: $font-size + 4;
+		}
+
+		a {
+			color: cyan;
+		}
+
+		a.gotit {
+			$icon-width: 20px;
+
+			margin-top: 9.5px;
+			padding-right: $icon-width + 6px;
+			position: relative;
+			font-size: $font-size + 2;
+			line-height: 19px;
+			display: inline-block;
+			font-weight: bold;
+
+			svg {
+				display: inline;
+				position: absolute;
+				bottom: 0;
+				right: 0;
+				width: $icon-width;
+				height: $icon-width;
+			}
+		}
+
+		a.close {
+			@extend %hidden-text;
+			$size: 16px;
+
+			position: absolute;
+			top: 4px;
+			right: 4px;
+			text-decoration: none;
+			display: block;
+			width: $size;
+			height: $size;
+			border: {
+				width: 2px;
+				style: solid;
+				radius: $size;
+			}
+
+			&::before,
+			&::after {
+				content: "";
+				display: block;
+				width: 0;
+				height: $size - 4;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				border-style: solid;
+				border-width: 0;
+			}
+
+			&::before {
+				border-left-width: 2px;
+				transform: translate(-1px, -50%) rotate(45deg);
+			}
+
+			&::after {
+				border-right-width: 2px;
+				transform: translate(-1px, -50%) rotate(135deg);
+			}
+		}
+	}
+
+	&:hover .c-toggle__tooltip {
+		display: block;
 	}
 
 	#sandbox:checked ~ .c-toggle__switcher {
