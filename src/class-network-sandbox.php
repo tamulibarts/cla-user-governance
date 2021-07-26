@@ -215,14 +215,46 @@ class Network_Sandbox {
 			}
 			$switch_link  = $live_url . $uri;
 			$switch_class = 'wpug-network-sandbox-link-to-live';
-			$switch_title = '<div class="switch-a"><fieldset aria-label="switch between the live website and the sandbox website" role="radiogroup"><!-- 	<legend><h1>Live and Sandbox Website Switching Toggle</h1></legend> --><div class="c-toggle"><label for="live">Go to Live Site</label><span class="c-toggle__wrapper"><input type="radio" name="environment" id="live"><input type="radio" name="environment" id="sandbox" checked><span aria-hidden="true" class="c-toggle__background"></span><span aria-hidden="true" class="c-toggle__switcher"></span></span><label for="sandbox">Sandbox site</label></div></fieldset></div>';
+			$switch_title = '<div class="switch-a">
+		<fieldset aria-label="switch between the live website and the sandbox website" role="radiogroup">
+			<!-- 	<legend><h1>Live and Sandbox Website Switching Toggle</h1></legend> -->
+			<div class="c-toggle">
+				<label for="wpug_env_live3" title="Click to go back to the Live Site">Go Back to the Live Site</label><span class="c-toggle__wrapper"><input type="radio" name="environment3" id="wpug_env_live3"><input type="radio" name="environment3" id="wpug_env_sandbox3" checked><span aria-hidden="true" class="c-toggle__background"></span><span aria-hidden="true" class="c-toggle__switcher"></span><span class="c-toggle__tooltip">
+						<div>What is a Sandbox Site?</div>
+						<div>It\'s a <span class="big">classroom</span> version of the website where</div>
+						<div>you can learn and experiment. Don\'t worry, we</div>
+						<div>reset it weekly. <a class="text" href="#moreinfo">Click for more information</a></div>
+						<div style="text-align:right;"><a class="text gotit" href="#gotit">Got it! <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20">
+									<path fill="#FFF" d="M12.72 2c0.15-0.020 0.26 0.020 0.41 0.070 0.56 0.19 0.83 0.79 0.66 1.35-0.17 0.55-1 3.040-1 3.58 0 0.53 0.75 1 1.35 1h3c0.6 0 1 0.4 1 1s-2 7-2 7c-0.17 0.39-0.55 1-1 1h-9.14v-9h2.14c0.41-0.41 3.3-4.71 3.58-5.27 0.21-0.41 0.6-0.68 1-0.73zM2 8h2v9h-2v-9z"></path>
+								</svg></a>
+						</div>
+					</span></span><label for="wpug_env_sandbox3" title="">Sandbox Site</label>
+			</div>
+		</fieldset>
+	</div>';
 		} elseif ( $live_url === $base_url ) {
 			if ( 'on' !== $sandbox_show ) {
 				return;
 			}
 			$switch_link  = $sandbox_url . $uri;
 			$switch_class = 'wpug-network-sandbox-link-to-sandbox';
-			$switch_title = '<div class="switch-a"><fieldset aria-label="switch between the live website and the sandbox website" role="radiogroup"><!-- 	<legend><h1>Live and Sandbox Website Switching Toggle</h1></legend> --><div class="c-toggle"><label for="live">Live Site</label><span class="c-toggle__wrapper"><input type="radio" name="environment" id="live" checked><input type="radio" name="environment" id="sandbox"><span aria-hidden="true" class="c-toggle__background"></span><span aria-hidden="true" class="c-toggle__switcher"></span></span><label for="sandbox">Go to Sandbox site</label></div></fieldset></div>';
+			$switch_title = '<div class="switch-a">
+		<fieldset aria-label="switch between the live website and the sandbox website" role="radiogroup">
+			<!-- 	<legend><h1>Live and Sandbox Website Switching Toggle</h1></legend> -->
+			<div class="c-toggle">
+				<label for="wpug_env_live3" title="">Live Site</label><span class="c-toggle__wrapper"><input type="radio" name="environment3" id="wpug_env_live3" checked><input type="radio" name="environment3" id="wpug_env_sandbox3"><span aria-hidden="true" class="c-toggle__background"></span><span aria-hidden="true" class="c-toggle__switcher"></span><span class="c-toggle__tooltip">
+						<div>What is a Sandbox Site?</div>
+						<div>It\'s a <span class="big">classroom</span> version of the website where</div>
+						<div>you can learn and experiment. Don\'t worry, we</div>
+						<div>reset it weekly. <a class="text" href="#moreinfo">Click for more information</a></div>
+						<div style="text-align:right;"><a class="text gotit" href="#gotit">Got it! <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20">
+									<path fill="#FFF" d="M12.72 2c0.15-0.020 0.26 0.020 0.41 0.070 0.56 0.19 0.83 0.79 0.66 1.35-0.17 0.55-1 3.040-1 3.58 0 0.53 0.75 1 1.35 1h3c0.6 0 1 0.4 1 1s-2 7-2 7c-0.17 0.39-0.55 1-1 1h-9.14v-9h2.14c0.41-0.41 3.3-4.71 3.58-5.27 0.21-0.41 0.6-0.68 1-0.73zM2 8h2v9h-2v-9z"></path>
+								</svg></a>
+						</div>
+					</span></span><label for="wpug_env_sandbox3" title="Click to go to the Sandbox Site">Go to Sandbox Site</label>
+			</div>
+		</fieldset>
+	</div>';
 		}
 
 		if ( $switch_link ) {
