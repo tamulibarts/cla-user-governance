@@ -3,12 +3,6 @@
 // Demo: https://codepen.io/SaraSoueidan/pen/jpBbrq
 $text-color: #F0F0F1;
 
-%hidden-text {
-	white-space: nowrap;
-	overflow: hidden;
-	text-indent: 100%;
-}
-
 %switch {
 	$width: 50px;
 	$height: 20px;
@@ -100,8 +94,9 @@ $text-color: #F0F0F1;
 		top: 2px;
 		left: 2px;
 		right: 100%;
-		width: 16px;
-		height: 16px;
+		width: 14px;
+		height: 14px;
+		border: 1px solid #000;
 		border-radius: 50%;
 		background-color: #fff;
 		transition: all 0.1s ease-out;
@@ -169,6 +164,10 @@ $text-color: #F0F0F1;
 			line-height: 1;
 		}
 
+		.actions {
+			margin: 14px 0 2px;
+		}
+
 		.big {
 			font-size: 16px;
 			font-weight: 700;
@@ -204,16 +203,23 @@ $text-color: #F0F0F1;
 			color: #fff;
 		}
 
-		a.gotit {
+		a.action {
 			$icon-width: 20px;
 
 			margin-top: 9.5px;
-			padding-right: $icon-width + 6px;
 			position: relative;
 			font-size: $font-size + 2;
 			line-height: 19px;
 			display: inline-block;
 			font-weight: bold;
+
+			&.gigem {
+				padding-right: $icon-width + 6px;
+
+				svg path {
+					fill: #fff;
+				}
+			}
 
 			svg {
 				display: inline;
@@ -224,127 +230,18 @@ $text-color: #F0F0F1;
 				height: $icon-width;
 			}
 		}
-
-		.gotit-btn {
-			$icon-width: 20px;
-
-			position: relative;
-			font-size: $font-size + 2;
-			line-height: 19px;
-			display: inline-block;
-			font-weight: bold;
-			background-color: #fff;
-			color: #000;
-			text-decoration: none;
-			padding: 4px 34px 4px 8px;
-			margin-top: 16px;
-			white-space: nowrap;
-			border-bottom: none;
-
-			svg {
-				display: inline;
-				position: absolute;
-				bottom: 50%;
-				right: 8px;
-				width: $icon-width;
-				height: $icon-width;
-				transform: translateY(50%);
-
-				path {
-					fill: #500000;
-				}
-			}
-		}
-
-		a.close {
-			@extend %hidden-text;
-			$size: 16px;
-
-			position: absolute;
-			top: 4px;
-			right: 4px;
-			text-decoration: none;
-			display: block;
-			width: $size;
-			height: $size;
-			transition: all 0.25s;
-			background: #500000;
-			border: {
-				width: 2px;
-				style: solid;
-				radius: $size;
-			}
-
-			&::before,
-			&::after {
-				content: "";
-				display: block;
-				width: 0;
-				height: $size - 4;
-				position: absolute;
-				left: 50%;
-				top: 50%;
-				border-style: solid;
-				border-width: 0;
-			}
-
-			&::before {
-				border-left-width: 2px;
-				transform: translate(-1px, -50%) rotate(45deg);
-			}
-
-			&::after {
-				border-right-width: 2px;
-				transform: translate(-1px, -50%) rotate(135deg);
-			}
-
-			&:active,
-			&:hover {
-				transform: rotate(90deg);
-			}
-		}
 	}
 
 	.c-toggle__tooltip {
 		display: block;
 	}
 
-	input[id^="wpug_env_sandbox"]:checked ~ .c-toggle__switcher {
+	input#wpug_env_sandbox:checked ~ .c-toggle__switcher {
 		right: 0;
 		left: 32px;
 	}
 
-	input[id^="wpug_env_sandbox"]:checked ~ .c-toggle__background {
+	input#wpug_env_sandbox:checked ~ .c-toggle__background {
 		background-color: #d00;
-	}
-
-	&.color-b {
-		$link-color: #eaeaea;
-
-		a,
-		a.gotit {
-			color: $link-color;
-			text-decoration: none;
-			border-bottom-width: 2px;
-			border-bottom-style: dotted;
-
-			&:hover,
-			&:focus {
-				border-bottom-style: solid;
-			}
-		}
-
-		a.gotit.btn {
-			background-color: $link-color;
-			border: none;
-		}
-
-		svg path {
-			fill: $link-color;
-		}
-
-		.c-toggle__tooltip {
-			background-color: #550000;
-		}
 	}
 }
