@@ -3,13 +3,23 @@
 // Demo: https://codepen.io/SaraSoueidan/pen/jpBbrq
 $text-color: #F0F0F1;
 
-%switch {
+%hidden-text {
+	white-space: nowrap;
+	text-indent: 100%;
+	overflow: hidden;
+}
+
+.%switch {
 	$width: 50px;
 	$height: 20px;
 	$font-size: 13px;
 
 	font-size: $font-size;
 	display: inline-block;
+
+	*:focus {
+		outline: 1px solid yellow;
+	}
 
 	&::before,
 	&::after {
@@ -18,6 +28,10 @@ $text-color: #F0F0F1;
 		height: $height;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
+	}
+
+	a {
+		color: #fff;
 	}
 
 	fieldset {
@@ -73,7 +87,8 @@ $text-color: #F0F0F1;
 			&:focus,
 			&:hover {
 				~ .c-toggle__background {
-					box-shadow: 0 0 2px 2px #fff;
+					border-color: #fff;
+					box-shadow: 0 0 0 1px inset #080;
 				}
 			}
 		}
@@ -96,12 +111,25 @@ $text-color: #F0F0F1;
 		right: 100%;
 		width: 14px;
 		height: 14px;
-		border: 1px solid #000;
 		border-radius: 50%;
 		background-color: #fff;
 		transition: all 0.1s ease-out;
 		z-index: 2;
+		border: 1px solid #000;
 		pointer-events: none;
+
+		&::after {
+			$size: 10;
+
+			content: "";
+			display: block;
+			width: #{$size}px;
+			height: #{$size}px;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
 	}
 
 	.c-toggle__background {
@@ -112,136 +140,208 @@ $text-color: #F0F0F1;
 		width: 100%;
 		height: 100%;
 		z-index: 0;
-		background-color: #0c0;
 		border-radius: 20px;
-		transition: box-shadow 0.25s;
+		box-sizing: border-box;
+		transition: all 0.25s;
+		background-color: #0c0;
+		border: 2px solid #0c0;
+		box-shadow: 0 0 0 1px inset #0c0;
 	}
 
-	.c-toggle__tooltip {
-		$font-size: $font-size + 2;
-		$background: #500000;
-
-		display: none;
-		background: $background;
-		color: #fff;
-		font-size: $font-size;
-		width: auto;
-		padding: 16px;
-		position: absolute;
-		left: 50%;
-		top: $height + 19px;
-		transform: translateX(-50%);
-		border-radius: 13px;
-		letter-spacing: 0.3px;
-		box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.33);
+	.tooltip {
+		position: relative;
+		display: inline-block;
+		margin-right: 6px;
+		cursor: pointer;
 
 		*:focus {
 			outline: 1px solid #fce300;
 			outline-offset: 2px;
 		}
 
-		&::before {
-			content: "";
-			width: 16px;
-			height: 16px;
+		.toggle {
+			display: none;
+
+			&.show {
+				display: block;
+			}
+		}
+
+		a.info-icon {
+			@extend %hidden-text;
+
+			display: inline-block;
+			width: 20px;
+			height: 20px;
+			background: url('data:image/svg+xml;utf8,<svg id="svg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0, 0, 40, 40"><circle cx="20" cy="20" r="18" fill="none" stroke="white" stroke-width="4" /><text style="font: bold 32px serif;" x="16" y="31" class="small" fill="white">i</text></svg>');
+		}
+
+		.c-toggle__tooltip {
+			$font-size: $font-size + 2;
+			$background: #500000;
+
+			display: none;
 			background: $background;
+			color: #fff;
+			font-size: $font-size;
+			width: auto;
+			padding: 16px;
 			position: absolute;
 			left: 50%;
-			top: -8px;
-			transform: translateX(-50%) rotate(45deg);
-		}
+			top: $height + 19px;
+			transform: translateX(-50%);
+			border-radius: 13px;
+			letter-spacing: 0.3px;
+			box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.33);
 
-		div {
-			line-height: $font-size + 2;
-			white-space: nowrap;
-		}
-
-		div:first-child {
-			font-weight: bold;
-			font-size: $font-size + 4;
-			text-align: center;
-			margin-bottom: 0.5em;
-			line-height: 1;
-		}
-
-		.actions {
-			margin: 14px 0 2px;
-		}
-
-		.big {
-			font-size: 16px;
-			font-weight: 700;
-			line-height: $font-size + 4;
-		}
-
-		a.text {
-			text-decoration: none;
-			border-bottom-width: 2px;
-			border-bottom-style: dotted;
-			position: relative;
-
-			&::after {
+			&::before {
 				content: "";
+				width: 16px;
+				height: 16px;
+				background: $background;
 				position: absolute;
-				width: 0%;
-				bottom: -2px;
-				left: 0;
-				background-color: #fff;
-				height: 2px;
-				transition: width 0.25s;
+				left: 50%;
+				top: -8px;
+				transform: translateX(-50%) rotate(45deg);
 			}
 
-			&:active,
-			&:hover {
+			&.show {
+				display: block;
+			}
+
+			div {
+				line-height: $font-size + 2;
+				white-space: nowrap;
+			}
+
+			div:first-child {
+				font-weight: bold;
+				font-size: $font-size + 4;
+				text-align: center;
+				margin-bottom: 0.5em;
+				line-height: 1;
+			}
+
+			.actions {
+				margin: 14px 0 2px;
+			}
+
+			.big {
+				font-size: 16px;
+				font-weight: 700;
+				line-height: $font-size + 4;
+			}
+
+			a.text {
+				text-decoration: none;
+				border-bottom-width: 2px;
+				border-bottom-style: dotted;
+				position: relative;
+
 				&::after {
-					width: 100%;
+					content: "";
+					position: absolute;
+					width: 0%;
+					bottom: -2px;
+					left: 0;
+					background-color: #fff;
+					height: 2px;
+					transition: width 0.25s;
 				}
-			}
-		}
 
-		a {
-			color: #fff;
-		}
-
-		a.action {
-			$icon-width: 20px;
-
-			margin-top: 9.5px;
-			position: relative;
-			font-size: $font-size + 2;
-			line-height: 19px;
-			display: inline-block;
-			font-weight: bold;
-
-			&.gigem {
-				padding-right: $icon-width + 6px;
-
-				svg path {
-					fill: #fff;
+				&:active,
+				&:hover {
+					&::after {
+						width: 100%;
+					}
 				}
 			}
 
-			svg {
-				display: inline;
-				position: absolute;
-				bottom: 1px;
-				right: 0;
-				width: $icon-width;
-				height: $icon-width;
+			a.action {
+				$icon-width: 20px;
+
+				position: relative;
+				font-size: $font-size + 2;
+				line-height: 19px;
+				display: inline-block;
+				font-weight: bold;
+
+				&.gigem {
+					padding-right: $icon-width + 6px;
+
+					svg path {
+						fill: #fff;
+					}
+				}
+
+				svg {
+					display: inline;
+					position: absolute;
+					bottom: 1px;
+					right: 0;
+					width: $icon-width;
+					height: $icon-width;
+				}
+			}
+
+			.action-btn {
+				$icon-width: 20px;
+
+				position: relative;
+				font-size: $font-size + 2;
+				line-height: 19px;
+				display: inline-block;
+				font-weight: bold;
+				background-color: #fff;
+				color: #000;
+				text-decoration: none;
+				padding: 4px 8px;
+				margin-top: 16px;
+				white-space: nowrap;
+				border-bottom: none;
+
+				svg {
+					display: inline;
+					position: absolute;
+					bottom: 50%;
+					right: 8px;
+					width: $icon-width;
+					height: $icon-width;
+					transform: translateY(50%);
+
+					path {
+						fill: #500000;
+					}
+				}
+			}
+
+			span.left,
+			span.right {
+				display: inline-block;
+				vertical-align: baseline;
+				width: 50%;
+				box-sizing: border-box;
+				padding: 0 8px;
+			}
+
+			span.left {
+				text-align: right;
+			}
+
+			span.right {
+				text-align: left;
 			}
 		}
 	}
 
-	.c-toggle__tooltip {
-		display: block;
-	}
-
-	input#wpug_env_sandbox:checked ~ .c-toggle__switcher {
+	input[id^="wpug_env_sandbox"]:checked ~ .c-toggle__switcher {
 		right: 0;
 		left: 32px;
 	}
 
-	input#wpug_env_sandbox:checked ~ .c-toggle__background {
+	input[id^="wpug_env_sandbox"]:checked ~ .c-toggle__background {
 		background-color: #d00;
+		border-color: #d00;
+		box-shadow: 0 0 0 1px inset #d00;
 	}
 }
