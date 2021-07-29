@@ -15,6 +15,12 @@
 	var sandbox_slug = "wpug_env_sandbox";
 
 	// Add event listeners.
+	var live = "Live Site";
+	var live_slug = "wpug_env_live";
+	var sandbox = "Sandbox Site";
+	var sandbox_slug = "wpug_env_sandbox";
+
+	// Add event listeners.
 	jQuery(".switch-a input[id^='" + live_slug + "']").on("change", function (e) {
 		var input = this;
 		var live_label = this.parentNode.parentNode.querySelector(
@@ -62,5 +68,24 @@
 			}, 400);
 		}
 	);
+	console.clear();
+	jQuery(".switch-a .toggler").on("click", function (e) {
+		var $toggler = jQuery(this);
+		if (!$toggler.is(".toggler")) {
+			$toggler = $toggler.closest(".toggler");
+		}
+		var selector = $toggler.attr("data-target");
+		var $target = jQuery(selector);
+		$target.toggleClass("hidden");
+		// If a specific entry point is set, focus on that.
+		if ($target.hasClass("hidden") && jQuery.contains($target[0], $toggler[0])) {
+			if ($toggler.attr("data-entry-point")) {
+				jQuery($toggler.attr("data-entry-point")).focus();
+			} else {
+				$toggler.focus();
+			}
+		}
+	});
+
 
 })();
