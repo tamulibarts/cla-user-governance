@@ -13,13 +13,10 @@ $text-color: #F0F0F1;
 	$width: 50px;
 	$height: 20px;
 	$font-size: 13px;
+	$drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.33);
 
 	font-size: $font-size;
 	display: inline-block;
-
-	*:focus {
-		outline: 1px solid yellow;
-	}
 
 	&::before,
 	&::after {
@@ -77,22 +74,31 @@ $text-color: #F0F0F1;
 
 		input[type="radio"] {
 			display: inline-block;
-			width: $width - $height;
+			width: $width - $height - 1px;
 			height: 100%;
 			opacity: 0;
 			position: relative;
+			top: -1px;
+			margin: 0;
 			z-index: 1;
 			cursor: pointer;
 
 			&:checked {
-				width: $height;
+				width: $height - 1px;
 			}
 
 			&:focus,
 			&:hover {
 				~ .c-toggle__background {
-					border-color: #fff;
-					box-shadow: 0 0 0 1px inset #080;
+					box-shadow: 0 0 1px 1px inset #fff;
+
+					svg rect {
+						stroke-dasharray: 3, 1;
+						width: 52px;
+						height: 22px;
+						x: 2;
+						y: 2;
+					}
 				}
 			}
 		}
@@ -110,8 +116,8 @@ $text-color: #F0F0F1;
 	.c-toggle__switcher {
 		display: block;
 		position: absolute;
-		top: 2px;
-		left: 2px;
+		top: 1px;
+		left: 1px;
 		right: 100%;
 		width: 14px;
 		height: 14px;
@@ -141,26 +147,38 @@ $text-color: #F0F0F1;
 		position: absolute;
 		top: 0;
 		left: 0;
-		width: 100%;
-		height: 100%;
+		width: 48px;
+		height: 18px;
 		z-index: 0;
 		border-radius: 20px;
 		box-sizing: border-box;
 		transition: all 0.25s;
 		background-color: #0c0;
-		border: 2px solid #0c0;
-		box-shadow: 0 0 0 1px inset #0c0;
+		box-shadow: 0 0 0 1px inset #000;
+
+		svg {
+			position: relative;
+			left: -4px;
+			top: -4px;
+
+			rect {
+				transition: all 0.25s;
+			}
+		}
 	}
 
 	.tooltip {
 		position: relative;
 		display: inline-block;
 		margin-right: 6px;
-		cursor: pointer;
 
-		*:focus {
-			outline: 1px solid #fce300;
-			outline-offset: 2px;
+		&.expand .c-toggle__tooltip {
+			border-radius: 13px 13px 0 0;
+			padding-bottom: 0;
+
+			.long-desc {
+				border-radius: 0 13px 13px 13px;
+			}
 		}
 
 		a.info-icon {
@@ -177,27 +195,38 @@ $text-color: #F0F0F1;
 				}
 			}
 
-			&:hover,
-			&:focus {
-				outline: none;
-
+			// Click for more information pseudo-title.
+			&:not(.active) {
 				&::after {
 					content: attr(data-title);
-					display: block;
+					opacity: 0;
+					pointer-events: none;
 					position: absolute;
-					left: 0;
+					left: 50%;
 					top: 100%;
 					white-space: nowrap;
 					background: #000;
 					padding: 6px;
+					transition: all 0.25s;
+					box-shadow: $drop-shadow;
 				}
 
-				svg {
-					circle {
-						stroke-width: 3;
-						r: 9;
-						stroke-dasharray: 3, 1;
+				&:hover,
+				&:focus {
+					&::after {
+						opacity: 1;
 					}
+				}
+			}
+
+			&:hover,
+			&:focus {
+				outline: none;
+
+				svg circle {
+					stroke-width: 3;
+					r: 9;
+					stroke-dasharray: 3, 1;
 				}
 			}
 		}
@@ -217,7 +246,7 @@ $text-color: #F0F0F1;
 			transform: translateX(-50%);
 			border-radius: 13px;
 			letter-spacing: 0.3px;
-			box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.33);
+			box-shadow: $drop-shadow;
 
 			&::before {
 				content: "";
@@ -234,12 +263,12 @@ $text-color: #F0F0F1;
 				display: block;
 			}
 
-			div {
+			.nowrap {
 				line-height: $font-size + 2;
 				white-space: nowrap;
 			}
 
-			div:first-child {
+			> div:first-child {
 				font-weight: bold;
 				font-size: $font-size + 4;
 				text-align: center;
@@ -247,9 +276,34 @@ $text-color: #F0F0F1;
 				line-height: 1;
 			}
 
-			.actions,
-			.long-desc {
+			.actions {
 				margin: 14px 0 2px;
+			}
+
+			.long-desc {
+				position: absolute;
+				top: 100%;
+				left: 0;
+				box-sizing: border-box;
+				width: auto;
+				max-width: 200%;
+				max-width: 800px;
+				margin-bottom: 2px;
+				padding: 0 16px 16px;
+				font-size: 16pt;
+				line-height: 1.3;
+				background: #500000;
+				box-shadow: $drop-shadow;
+
+				h3 {
+					margin: 15px 0;
+				}
+
+				ul {
+					margin: 0 0 10px;
+					padding-left: 22px;
+					white-space: nowrap;
+				}
 			}
 
 			.big {
@@ -275,6 +329,7 @@ $text-color: #F0F0F1;
 					transition: width 0.25s;
 				}
 
+				&:focus,
 				&:active,
 				&:hover {
 					&::after {
