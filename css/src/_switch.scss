@@ -1,20 +1,50 @@
-// Based on work by Sara Soueidan
-// https://www.sarasoueidan.com/blog/toggle-switch-design/
-// Demo: https://codepen.io/SaraSoueidan/pen/jpBbrq
-$text-color: #F0F0F1;
+// Default variables.
+$text-color: #f0f0f1;
+$drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.33);
+// Sandbox-specific variables.
+$sand-bg: #ff0;
+$sand-icon-rgb: rgb(14, 14, 12);
+$sand-icon: #0e0e0c;
+$sand-text: #000;
 
-%hidden-text {
-	white-space: nowrap;
-	text-indent: 100%;
-	overflow: hidden;
+// Instantly available title.
+%cla-title {
+	$drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.33) !default;
+
+	.cla-title-el {
+		opacity: 0;
+		color: #fff;
+		background: #000;
+		pointer-events: none;
+		position: absolute;
+		display: block;
+		margin-left: 100%;
+		white-space: nowrap;
+		padding: 6px;
+		line-height: 1;
+		transition: all 0.25s;
+		box-shadow: $drop-shadow;
+	}
+
+	&:hover,
+	&:focus {
+		.cla-title-el {
+			opacity: 1;
+		}
+	}
+
+	&.hide-cla-title-el .cla-title-el {
+		opacity: 0;
+	}
 }
 
-%switch {
-	$width: 50px;
-	$height: 20px;
-	$font-size: 13px;
-	$drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.33);
+.cla-title {
+	@extend %cla-title;
+}
 
+@mixin switch($width: 50px, $height: 20px, $text-color: #000) {
+	$font-size: 13px !default;
+	$drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.33) !default;
 	font-size: $font-size;
 	display: inline-block;
 
@@ -46,18 +76,17 @@ $text-color: #F0F0F1;
 		label {
 			display: inline-block;
 			padding: 0 8px;
-			height: $height;
-			line-height: $height;
+			height: $height + 4px;
+			line-height: $height + 4px;
 			cursor: pointer;
 			position: relative;
-			overflow: hidden;
 
 			&::after {
 				content: "";
 				position: absolute;
 				right: 6px;
 				left: 6px;
-				bottom: 0;
+				bottom: 2px;
 				height: 0;
 				opacity: 0;
 				transition: all 0.25s;
@@ -75,10 +104,10 @@ $text-color: #F0F0F1;
 		input[type="radio"] {
 			display: inline-block;
 			width: $width - $height - 1px;
-			height: 100%;
+			height: 18px;
 			opacity: 0;
 			position: relative;
-			top: -1px;
+			top: 1px;
 			margin: 0;
 			z-index: 1;
 			cursor: pointer;
@@ -90,7 +119,7 @@ $text-color: #F0F0F1;
 			&:focus,
 			&:hover {
 				~ .c-toggle__background {
-					box-shadow: 0 0 1px 1px inset #fff;
+					box-shadow: 0 0 1px 1px inset $text-color;
 
 					svg rect {
 						stroke-dasharray: 3, 1;
@@ -109,6 +138,7 @@ $text-color: #F0F0F1;
 		vertical-align: bottom;
 		width: $width;
 		height: $height;
+		padding: 2px;
 		border-radius: $height;
 		position: relative;
 	}
@@ -116,8 +146,8 @@ $text-color: #F0F0F1;
 	.c-toggle__switcher {
 		display: block;
 		position: absolute;
-		top: 1px;
-		left: 1px;
+		top: 4px;
+		left: 4px;
 		right: 100%;
 		width: 14px;
 		height: 14px;
@@ -145,8 +175,8 @@ $text-color: #F0F0F1;
 	.c-toggle__background {
 		display: block;
 		position: absolute;
-		top: 0;
-		left: 0;
+		top: 3px;
+		left: 3px;
 		width: 48px;
 		height: 18px;
 		z-index: 0;
@@ -163,6 +193,7 @@ $text-color: #F0F0F1;
 
 			rect {
 				transition: all 0.25s;
+				stroke: $text-color;
 			}
 		}
 	}
@@ -188,41 +219,18 @@ $text-color: #F0F0F1;
 			height: 20px;
 
 			svg {
-				position: relative;
-
 				circle {
 					transition: all 0.25s;
-				}
-			}
-
-			// Click for more information pseudo-title.
-			&:not(.active) {
-				&::after {
-					content: attr(data-title);
-					opacity: 0;
-					pointer-events: none;
-					position: absolute;
-					left: 50%;
-					top: 100%;
-					white-space: nowrap;
-					background: #000;
-					padding: 6px;
-					transition: all 0.25s;
-					box-shadow: $drop-shadow;
+					stroke: $text-color;
 				}
 
-				&:hover,
-				&:focus {
-					&::after {
-						opacity: 1;
-					}
+				text {
+					fill: $text-color;
 				}
 			}
 
 			&:hover,
 			&:focus {
-				outline: none;
-
 				svg circle {
 					stroke-width: 3;
 					r: 9;
@@ -417,7 +425,7 @@ $text-color: #F0F0F1;
 
 	input[id^="wpug_env_sandbox"]:checked ~ .c-toggle__switcher {
 		right: 0;
-		left: 32px;
+		left: 34px;
 	}
 
 	input[id^="wpug_env_sandbox"]:checked ~ .c-toggle__background {
