@@ -2,25 +2,27 @@
 
 @import "foundation";
 @import "settings";
-// $yellow: #787A00; // WCAG-AA compliant with white text in front.
 
 .wpug-network-is-sandbox {
 	$yellow: #FF0;
 	$base-color: $yellow;
 	$text-color: #000;
 	$icon-color: hsl( hue( $base-color ), 7%, 5% );
-	// $menu-submenu-text: #000;
-	$highlight-color: $yellow; // default: 199deg, 100%, 33%
+	$highlight-color: $yellow;
 	$notification-color: #918318;
 	$button-color: #918318;
 	$menu-collapse-text: #B3B3B3;
 	$menu-submenu-focus-text: #000;
 
 	@import "wp-admin/_adminbar.scss";
+	@import "switch";
 
 	#wpadminbar {
 		box-shadow: 0 1px 0 #000;
 
+		.switch-a {
+			@include switch($text-color: $text-color);
+		}
 
 		// User testing, delete when done.
 		.wpug-network-sandbox-switch-toggle-style .ab-item {
@@ -31,9 +33,14 @@
 
 #wpadminbar {
 	@import "switch";
+	@import "cla_title";
+
+	.cla-title {
+		@extend %cla-title;
+	}
 
 	.switch-a {
-		@extend %switch;
+		@include switch;
 	}
 
 	// User testing, delete when done.

@@ -19,7 +19,8 @@ module.exports = (grunt) ->
         files:
           'css/admin.css': 'css/admin.css'
           'css/style.css': 'css/style.css'
-          'css/network-sandbox.css': 'css/network-sandbox.css'
+          'css/network-sb-live.css': 'css/network-sb-live.css'
+          'css/network-sb-sandbox.css': 'css/network-sb-sandbox.css'
       dev:
         options:
           map: true
@@ -30,7 +31,8 @@ module.exports = (grunt) ->
         files:
           'css/admin.css': 'css/admin.css'
           'css/style.css': 'css/style.css'
-          'css/network-sandbox.css': 'css/network-sandbox.css'
+          'css/network-sb-live.css': 'css/network-sb-live.css'
+          'css/network-sb-sandbox.css': 'css/network-sb-sandbox.css'
     sass:
       pkg:
         options:
@@ -42,7 +44,8 @@ module.exports = (grunt) ->
         files:
           'css/admin.css': 'css/src/admin.scss'
           'css/style.css': 'css/src/style.scss'
-          'css/network-sandbox.css': 'css/src/network-sandbox.scss'
+          'css/network-sb-live.css': 'css/src/network-sb-live.scss'
+          'css/network-sb-sandbox.css': 'css/src/network-sb-sandbox.scss'
       dev:
         options:
           implementation: sass
@@ -53,7 +56,8 @@ module.exports = (grunt) ->
         files:
           'css/admin.css': 'css/src/admin.scss'
           'css/style.css': 'css/src/style.scss'
-          'css/network-sandbox.css': 'css/src/network-sandbox.scss'
+          'css/network-sb-live.css': 'css/src/network-sb-live.scss'
+          'css/network-sb-sandbox.css': 'css/src/network-sb-sandbox.scss'
     sasslint:
       options:
         configFile: '.sass-lint.yml'

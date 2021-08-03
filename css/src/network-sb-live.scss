@@ -1,0 +1,32 @@
+@charset "utf-8";
+
+@import "foundation";
+@import "settings";
+
+#wpadminbar {
+	@import "switch";
+	@import "cla_title";
+
+	.cla-title {
+		@extend %cla-title;
+	}
+
+	.switch-a {
+		@include switch;
+	}
+
+	// User testing, delete when done.
+	.wpug-network-sandbox-switch-toggle-style .ab-item {
+		color: #F0F0F1!important;//sass-lint:disable-line no-important
+	}
+
+	#wp-admin-bar-wpug_network_sandbox_link {
+		// User testing, delete when done.
+		position: relative;
+		z-index: 999999;
+
+		.ab-empty-item > a {
+			display: inline-block;
+		}
+	}
+}
