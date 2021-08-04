@@ -6,6 +6,8 @@ module.exports = (grunt) ->
       files: [
         'css/src/**/*.scss'
         'src/*.php'
+        'templates/*'
+        'img/*'
         'js/*'
       ]
       tasks: ['develop', 'copytostaging']
@@ -87,7 +89,7 @@ module.exports = (grunt) ->
   @registerTask 'copytostaging', 'Copy all relevant files to this plugin in the libartstest.local server', ->
     done = @async()
     css_files = grunt.file
-      .expand {filter: 'isFile' }, ['css/*','src/*','js/*']
+      .expand {filter: 'isFile' }, ['css/*','src/*','templates/*','img/*','js/*']
       .forEach (filePath) ->
         grunt.file.copy filePath, '../../../../../../libartstest/app/public/wp-content/plugins/wp-user-governance/' + filePath
     return

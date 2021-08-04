@@ -23,10 +23,8 @@
 							<li>Web support will not move content from a Sandbox site to a Live site.</li>
 							<li>It is identified by a yellow background in the top toolbar.</li>
 						</ul>
-						<h3>What else should I know?</h3>
-						<div>This is a new feature and we would <strong>love</strong> your feedback! Please let us know what you think by sending an email here: (link). This feature is subject to change and we will let you know via email and in the dashboard when it does.</div>
-					</div>
-				</span></div>
-		</div>
-	</fieldset>
-</div>
+						<h3>I need help!</h3>
+						<div>If you are having trouble with this feature, please submit a helpdesk ticket to <a class="text" href="mailto:liberalartsit@tamu.edu">LiberalartsIT@tamu.edu</a>.</div>
+						<h3>I want to give feedback!</h3>
+						<div>This is a new feature and we would love your feedback! Please let us know what you think by sending an email here: (link). This feature is subject to change and we will let you know via email and in the dashboard when it does.</div>
+					</div></span></div></div></fieldset></div>

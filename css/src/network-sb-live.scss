@@ -2,31 +2,71 @@
 
 @import "foundation";
 @import "settings";
+@import "switch";
+@import "cla_title";
 
 #wpadminbar {
-	@import "switch";
-	@import "cla_title";
+	$text-color: #F0F0F1;
 
 	.cla-title {
 		@extend %cla-title;
 	}
 
 	.switch-a {
-		@include switch;
-	}
+		@include switch($icon-color: #A7AAAD);
 
-	// User testing, delete when done.
-	.wpug-network-sandbox-switch-toggle-style .ab-item {
-		color: #F0F0F1!important;//sass-lint:disable-line no-important
+		// Switch styles specific to the admin bar.
+		&::before,
+		&::after,
+		> fieldset {
+			float: left;
+		}
+
+		&::before,
+		&::after {
+			margin-top: 4px;
+		}
+
+		.c-toggle label {
+			height: 28px;
+			line-height: 24px;
+			vertical-align: middle;
+		}
+
+		.c-toggle__wrapper {
+			height: 28px;
+		}
 	}
 
 	#wp-admin-bar-wpug_network_sandbox_link {
-		// User testing, delete when done.
-		position: relative;
-		z-index: 999999;
+		> .ab-item {
+			padding: 0;
 
-		.ab-empty-item > a {
-			display: inline-block;
+			&::before,
+			&::after {
+				content: "";
+				display: inline-block;
+				height: 24px;
+				line-height: 24px;
+				border: 1px solid #A7AAAD;
+				border-width: 0px 1px 0px 0px;
+				float: none;
+				position: static;
+				padding: 0;
+				margin-bottom: 4px;
+			}
+
+			&::before {
+				margin-right: 8px;
+			}
+
+			&::after {
+				margin-left: 8px;
+			}
+		}
+
+		&:hover .ab-item {
+			color: $text-color;
 		}
 	}
 }

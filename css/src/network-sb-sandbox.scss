@@ -2,6 +2,8 @@
 
 @import "foundation";
 @import "settings";
+@import "switch";
+@import "cla_title";
 
 .wpug-network-is-sandbox {
 	$yellow: #FF0;
@@ -15,46 +17,37 @@
 	$menu-submenu-focus-text: #000;
 
 	@import "wp-admin/_adminbar.scss";
-	@import "switch";
 
 	#wpadminbar {
 		box-shadow: 0 1px 0 #000;
 
+		.cla-title {
+			@extend %cla-title;
+		}
+
 		.switch-a {
-			@include switch($text-color: $text-color);
-		}
+			@include switch($text-color: $text-color, $icon-color: $text-color);
 
-		// User testing, delete when done.
-		.wpug-network-sandbox-switch-toggle-style .ab-item {
-			color: #000!important;//sass-lint:disable-line no-important
-		}
-	}
-}
+			&::before,
+			&::after,
+			> fieldset {
+				float: left;
+			}
 
-#wpadminbar {
-	@import "switch";
-	@import "cla_title";
+			&::before,
+			&::after {
+				margin-top: 4px;
+			}
 
-	.cla-title {
-		@extend %cla-title;
-	}
+			.c-toggle label {
+				height: 28px;
+				line-height: 24px;
+				vertical-align: middle;
+			}
 
-	.switch-a {
-		@include switch;
-	}
-
-	// User testing, delete when done.
-	.wpug-network-sandbox-switch-toggle-style .ab-item {
-		color: #F0F0F1!important;//sass-lint:disable-line no-important
-	}
-
-	#wp-admin-bar-wpug_network_sandbox_link {
-		// User testing, delete when done.
-		position: relative;
-		z-index: 999999;
-
-		.ab-empty-item > a {
-			display: inline-block;
+			.c-toggle__wrapper {
+				height: 28px;
+			}
 		}
 	}
 }

@@ -4,7 +4,7 @@
 // Zachary Watkins, zwatkins2@tamu.edu
 (function ($) {
 	$.fn.laitswitch = function (options) {
-		var opts = $.extend({}, $.fn.laitswitch.defaults, options);
+		var opts = $.extend({}, options);
 		return this.each(function () {
 			var $witch = $(this),
 				$radios = $witch.find(".c-toggle__wrapper > input[type=radio]"),
@@ -17,6 +17,7 @@
 					$first_label = $labels.eq(label_index);
 				$first_label.html(text_opt[0]);
 				if (text_opt.length > 1) {
+					$first_label.title
 					$first_label.attr("title", text_opt[1]);
 				}
 				// Update the other element.
@@ -54,21 +55,13 @@
 	};
 })(jQuery);
 
-$.fn.laitswitch.defaults = {
-	text: [
-		[["Option A"], ["Select Option A"]],
-		[["Option B"], ["Select Option B"]]
-	],
-	animation: 400
-};
-
 // Liberal Arts Information Technology
 // Toggler Plugin
 // GPL-2.0+
 // Zachary Watkins, zwatkins2@tamu.edu
 (function ($) {
 	$.fn.laittoggler = function (options) {
-		var opts = $.extend({}, $.fn.laitswitch.defaults, options);
+		var opts = $.extend({}, options);
 		return this.each(function () {
 			var $toggler = $(this);
 			var toggle = function (e) {
@@ -103,28 +96,30 @@ $.fn.laitswitch.defaults = {
 		});
 	};
 })(jQuery);
-$.fn.laitswitch.defaults = {
-	sel: ".toggler"
-};
 
-$(".switch-a").find(".toggler").laittoggler({ sel: ".toggler" });
+(function($){
+	var destination = undefined === wpugnsbdest ? false : wpugnsbdest;
+	jQuery(".switch-a").find(".toggler").laittoggler({ sel: ".toggler" });
 
-$(".switch-a")
-	.laitswitch({
-		text: [
-			[
-				["Live Site", "You are on the Live Site"],
-				["Go back to the Live Site", "Click to go to the Live Site"]
+	jQuery(".switch-a")
+		.laitswitch({
+			text: [
+				[
+					["Live Site", "You are on the Live Site"],
+					["Go back to the Live Site", "Click to go to the Live Site"]
+				],
+				[
+					["Sandbox Site", "You are on the Sandbox Site"],
+					["Go to Sandbox Site", "Click to go to the Sandbox Site"]
+				]
 			],
-			[
-				["Sandbox Site", "You are on the Sandbox Site"],
-				["Go to Sandbox Site", "Click to go to the Sandbox Site"]
-			]
-		],
-		animation: 400,
-		callback: function (el) {
-			if ( el.hasAttribute( 'data-laitswitch-path' ) && '' !== el.getAttribute( 'data-laitswitch-path' ) ) {
-				document.location.href = el.getAttribute('data-laitswitch-path');
+			animation: 400,
+			callback: function (el) {
+				console.log(destination);
+				if ( destination !== '' ) {
+					document.location.href = destination;
+				}
 			}
-		}
-	});
+		});
+
+})(jQuery);

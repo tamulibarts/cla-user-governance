@@ -29,62 +29,172 @@ class Network_Sandbox {
 	 */
 	public function __construct() {
 
-		// Add the admin bar link.
-		add_action( 'admin_bar_menu', array( $this, 'admin_bar_link' ), 31 );
+		// Get the status of the current site's network sandbox switch.
+		$network_switch_context = $this->network_switch_context();
 
-		// Add a sandbox class to the body.
-		add_filter( 'body_class', array( $this, 'body_class' ) );
-		add_filter( 'admin_body_class', array( $this, 'body_class' ) );
+		if ( 'on' === $network_switch_context['status'] ) {
 
-		// Get options.
-		$option   = get_site_option( $this->option_key );
-		$option   = array_merge( $this->default_option, $option );
-		$base_url = $this->get_base_url();
+			// Add the admin bar link.
+			add_action( 'admin_bar_menu', array( $this, 'admin_bar_link' ), 31 );
 
-		// Hooks for the sandbox network only.
-		$sandbox_url  = $option['sandbox_url'];
-		$sandbox_show = $option['sandbox_show_link'];
-		if ( $sandbox_url === $base_url && 'on' === $sandbox_show ) {
-			add_action( 'admin_init', array( 'PAnD', 'init' ) );
-			add_action( 'admin_notices', array( $this, 'admin_notice_sandbox_site' ) );
+			// Add a sandbox class to the body.
+			add_filter( 'body_class', array( $this, 'body_class' ) );
+			add_filter( 'admin_body_class', array( $this, 'body_class' ) );
+
+			if ( 'sandbox' === $network_switch_context['type'] ) {
+				// Admin notices for the Sandbox site.
+				add_action( 'admin_init', array( 'PAnD', 'init' ) );
+				add_action( 'admin_notices', array( $this, 'admin_notice_sandbox_site' ) );
+			}
+
 		}
 
-		if (
-			( $sandbox_url === $base_url && 'on' === $sandbox_show )
-			|| ( $option['live_url'] === $base_url && 'on' === $option['live_show_link'] )
-		) {
+		// Register the Network Sandbox assets.
+
+		if ( $network_switch_context && $network_switch_context['status'] === 'on' ) {
+
+			if ( 'sandbox' === $network_switch_context['type'] ) {
+
+				// Register global styles used in the theme.
+				add_action( 'admin_enqueue_scripts', array( $this, 'register_network_sb_sandbox_assets' ) );
+
+				// Enqueue extension styles.
+				add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_network_sb_sandbox_assets' ) );
+
+				// Register global styles used in the theme.
+				add_action( 'wp_enqueue_scripts', array( $this, 'register_network_sb_sandbox_assets' ) );
+
+				// Enqueue extension styles.
+				add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_network_sb_sandbox_assets' ) );
+
+			} elseif ( 'live' === $network_switch_context['type'] ) {
+
+				// Register global styles used in the theme.
+				add_action( 'admin_enqueue_scripts', array( $this, 'register_network_sb_live_assets' ) );
+
+				// Enqueue extension styles.
+				add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_network_sb_live_assets' ) );
+
+				// Register global styles used in the theme.
+				add_action( 'wp_enqueue_scripts', array( $this, 'register_network_sb_live_assets' ) );
+
+				// Enqueue extension styles.
+				add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_network_sb_live_assets' ) );
+
+			}
 
 			// Register global styles used in the theme.
-			add_action( 'admin_enqueue_scripts', array( $this, 'register_sandbox_assets' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'register_network_sb_js' ) );
 
 			// Enqueue extension styles.
-			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_sandbox_assets' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_network_sb_js' ) );
 
 			// Register global styles used in the theme.
-			add_action( 'wp_enqueue_scripts', array( $this, 'register_sandbox_assets' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'register_network_sb_js' ) );
 
 			// Enqueue extension styles.
-			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_sandbox_assets' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_network_sb_js' ) );
 
 		}
 
 	}
 
+	private function network_switch_context() {
+
+		$option       = get_site_option( $this->option_key );
+		$option       = array_merge( $this->default_option, $option );
+		$base_url     = $this->get_base_url();
+		$sandbox_show = $option['sandbox_show_link'];
+		$sandbox_url  = $option['sandbox_url'];
+		$live_show    = $option['live_show_link'];
+		$live_url     = $option['live_url'];
+		$site         = array();
+
+		if ( $sandbox_url === $base_url ) {
+
+			$site['type'] = 'sandbox';
+			$site['status'] = $live_show;
+			$site['destination'] = $live_url . preg_replace( '/^\/?/', '', $_SERVER['REQUEST_URI'] );
+
+		} elseif ( $live_url === $base_url ) {
+
+			$site['type'] = 'live';
+			$site['status'] = $sandbox_show;
+			$site['destination'] = $sandbox_url . preg_replace( '/^\/?/', '', $_SERVER['REQUEST_URI'] );
+
+		}
+
+		return $site;
+
+	}
+
 	/**
-	 * Registers sandbox assets.
+	 * Registers sandbox assets specific to the sandbox site.
 	 *
 	 * @since 1.0.0
 	 * @return void
 	 */
-	public static function register_sandbox_assets() {
+	public function register_network_sb_sandbox_assets() {
 
 		wp_register_style(
-			'wp-user-governance-network-sandbox-styles',
-			WP_USER_GOV_DIR_URL . 'css/network-sandbox.css',
+			'wp-user-governance-network-sb-sandbox-styles',
+			WP_USER_GOV_DIR_URL . 'css/network-sb-sandbox.css',
 			false,
-			filemtime( WP_USER_GOV_DIR_PATH . 'css/network-sandbox.css' ),
+			filemtime( WP_USER_GOV_DIR_PATH . 'css/network-sb-sandbox.css' ),
 			'screen'
 		);
+
+	}
+
+	/**
+	 * Enqueues sandbox assets specific to the sandbox site.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function enqueue_network_sb_sandbox_assets() {
+
+		wp_enqueue_style( 'wp-user-governance-network-sb-sandbox-styles' );
+
+	}
+
+	/**
+	 * Registers sandbox assets specific to the live site.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function register_network_sb_live_assets() {
+
+		wp_register_style(
+			'wp-user-governance-network-sb-live-styles',
+			WP_USER_GOV_DIR_URL . 'css/network-sb-live.css',
+			false,
+			filemtime( WP_USER_GOV_DIR_PATH . 'css/network-sb-live.css' ),
+			'screen'
+		);
+
+	}
+
+	/**
+	 * Enqueues sandbox assets specific to the live site.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function enqueue_network_sb_live_assets() {
+
+		wp_enqueue_style( 'wp-user-governance-network-sb-live-styles' );
+
+	}
+
+	/**
+	 * Registers sandbox JS assets.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function register_network_sb_js() {
 
 		wp_register_script(
 			'wp-user-governance-network-sandbox-scripts',
@@ -97,15 +207,24 @@ class Network_Sandbox {
 	}
 
 	/**
-	 * Enqueues sandbox assets.
+	 * Enqueues sandbox JS assets.
 	 *
 	 * @since 1.0.0
 	 * @return void
 	 */
-	public static function enqueue_sandbox_assets() {
+	public function enqueue_network_sb_js() {
 
-		wp_enqueue_style( 'wp-user-governance-network-sandbox-styles' );
+		if ( ! wp_script_is( 'jquery', 'enqueued' ) ) {
+			wp_enqueue_script( 'jquery' );
+		}
 		wp_enqueue_script( 'wp-user-governance-network-sandbox-scripts' );
+
+		// Include destination URL for network sandbox switch.
+		$network_switch_context = $this->network_switch_context();
+		$destination_url = $this->network_switch_context()['destination'];
+		$script_variables = 'var wpugnsbdest = "' . $destination_url . '";';
+
+		wp_add_inline_script( 'wp-user-governance-network-sandbox-scripts', $script_variables, 'before' );
 
 	}
 
@@ -198,42 +317,19 @@ class Network_Sandbox {
 	 */
 	public function admin_bar_link( $wp_admin_bar ) {
 
-		$option       = get_site_option( $this->option_key );
-		$option       = array_merge( $this->default_option, $option );
-		$base_url     = $this->get_base_url();
-		$sandbox_show = $option['sandbox_show_link'];
-		$sandbox_url  = $option['sandbox_url'];
-		$live_show    = $option['live_show_link'];
-		$live_url     = $option['live_url'];
-		$switch_link  = '';
-		$switch_title = '';
-		$uri          = preg_replace( '/^\/?/', '', $_SERVER['REQUEST_URI'] );
+		$network_switch_context = $this->network_switch_context();
 
-		if ( $sandbox_url === $base_url ) {
+		if ( 'on' === $network_switch_context['status'] ) {
 
-			if ( 'on' !== $live_show ) {
-				return;
-			}
-			$switch_link  = $live_url . $uri;
-			$switch_class = 'wpug-network-sandbox-link-to-live';
+			// Get site-type-specific switch markup.
+			$type            = $network_switch_context['type'];
+			$switch_class    = "wpug-network-sandbox-link-to-{$type}";
+			$switch_filename = "network-sb-switch-{$type}site.php";
 			ob_start();
-			include WP_USER_GOV_DIR_PATH . 'templates/network-sb-switch-sandboxsite.php';
+			include WP_USER_GOV_DIR_PATH . "templates/{$switch_filename}";
 			$switch_title = ob_get_clean();
 
-		} elseif ( $live_url === $base_url ) {
-
-			if ( 'on' !== $sandbox_show ) {
-				return;
-			}
-			$switch_link  = $sandbox_url . $uri;
-			$switch_class = 'wpug-network-sandbox-link-to-sandbox';
-			ob_start();
-			include WP_USER_GOV_DIR_PATH . 'templates/network-sb-switch-livesite.php';
-			$switch_title = ob_get_clean();
-
-		}
-
-		if ( $switch_link ) {
+			// Render WordPress admin bar menu item.
 			$wp_admin_bar->add_node(
 				array(
 					'id' => 'wpug_network_sandbox_link',
