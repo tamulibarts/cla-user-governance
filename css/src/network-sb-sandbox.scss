@@ -3,6 +3,7 @@
 @import "foundation";
 @import "settings";
 @import "switch";
+@import "q_panel";
 @import "cla_title";
 
 .wpug-network-is-sandbox {
@@ -48,6 +49,10 @@
 			.c-toggle__wrapper {
 				height: 28px;
 			}
+		}
+
+		.q-button {
+			@include q-panel($text-color: $text-color, $icon-color: $text-color);
 		}
 	}
 }

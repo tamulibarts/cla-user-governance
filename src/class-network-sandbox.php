@@ -108,7 +108,11 @@ class Network_Sandbox {
 		$sandbox_url  = $option['sandbox_url'];
 		$live_show    = $option['live_show_link'];
 		$live_url     = $option['live_url'];
-		$site         = array();
+		$site         = array(
+			'type'        => '',
+			'status'      => '',
+			'destination' => '',
+		);
 
 		if ( $sandbox_url === $base_url ) {
 
@@ -328,6 +332,7 @@ class Network_Sandbox {
 			ob_start();
 			include WP_USER_GOV_DIR_PATH . "templates/{$switch_filename}";
 			$switch_title = ob_get_clean();
+			$switch_title = preg_replace( '/[\s\n]*$/', '', $switch_title );
 
 			// Render WordPress admin bar menu item.
 			$wp_admin_bar->add_node(
