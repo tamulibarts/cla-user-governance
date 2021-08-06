@@ -31,7 +31,7 @@
 
 
 	.help-button {
-		@include help-button($icon-color: #A7AAAD);
+		@include help-button($text-color: $text-color);
 
 		float: left;
 	}

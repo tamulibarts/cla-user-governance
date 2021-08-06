@@ -52,7 +52,7 @@
 		}
 
 		.help-button {
-			@include help-button($text-color: $text-color, $icon-color: $text-color);
+			@include help-button($text-color: $text-color);
 
 			float: left;
 		}
