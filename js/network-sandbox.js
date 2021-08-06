@@ -97,11 +97,12 @@
 	};
 })(jQuery);
 
+// Initialize use of the plugins.
 (function($){
 	var destination = undefined === wpugnsbdest ? false : wpugnsbdest;
-	jQuery(".switch-a").find(".toggler").laittoggler({ sel: ".toggler" });
+	$("#wp-admin-bar-wpug_network_sandbox_help .toggler").laittoggler({ sel: ".toggler" });
 
-	jQuery(".switch-a")
+	$(".switch-a")
 		.laitswitch({
 			text: [
 				[
@@ -115,11 +116,26 @@
 			],
 			animation: 400,
 			callback: function (el) {
-				console.log(destination);
 				if ( destination !== '' ) {
 					document.location.href = destination;
 				}
 			}
 		});
+
+	// Add CSS to improve hover colors of switch labels.
+
+
+	// Hover colors for switch-a.
+	var default_text_color = $('#wpadminbar li:not(:hover) .ab-empty-item, #wpadminbar li:not(:hover) a.ab-item').first().css('color');
+	var switch_style = document.createElement('style');
+	switch_style.id = 'wpug_switch_style';
+	switch_style.type = 'text/css';
+	switch_style.innerHTML = '#wpadminbar .ab-top-menu>li#wp-admin-bar-wpug_network_sandbox_link.hover>.ab-item label:not(:focus):not(:hover),';
+	switch_style.innerHTML += '#wpadminbar.nojq .quicklinks .ab-top-menu>li#wp-admin-bar-wpug_network_sandbox_link>.ab-item:focus label:not(:focus):not(:hover),';
+	switch_style.innerHTML += '#wpadminbar:not(.mobile) .ab-top-menu>li#wp-admin-bar-wpug_network_sandbox_link:hover>.ab-item label:not(:focus):not(:hover),';
+	switch_style.innerHTML += '#wpadminbar:not(.mobile) .ab-top-menu>li#wp-admin-bar-wpug_network_sandbox_link>.ab-item:focus label:not(:focus):not(:hover) {';
+	switch_style.innerHTML += '  color: ' + default_text_color + ';';
+	switch_style.innerHTML += '}';
+	$('head').append(switch_style);
 
 })(jQuery);

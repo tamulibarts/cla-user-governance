@@ -31,6 +31,8 @@ require __DIR__ . '/vendor/autoload.php';
 define( 'WP_USER_GOV_DIRNAME', 'wp-user-governance' );
 define( 'WP_USER_GOV_TEXTDOMAIN', 'wp-user-governance' );
 define( 'WP_USER_GOV_DIR_PATH', plugin_dir_path( __FILE__ ) );
+define( 'WP_USER_GOV_TEMPLATE_PATH', WP_USER_GOV_DIR_PATH . 'templates/' );
+define( 'WP_USER_GOV_IMG_PATH', WP_USER_GOV_DIR_PATH . 'img/' );
 define( 'WP_USER_GOV_DIR_FILE', __FILE__ );
 define( 'WP_USER_GOV_DIR_URL', plugin_dir_url( __FILE__ ) );
 

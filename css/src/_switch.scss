@@ -4,16 +4,23 @@
 	$drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.33) !default;
 	font-size: $font-size;
 	display: inline-block;
+	margin: 0;
+	padding: 0;
+	border: 0 none;
 
 	a {
 		color: #FFF;
 	}
 
-	fieldset {
-		display: inline-block;
-		margin: 0;
-		padding: 0;
-		border: 0 none;
+	// Label text colors.
+	.c-toggle {
+		label:first-child {
+
+		}
+
+		label ~ label {
+
+		}
 	}
 
 	.hidden {
@@ -23,7 +30,6 @@
 	.c-toggle {
 		label {
 			display: inline-block;
-			// margin: 0 8px;
 			height: $height;
 			line-height: $height;
 			cursor: pointer;

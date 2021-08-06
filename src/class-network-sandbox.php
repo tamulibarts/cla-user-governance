@@ -325,25 +325,54 @@ class Network_Sandbox {
 
 		if ( 'on' === $network_switch_context['status'] ) {
 
+			// Create switch group.
+			$type         = $network_switch_context['type'];
+			$switch_class = "wpug-network-sandbox-link-to-{$type}";
+			$wp_admin_bar->add_node(
+				array(
+					'id' => 'wpug_network_sandbox_group',
+					'title' => '',
+					'group' => true,
+					'meta' => array(
+						'class' => $switch_class,
+					),
+				)
+			);
+
 			// Get site-type-specific switch markup.
-			$type            = $network_switch_context['type'];
-			$switch_class    = "wpug-network-sandbox-link-to-{$type}";
 			$switch_filename = "network-sb-switch-{$type}site.php";
 			ob_start();
-			include WP_USER_GOV_DIR_PATH . "templates/{$switch_filename}";
+			include WP_USER_GOV_TEMPLATE_PATH . "{$switch_filename}";
 			$switch_title = ob_get_clean();
 			$switch_title = preg_replace( '/[\s\n]*$/', '', $switch_title );
 
-			// Render WordPress admin bar menu item.
+			// Add Switch to Admin Bar.
 			$wp_admin_bar->add_node(
 				array(
 					'id' => 'wpug_network_sandbox_link',
 					'title' => $switch_title,
 					'meta' => array(
 						'class' => $switch_class,
-					)
+					),
+					'parent' => 'wpug_network_sandbox_group',
 				)
 			);
+
+			// Get Help Panel.
+			ob_start();
+			include WP_USER_GOV_TEMPLATE_PATH . 'network-sb-help-button.php';
+			$help_panel = ob_get_clean();
+			$help_panel = preg_replace( '/[\s\n]*$/', '', $help_panel );
+
+			// Add Help Panel to Admin Bar.
+			$wp_admin_bar->add_node(
+				array(
+					'id' => 'wpug_network_sandbox_help',
+					'title' => $help_panel,
+					'parent' => 'wpug_network_sandbox_group',
+				)
+			);
+
 		}
 	}
 }
