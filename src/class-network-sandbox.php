@@ -22,6 +22,8 @@ class Network_Sandbox {
 		'live_icon'         => 'live-icon.svg',
 	);
 
+	private $user_color_theme;
+
 	/**
 	 * Class constructor function.
 	 *
@@ -33,6 +35,8 @@ class Network_Sandbox {
 		$network_switch_context = $this->network_switch_context();
 
 		if ( 'on' === $network_switch_context['status'] ) {
+
+			add_action( 'admin_head', array( $this, 'get_user_admin_theme_color' ) );
 
 			// Add the admin bar link.
 			add_action( 'admin_bar_menu', array( $this, 'admin_bar_link' ), 31 );
@@ -133,6 +137,17 @@ class Network_Sandbox {
 	}
 
 	/**
+	 * Get current user's chosen admin color theme.
+	 */
+	public function get_user_admin_theme_color() {
+
+  	global $_wp_admin_css_colors;
+  	$user_color = get_user_option( 'admin_color' );
+  	$this->user_color_theme = $_wp_admin_css_colors[$user_color];
+
+  }
+
+	/**
 	 * Registers sandbox assets specific to the sandbox site.
 	 *
 	 * @since 1.0.0
@@ -189,6 +204,29 @@ class Network_Sandbox {
 	public function enqueue_network_sb_live_assets() {
 
 		wp_enqueue_style( 'wp-user-governance-network-sb-live-styles' );
+
+  	global $_wp_admin_css_colors;
+  	$user_color = get_user_option( 'admin_color' );
+  	$this->user_color_theme = $_wp_admin_css_colors[$user_color];
+		$colors = $this->user_color_theme->icon_colors;
+		$focus_color = $colors['focus'];
+
+		$css = "#wpadminbar .ab-top-menu>li#wp-admin-bar-wpug_network_sandbox_link.hover>.ab-item label:not(:focus):not(:hover):not(.active),\n";
+		$css .= "#wpadminbar.nojq .quicklinks .ab-top-menu>li#wp-admin-bar-wpug_network_sandbox_link>.ab-item:focus label:not(:focus):not(:hover):not(.active),\n";
+		$css .= "#wpadminbar:not(.mobile) .ab-top-menu>li#wp-admin-bar-wpug_network_sandbox_link:hover>.ab-item label:not(:focus):not(:hover):not(.active),\n";
+		$css .= "#wpadminbar:not(.mobile) .ab-top-menu>li#wp-admin-bar-wpug_network_sandbox_link>.ab-item:focus label:not(:focus):not(:hover):not(.active) ";
+		$css .= '{';
+		$css .= "\n";
+		$css .= "  color: #f0f0f1;\n";
+		$css .= '}';
+		$css .= "\n";
+		$css .= "#wp-admin-bar-wpug_network_sandbox_link .active ";
+		$css .= '{';
+		$css .= "\n";
+		$css .= "  color: {$focus_color};\n";
+		$css .= '}';
+
+		wp_add_inline_style( 'wp-user-governance-network-sb-live-styles', $css );
 
 	}
 
@@ -346,6 +384,14 @@ class Network_Sandbox {
 			$switch_title = ob_get_clean();
 			$switch_title = preg_replace( '/[\s\n]*$/', '', $switch_title );
 
+			// Get the help panel.
+			ob_start();
+			include WP_USER_GOV_TEMPLATE_PATH . "network-sb-switch-help.php";
+			$help_panel = ob_get_clean();
+			$help_panel = preg_replace( '/[\s\n]*$/', '', $help_panel );
+
+			$switch_title .= $help_panel;
+
 			// Add Switch to Admin Bar.
 			$wp_admin_bar->add_node(
 				array(
@@ -357,22 +403,6 @@ class Network_Sandbox {
 					'parent' => 'wpug_network_sandbox_group',
 				)
 			);
-
-			// Get Help Panel.
-			ob_start();
-			include WP_USER_GOV_TEMPLATE_PATH . 'network-sb-help-button.php';
-			$help_panel = ob_get_clean();
-			$help_panel = preg_replace( '/[\s\n]*$/', '', $help_panel );
-
-			// Add Help Panel to Admin Bar.
-			$wp_admin_bar->add_node(
-				array(
-					'id' => 'wpug_network_sandbox_help',
-					'title' => $help_panel,
-					'parent' => 'wpug_network_sandbox_group',
-				)
-			);
-
 		}
 	}
 }

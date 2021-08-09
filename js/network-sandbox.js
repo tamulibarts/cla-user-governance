@@ -51,6 +51,38 @@
 					$radios.on("change", switchIt);
 				}
 			}
+
+			// Add radio button event listeners.
+			$radios.on("focus", focusRadio);
+			$radios.on("blur", blurRadio);
+			$radios.hover(enterRadio, leaveRadio);
+
+			var focusRadio = function(e){
+				var index = e.target.previousSibling ? 1 : 0;
+				var $ctoggle = $radios.first().parent().parent();
+				$ctoggle.find('label').eq(index).add('.c-toggle__wrapper').addClass('active');
+			};
+
+			var blurRadio = function(e){
+				var index = e.target.previousSibling ? 1 : 0;
+				var $ctoggle = $radios.first().parent().parent();
+				$ctoggle.find('label').eq(index).add('.c-toggle__wrapper').removeClass('active');
+			};
+
+			var enterRadio = function(e){
+				var index = e.target.previousSibling ? 1 : 0;
+				var $label = $labels.eq(index);
+				$label.addClass('active');
+			};
+
+			var leaveRadio = function(e){
+				if ( false === $(e.target).is(":focus") ) {
+					var index = e.target.previousSibling ? 1 : 0;
+					var $label = $labels.eq(index);
+					$label.removeClass('active');
+				}
+			};
+
 		});
 	};
 })(jQuery);
@@ -125,17 +157,43 @@
 	// Add CSS to improve hover colors of switch labels.
 
 
-	// Hover colors for switch-a.
-	var default_text_color = $('#wpadminbar li:not(:hover) .ab-empty-item, #wpadminbar li:not(:hover) a.ab-item').first().css('color');
-	var switch_style = document.createElement('style');
-	switch_style.id = 'wpug_switch_style';
-	switch_style.type = 'text/css';
-	switch_style.innerHTML = '#wpadminbar .ab-top-menu>li#wp-admin-bar-wpug_network_sandbox_link.hover>.ab-item label:not(:focus):not(:hover),';
-	switch_style.innerHTML += '#wpadminbar.nojq .quicklinks .ab-top-menu>li#wp-admin-bar-wpug_network_sandbox_link>.ab-item:focus label:not(:focus):not(:hover),';
-	switch_style.innerHTML += '#wpadminbar:not(.mobile) .ab-top-menu>li#wp-admin-bar-wpug_network_sandbox_link:hover>.ab-item label:not(:focus):not(:hover),';
-	switch_style.innerHTML += '#wpadminbar:not(.mobile) .ab-top-menu>li#wp-admin-bar-wpug_network_sandbox_link>.ab-item:focus label:not(:focus):not(:hover) {';
-	switch_style.innerHTML += '  color: ' + default_text_color + ';';
-	switch_style.innerHTML += '}';
-	$('head').append(switch_style);
+	// Detect the default and hover text colors for admin bar node text labels.
+	// This is unfortunately necessary because WordPress admin themes apply hover state
+	// colors to admin bar text in a way that cannot be intercepted or parsed so that only
+	// the label of the switch being hovered over is given the focused color.
+	$(window).load(function(){
+		var test_item = document.createElement('li');
+		test_item.id = 'wp-admin-bar-wpug-sample-text-color';
+		test_item.className = 'menupop';
+		test_item.style.cssText = 'width:0;visibility:hidden;';
+		test_item.innerHTML = '<div class="ab-item ab-empty-item">WPUG</div>';
+		var wp_logo = document.querySelector('#wpadminbar #wp-admin-bar-wp-logo');
+		wp_logo.parentNode.insertBefore(test_item, wp_logo);
+		window.requestAnimationFrame(function(){
+			var $test_item = $(test_item);
+			var default_text_color = $test_item.find('.ab-item').css('color');
+			$test_item.addClass('hover');
+			window.requestAnimationFrame(function(){
+				var hover_text_color = $test_item.find('.ab-item').css('color');
+				console.log(hover_text_color);
+				$test_item.remove();
 
+				// Add the style element to the page.
+				var switch_style = document.createElement('style');
+				switch_style.id = 'wpug_switch_style';
+				switch_style.type = 'text/css';
+				switch_style.innerHTML = '#wpadminbar .ab-top-menu>li#wp-admin-bar-wpug_network_sandbox_link.hover>.ab-item label:not(:focus):not(:hover):not(.active),\n';
+				switch_style.innerHTML += '#wpadminbar.nojq .quicklinks .ab-top-menu>li#wp-admin-bar-wpug_network_sandbox_link>.ab-item:focus label:not(:focus):not(:hover):not(.active),\n';
+				switch_style.innerHTML += '#wpadminbar:not(.mobile) .ab-top-menu>li#wp-admin-bar-wpug_network_sandbox_link:hover>.ab-item label:not(:focus):not(:hover):not(.active),\n';
+				switch_style.innerHTML += '#wpadminbar:not(.mobile) .ab-top-menu>li#wp-admin-bar-wpug_network_sandbox_link>.ab-item:focus label:not(:focus):not(:hover):not(.active) {\n';
+				switch_style.innerHTML += '  color: ' + default_text_color + ';\n';
+				switch_style.innerHTML += '}\n';
+				switch_style.innerHTML += '#wp-admin-bar-wpug_network_sandbox_link .active {\n';
+				switch_style.innerHTML += '  color: ' + hover_text_color + ';\n';
+				switch_style.innerHTML += '}';
+				$('head').append(switch_style);
+
+			});
+		});
+	});
 })(jQuery);
