@@ -358,12 +358,6 @@ class Network_Sandbox {
 			$type         = $network_switch_context['type'];
 			$switch_class = "wpug-network-sandbox-link-to-{$type}";
 
-			// Get JS solution to detect the default color of the admin bar's text.
-			ob_start();
-			include WP_USER_GOV_TEMPLATE_PATH . "network-sb-switch-colorjs.php";
-			$colorjs = ob_get_clean();
-			$colorjs = preg_replace( '/[\s\n]*$/', '', $colorjs );
-
 			// Get site-type-specific switch markup.
 			ob_start();
 			include WP_USER_GOV_TEMPLATE_PATH . "network-sb-switch-{$type}site.php";
