@@ -1,4 +1,4 @@
-@mixin help-button($text-color: #F0F0F1) {
+@mixin help-button() {
 	$font-size: 13px !default;
 	$drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.33) !default;
 
@@ -29,13 +29,11 @@
 
 		svg {
 			circle {
-				transition: all 0.25s;
-				stroke: rgba($text-color, 0.75);
+				stroke: currentColor;
 			}
 
 			text {
-				transition: all 0.25s;
-				fill: rgba($text-color, 0.75);
+				fill: currentColor;
 			}
 		}
 
@@ -46,12 +44,6 @@
 				circle {
 					stroke-width: 3;
 					r: 9;
-					stroke-dasharray: 3, 1;
-					stroke: $text-color;
-				}
-
-				text {
-					fill: $text-color;
 				}
 			}
 		}
@@ -189,7 +181,6 @@
 				left: 0;
 				background-color: #FFF;
 				height: 2px;
-				transition: width 0.25s;
 			}
 
 			&:focus,

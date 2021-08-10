@@ -7,8 +7,6 @@
 @import "cla_title";
 
 #wpadminbar {
-	$text-color: #F0F0F1;
-
 	.cla-title {
 		@extend %cla-title;
 	}
@@ -24,12 +22,19 @@
 		}
 
 		.c-toggle__wrapper {
-			height: 28px;
+			margin-bottom: 4px;
 		}
 	}
 
+	// Required for applying switch label hover colors automatically.
+	> #wp-toolbar .switch-a span.c-toggle-label:hover,
+	> #wp-toolbar .switch-a span.c-toggle-label:hover label:hover,
+	> #wp-toolbar .switch-a span.c-toggle__wrapper:hover {
+		color: inherit;
+	}
+
 	.help-button {
-		@include help-button($text-color: $text-color);
+		@include help-button();
 
 		vertical-align: top;
 		line-height: 32px;

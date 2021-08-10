@@ -18,20 +18,20 @@
 	}
 
 	.c-toggle {
+		> *:first-child label {
+			padding-right: 8px;
+		}
+
+		.c-toggle__wrapper + * label {
+			padding-left: 8px;
+		}
+
 		label {
 			display: inline-block;
 			height: $height;
 			line-height: $height;
 			cursor: pointer;
 			position: relative;
-
-			&:first-child {
-				padding-right: 8px;
-			}
-
-			~ label {
-				padding-left: 8px;
-			}
 		}
 
 		input[type="radio"] {
@@ -70,21 +70,6 @@
 					box-shadow: 0 0 0 1px inset #D00;
 				}
 			}
-
-			&:focus,
-			&:hover {
-				~ .c-toggle__background {
-					box-shadow: 0 0 1px 1px inset $text-color;
-
-					svg rect {
-						// stroke-dasharray: 3, 1;
-						width: 52px;
-						height: 22px;
-						x: 2;
-						y: 2;
-					}
-				}
-			}
 		}
 	}
 
@@ -100,11 +85,11 @@
 	.c-toggle__switcher {
 		display: block;
 		position: absolute;
-		top: 4px;
-		left: 4px;
+		top: 5px;
+		left: 5px;
 		right: 100%;
-		width: 14px;
-		height: 14px;
+		width: 12px;
+		height: 12px;
 		border-radius: 50%;
 		background-color: #FFF;
 		transition: all 0.1s ease-out;
@@ -136,7 +121,6 @@
 		z-index: 0;
 		border-radius: 20px;
 		box-sizing: border-box;
-		transition: all 0.25s;
 		background-color: #0C0;
 		box-shadow: 0 0 0 1px inset #000;
 
@@ -147,7 +131,6 @@
 			top: -4px;
 
 			rect {
-				transition: all 0.25s;
 				stroke: currentColor;
 				width: 50px;
 				height: 20px;
