@@ -33,15 +33,8 @@
 		.switch-a {
 			@include switch();
 
-			// Switch styles specific to the admin bar.
-			.c-toggle label {
-				height: 28px;
-				line-height: 24px;
-				vertical-align: middle;
-			}
-
-			.c-toggle__wrapper {
-				margin-bottom: 4px;
+			&:hover .c-toggle__wrapper {
+				color: $highlight-color;
 			}
 		}
 

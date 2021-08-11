@@ -13,17 +13,6 @@
 
 	.switch-a {
 		@include switch();
-
-		// Switch styles specific to the admin bar.
-		.c-toggle label {
-			height: 28px;
-			line-height: 24px;
-			vertical-align: middle;
-		}
-
-		.c-toggle__wrapper {
-			margin-bottom: 4px;
-		}
 	}
 
 	// Required for applying switch label hover colors automatically.
@@ -44,12 +33,7 @@
 		> .ab-item {
 			padding: 0;
 
-			&::before {
-				margin-right: 8px;
-			}
-
 			&:after {
-				margin-left: 7px;
 				margin-top: 4px;
 			}
 

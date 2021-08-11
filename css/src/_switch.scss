@@ -1,12 +1,11 @@
 @mixin switch($width: 54px, $height: 24px) {
 	$buffer: 2px;
-	$font-size: 13px !default;
 	$drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.33) !default;
-	font-size: $font-size;
 	display: inline-block;
 	margin: 0;
 	padding: 0;
 	border: 0 none;
+	height: 32px;
 
 	a {
 		color: #FFF;
@@ -18,20 +17,31 @@
 	}
 
 	.c-toggle {
-		> *:first-child label {
+		height: 32px;
+
+		> *:first-child {
+			padding-left: 8px;
 			padding-right: 8px;
 		}
 
-		.c-toggle__wrapper + * label {
+		.c-toggle__wrapper + * {
+			padding-right: 8px;
 			padding-left: 8px;
+		}
+
+		.c-toggle-label {
+			display: inline-block;
+			height: $height + 8px;
+			line-height: $height + 4px;
+			cursor: pointer;
+			position: relative;
+			vertical-align: middle;
 		}
 
 		label {
 			display: inline-block;
-			height: $height;
-			line-height: $height;
-			cursor: pointer;
-			position: relative;
+			height: $height + 8px;
+			line-height: $height + 4px;
 		}
 
 		input[type="radio"] {
@@ -74,11 +84,12 @@
 
 	.c-toggle__wrapper {
 		display: inline-block;
-		vertical-align: middle;
 		width: $width;
 		height: $height;
 		border-radius: $height;
 		position: relative;
+		margin-bottom: 4px;
+		vertical-align: middle;
 	}
 
 	.c-toggle__switcher {

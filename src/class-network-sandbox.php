@@ -205,7 +205,8 @@ class Network_Sandbox {
   	$user_color = get_user_option( 'admin_color' );
   	$user_color_theme = $_wp_admin_css_colors[$user_color];
 
-		$css = "#wpadminbar>#wp-toolbar #wp-admin-bar-wpug_network_sandbox_link .active {\n";
+		$css = "#wpadminbar>#wp-toolbar #wp-admin-bar-wpug_network_sandbox_link .switch-a:hover .c-toggle__wrapper,\n";
+		$css .= "#wpadminbar>#wp-toolbar #wp-admin-bar-wpug_network_sandbox_link .active {\n";
 		$css .= "  color: {$user_color_theme->colors[3]};";
 		$css .= "\n}\n";
 		$css .= "#wp-admin-bar-wpug_network_sandbox_link .info-icon {\n";

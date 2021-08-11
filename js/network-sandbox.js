@@ -50,52 +50,46 @@
 			};
 
 			var focusRadio = function(e){
-				var index = e.target.previousSibling ? 1 : 0;
+				var index = this.previousSibling ? 1 : 0;
 				$labels.eq(index).add('.c-toggle__wrapper').addClass('active');
 			};
 
 			var blurRadio = function(e){
-				var index = e.target.previousSibling ? 1 : 0;
+				var index = this.previousSibling ? 1 : 0;
 				$labels.eq(index).add('.c-toggle__wrapper').removeClass('active');
 			};
 
 			var enterRadio = function(e){
-				var index = e.target.previousSibling ? 1 : 0;
-				$labels.eq(index).addClass('active');
-				$labels.eq(Math.abs(index - 1)).removeClass('active');
+				var index = this.previousSibling ? 1 : 0;
+				$labels.eq( index ).addClass('active');
 			};
 
 			var leaveRadio = function(e){
-				var index = e.target.previousSibling ? 1 : 0;
-				if ( false === $(e.target).is(":focus") ) {
-					$labels.eq(index).removeClass('active');
-				}
-				var oindex = Math.abs(index - 1);
-				if ( $radios.eq(oindex).is(':checked') ) {
-					$labels.eq(oindex).addClass('active');
+				var index = this.previousSibling ? 1 : 0;
+				if ( ! $( this ).is(":focus") ) {
+					$labels.eq( index ).removeClass('active');
 				}
 			};
 
 			var enterLabel = function(e){
-				$toggle_wrap.addClass('active');
 				var index = this.previousSibling ? 1 : 0;
-				$labels.eq(Math.abs(index - 1)).removeClass('active');
+				var oindex = Math.abs( index - 1 );
+				if ( ! $radios.eq( oindex ).is(":checked") ) {
+					$labels.eq( oindex ).removeClass('active');
+				}
 			};
 
 			var leaveLabel = function(e){
 				var index = this.previousSibling ? 1 : 0;
-				$labels.eq(index).removeClass('active');
-				var $focused = $radios.filter(":focus");
-				if ( 0 === $focused.length ){
-					$toggle_wrap.removeClass('active');
-				} else if ( 1 === $focused.length ){
-					$labels.eq(Math.abs(index - 1)).addClass('active');
+				var $checked_r = $radios.filter(":checked");
+				if ( 0 === $checked_r.length || $checked_r[0] !== $radios.eq( index )[0] ) {
+					$labels.eq( index ).removeClass('active');
 				}
 			};
 
 			// If the plugin uses label switching at all, add the event handlers.
-			if (opts.hasOwnProperty("text") || opts.hasOwnProperty("callback")) {
-				if (opts.animation > 0) {
+			if ( opts.hasOwnProperty("text") || opts.hasOwnProperty("callback") ) {
+				if ( opts.animation > 0 ) {
 					$radios.on("change", delaySwitchIt);
 				} else {
 					$radios.on("change", switchIt);
@@ -103,10 +97,10 @@
 			}
 
 			// Add radio button event listeners.
-			$radios.on("focus", focusRadio);
-			$radios.on("blur", blurRadio);
-			$radios.hover(enterRadio, leaveRadio);
-			$labels.hover(enterLabel, leaveLabel);
+			$radios.on( "focus", focusRadio );
+			$radios.on( "blur", blurRadio );
+			$radios.hover( enterRadio, leaveRadio );
+			$labels.hover( enterLabel, leaveLabel );
 
 		});
 	};
@@ -157,9 +151,10 @@
 // Initialize use of the plugins.
 (function($){
 	var destination = undefined === wpugnsbdest ? false : wpugnsbdest;
-	$("#wp-admin-bar-wpug_network_sandbox_link .toggler").laittoggler({ sel: ".toggler" });
+	var $menu_node = $("#wp-admin-bar-wpug_network_sandbox_link");
+	$menu_node.find(".toggler").laittoggler({ sel: ".toggler" });
 
-	$(".switch-a")
+	$menu_node.find(".switch-a")
 		.laitswitch({
 			text: [
 				[
