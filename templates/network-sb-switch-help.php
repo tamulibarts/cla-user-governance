@@ -7,15 +7,15 @@
 	<div class="long-desc hidden">
 		<h3>How do Sandbox sites work?</h3>
 		<ul>
-			<li>It's a copy of your current website.</li>
+			<li>It's a copy of your public website.</li>
 			<li>It has a yellow background in the top toolbar.</li>
 			<li>It can only be seen by logged in users.</li>
 			<li>Updates to the Sandbox are typically at 8am Monday.</li>
 			<li>Web support will not move content from a Sandbox site to a Live site.</li>
-			<li>It may be unavailable at times when we are developing new features or <br>perform maintenance.</li>
+			<li>The Sandbox network may be unavailable when we perform maintenance or <br>develop new features.</li>
 		</ul>
 		<h3>I need help!</h3>
 		<div>If you are having trouble with this feature, please submit a helpdesk ticket to <a class="text" href="mailto:liberalartsit@tamu.edu">LiberalartsIT@tamu.edu</a>.</div>
-		<h3>I want to give feedback!</h3>
+		<h3>How do I give feedback?</h3>
 		<div>This is a new feature and we would love your feedback! Please let us know what you think by sending an email here: (link). This feature is subject to change and we will let you know via email and in the dashboard when it does.</div>
 	</div></span></div>
