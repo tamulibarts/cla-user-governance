@@ -1,0 +1,21 @@
+$base-color: #FF0;
+$icon-color: #000;
+$text-color: #000;
+$highlight-color: #500000;
+$notification-color: #918318;
+$button-color: #918318;
+
+$body-background: #F5F5F5;
+
+$menu-highlight-text: #FFF;
+$menu-highlight-icon: #CCC;
+$menu-highlight-background: #888;
+
+$menu-bubble-text: #FFF;
+$menu-avatar-frame: #AAA;
+$menu-submenu-focus-text: #000;
+
+$menu-collapse-text: #B3B3B3;
+$menu-collapse-focus-icon: #555;
+
+@import "../_adminbar.scss";

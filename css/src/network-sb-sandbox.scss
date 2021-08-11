@@ -7,7 +7,21 @@
 @import "cla_title";
 
 .wpug-network-is-sandbox {
-	@import "wp-admin/_adminbar.scss";
+	@import "sandbox-color-theme/sandbox/colors";
+
+	#wpadminbar>#wp-toolbar #wp-admin-bar-wpug_network_sandbox_link .active {
+		color: $highlight-color;
+	}
+
+	#wp-admin-bar-wpug_network_sandbox_link .info-icon {
+		color: $base-color;
+	}
+
+	#wp-admin-bar-wpug_network_sandbox_link .info-icon:focus,
+	#wp-admin-bar-wpug_network_sandbox_link .info-icon:hover,
+	#wp-admin-bar-wpug_network_sandbox_link .info-icon.active {
+		color: $menu-highlight-icon;
+	}
 
 	#wpadminbar {
 		box-shadow: 0 1px 0 #000;

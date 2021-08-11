@@ -1,9 +1,19 @@
-
-@import 'variables';
-@import 'mixins';
+@import "variables";
+@import "mixins";
 
 @function url-friendly-colour( $color ) {
-	@return '%23' + str-slice( '#{ $color }', 2, -1 );
+	@return "%23" + str-slice( "#{ $color }", 2, -1 );
+}
+
+/* Admin Menu: collapse button */
+
+#collapse-button {
+	color: $menu-collapse-text;
+}
+
+#collapse-button:hover,
+#collapse-button:focus {
+	color: $menu-submenu-focus-text;
 }
 
 /* Admin Bar */
@@ -115,7 +125,7 @@
 	color: $menu-icon;
 }
 
-#wpadminbar > #wp-toolbar > #wp-admin-bar-top-secondary > #wp-admin-bar-search #adminbarsearch input.adminbar-input:focus {
+#wpadminbar > #wp-toolbar > #wp-admin-bar-top-secondary > #wp-admin-bar-search #adminbarsearch input.adminbar-input:focus { // sass-lint:disable-line max-line-length
 	color: $menu-text;
 	background: $adminbar-input-background;
 }
