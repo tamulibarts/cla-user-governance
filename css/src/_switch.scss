@@ -1,4 +1,4 @@
-@mixin switch($width: 54px, $height: 24px, $text-color: #F0F0F1, $icon-color: #F0F0F1) {
+@mixin switch($width: 54px, $height: 24px) {
 	$buffer: 2px;
 	$font-size: 13px !default;
 	$drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.33) !default;
@@ -67,7 +67,6 @@
 				~ .c-toggle__background {
 					background-color: #D00;
 					border-color: #D00;
-					box-shadow: 0 0 0 1px inset #D00;
 				}
 			}
 		}
@@ -114,21 +113,21 @@
 	.c-toggle__background {
 		display: block;
 		position: absolute;
-		top: 3px;
-		left: 3px;
-		width: 48px;
-		height: 18px;
+		top: 4px;
+		left: 4px;
+		width: 46px;
+		height: 16px;
 		z-index: 0;
 		border-radius: 20px;
 		box-sizing: border-box;
 		background-color: #0C0;
-		box-shadow: 0 0 0 1px inset #000;
+		border: 1px solid transparent;
 
 		svg {
 			pointer-events: none;
 			position: relative;
-			left: -4px;
-			top: -4px;
+			left: -6px;
+			top: -6px;
 
 			rect {
 				stroke: currentColor;

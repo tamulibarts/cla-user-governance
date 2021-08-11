@@ -12,7 +12,7 @@
 	}
 
 	.switch-a {
-		@include switch($icon-color: #A7AAAD);
+		@include switch();
 
 		// Switch styles specific to the admin bar.
 		.c-toggle label {
