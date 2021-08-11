@@ -6,15 +6,18 @@
 	$.fn.laitswitch = function (options) {
 		var opts = $.extend({}, options);
 		return this.each(function () {
+
 			var $witch = $(this),
+				$toggle_wrap = $witch.find('.c-toggle__wrapper'),
 				$radios = $witch.find(".c-toggle__wrapper > input[type=radio]"),
-				$labels = $witch.find("label");
+				$labels = $witch.find(".c-toggle-label");
+
 			var changeLabels = function () {
 				var input = $radios[0],
 					label_index = 0,
 					status_index = input.checked ? 0 : 1,
 					text_opt = opts.text[label_index][status_index],
-					$first_label = $labels.eq(label_index);
+					$first_label = $labels.eq(label_index).find('label');
 				$first_label.html(text_opt[0]);
 				if (text_opt.length > 1) {
 					$first_label.title
@@ -24,12 +27,13 @@
 				var other_status_index = status_index === 0 ? 1 : 0,
 					other_label_index = label_index === 0 ? 1 : 0,
 					other_text_opt = opts.text[other_label_index][other_status_index],
-					$second_label = $labels.eq(other_label_index);
+					$second_label = $labels.eq(other_label_index).find('label');
 				$second_label.html(other_text_opt[0]);
 				if (other_text_opt.length > 1) {
 					$second_label.attr("title", other_text_opt[1]);
 				}
 			};
+
 			var switchIt = function () {
 				if (opts.hasOwnProperty("text")) {
 					changeLabels();
@@ -40,9 +44,55 @@
 					opts["callback"]($checked_input);
 				}
 			};
+
 			var delaySwitchIt = function () {
 				window.setTimeout(switchIt, opts.animation);
 			};
+
+			var focusRadio = function(e){
+				var index = e.target.previousSibling ? 1 : 0;
+				$labels.eq(index).add('.c-toggle__wrapper').addClass('active');
+			};
+
+			var blurRadio = function(e){
+				var index = e.target.previousSibling ? 1 : 0;
+				$labels.eq(index).add('.c-toggle__wrapper').removeClass('active');
+			};
+
+			var enterRadio = function(e){
+				var index = e.target.previousSibling ? 1 : 0;
+				$labels.eq(index).addClass('active');
+				$labels.eq(Math.abs(index - 1)).removeClass('active');
+			};
+
+			var leaveRadio = function(e){
+				var index = e.target.previousSibling ? 1 : 0;
+				if ( false === $(e.target).is(":focus") ) {
+					$labels.eq(index).removeClass('active');
+				}
+				var oindex = Math.abs(index - 1);
+				if ( $radios.eq(oindex).is(':checked') ) {
+					$labels.eq(oindex).addClass('active');
+				}
+			};
+
+			var enterLabel = function(e){
+				$toggle_wrap.addClass('active');
+				var index = this.previousSibling ? 1 : 0;
+				$labels.eq(Math.abs(index - 1)).removeClass('active');
+			};
+
+			var leaveLabel = function(e){
+				var index = this.previousSibling ? 1 : 0;
+				$labels.eq(index).removeClass('active');
+				var $focused = $radios.filter(":focus");
+				if ( 0 === $focused.length ){
+					$toggle_wrap.removeClass('active');
+				} else if ( 1 === $focused.length ){
+					$labels.eq(Math.abs(index - 1)).addClass('active');
+				}
+			};
+
 			// If the plugin uses label switching at all, add the event handlers.
 			if (opts.hasOwnProperty("text") || opts.hasOwnProperty("callback")) {
 				if (opts.animation > 0) {
@@ -56,32 +106,7 @@
 			$radios.on("focus", focusRadio);
 			$radios.on("blur", blurRadio);
 			$radios.hover(enterRadio, leaveRadio);
-
-			var focusRadio = function(e){
-				var index = e.target.previousSibling ? 1 : 0;
-				var $ctoggle = $radios.first().parent().parent();
-				$ctoggle.find('label').eq(index).add('.c-toggle__wrapper').addClass('active');
-			};
-
-			var blurRadio = function(e){
-				var index = e.target.previousSibling ? 1 : 0;
-				var $ctoggle = $radios.first().parent().parent();
-				$ctoggle.find('label').eq(index).add('.c-toggle__wrapper').removeClass('active');
-			};
-
-			var enterRadio = function(e){
-				var index = e.target.previousSibling ? 1 : 0;
-				var $label = $labels.eq(index);
-				$label.addClass('active');
-			};
-
-			var leaveRadio = function(e){
-				if ( false === $(e.target).is(":focus") ) {
-					var index = e.target.previousSibling ? 1 : 0;
-					var $label = $labels.eq(index);
-					$label.removeClass('active');
-				}
-			};
+			$labels.hover(enterLabel, leaveLabel);
 
 		});
 	};
