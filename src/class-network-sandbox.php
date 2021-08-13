@@ -205,8 +205,19 @@ class Network_Sandbox {
   	$user_color = get_user_option( 'admin_color' );
   	$user_color_theme = $_wp_admin_css_colors[$user_color];
 
-		$css = "#wpadminbar>#wp-toolbar #wp-admin-bar-wpug_network_sandbox_link .switch-a:hover .c-toggle__wrapper,\n";
-		$css .= "#wpadminbar>#wp-toolbar #wp-admin-bar-wpug_network_sandbox_link .active {\n";
+  	$active_color_selectors = array(
+  		'.input-enter-left .c-toggle-label.left',
+  		'.input-enter-right .c-toggle-label.right',
+  		'.input-focus-left .c-toggle-label.left',
+  		'.input-focus-right .c-toggle-label.right',
+  		'.input-focus-left input.left',
+  		'.input-focus-right input.right',
+  		'.label-enter-left .c-toggle__wrapper',
+  		'.label-enter-right .c-toggle__wrapper',
+  	);
+
+  	$css = "#wpadminbar>#wp-toolbar #wp-admin-bar-wpug_network_sandbox_link ";
+  	$css .= implode( ",\n#wpadminbar>#wp-toolbar #wp-admin-bar-wpug_network_sandbox_link ", $active_color_selectors ) . " {\n";
 		$css .= "  color: {$user_color_theme->colors[3]};";
 		$css .= "\n}\n";
 		$css .= "#wp-admin-bar-wpug_network_sandbox_link .info-icon {\n";

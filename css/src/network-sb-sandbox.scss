@@ -9,8 +9,17 @@
 .wpug-network-is-sandbox {
 	@import "sandbox-color-theme/sandbox/colors";
 
-	#wpadminbar>#wp-toolbar #wp-admin-bar-wpug_network_sandbox_link .active {
-		color: $highlight-color;
+	#wpadminbar>#wp-toolbar #wp-admin-bar-wpug_network_sandbox_link {
+		.input-enter-left .c-toggle-label.left,
+		.input-enter-right .c-toggle-label.right,
+		.input-focus-left .c-toggle-label.left,
+		.input-focus-right .c-toggle-label.right,
+		.input-focus-left input.left,
+		.input-focus-right input.right,
+		.label-enter-left .c-toggle__wrapper,
+		.label-enter-right .c-toggle__wrapper {
+			color: $highlight-color;
+		}
 	}
 
 	#wp-admin-bar-wpug_network_sandbox_link .info-icon {

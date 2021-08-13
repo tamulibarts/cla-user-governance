@@ -6,9 +6,8 @@
 	$.fn.laitswitch = function (options) {
 		var opts = $.extend({}, options);
 		return this.each(function () {
-
 			var $witch = $(this),
-				$toggle_wrap = $witch.find('.c-toggle__wrapper'),
+				$toggle_wrap = $witch.find(".c-toggle__wrapper"),
 				$radios = $witch.find(".c-toggle__wrapper > input[type=radio]"),
 				$labels = $witch.find(".c-toggle-label");
 
@@ -17,17 +16,17 @@
 					label_index = 0,
 					status_index = input.checked ? 0 : 1,
 					text_opt = opts.text[label_index][status_index],
-					$first_label = $labels.eq(label_index).find('label');
+					$first_label = $labels.eq(label_index).find("label");
 				$first_label.html(text_opt[0]);
 				if (text_opt.length > 1) {
-					$first_label.title
+					$first_label.title;
 					$first_label.attr("title", text_opt[1]);
 				}
 				// Update the other element.
 				var other_status_index = status_index === 0 ? 1 : 0,
 					other_label_index = label_index === 0 ? 1 : 0,
 					other_text_opt = opts.text[other_label_index][other_status_index],
-					$second_label = $labels.eq(other_label_index).find('label');
+					$second_label = $labels.eq(other_label_index).find("label");
 				$second_label.html(other_text_opt[0]);
 				if (other_text_opt.length > 1) {
 					$second_label.attr("title", other_text_opt[1]);
@@ -49,47 +48,39 @@
 				window.setTimeout(switchIt, opts.animation);
 			};
 
-			var focusRadio = function(e){
-				var index = this.previousSibling ? 1 : 0;
-				$labels.eq(index).add('.c-toggle__wrapper').addClass('active');
+			var focusRadio = function (e) {
+				var index = this.previousSibling ? "input-focus-right" : "input-focus-left";
+				$witch.addClass(index);
 			};
 
-			var blurRadio = function(e){
-				var index = this.previousSibling ? 1 : 0;
-				$labels.eq(index).add('.c-toggle__wrapper').removeClass('active');
+			var blurRadio = function (e) {
+				var index = this.previousSibling ? "input-focus-right" : "input-focus-left";
+				$witch.removeClass(index);
 			};
 
-			var enterRadio = function(e){
-				var index = this.previousSibling ? 1 : 0;
-				$labels.eq( index ).addClass('active');
+			var enterRadio = function (e) {
+				var index = this.previousSibling ? "input-enter-right" : "input-enter-left";
+				$witch.addClass(index);
 			};
 
-			var leaveRadio = function(e){
-				var index = this.previousSibling ? 1 : 0;
-				if ( ! $( this ).is(":focus") ) {
-					$labels.eq( index ).removeClass('active');
-				}
+			var leaveRadio = function (e) {
+				var index = this.previousSibling ? "input-enter-right" : "input-enter-left";
+				$witch.removeClass(index);
 			};
 
-			var enterLabel = function(e){
-				var index = this.previousSibling ? 1 : 0;
-				var oindex = Math.abs( index - 1 );
-				if ( ! $radios.eq( oindex ).is(":checked") ) {
-					$labels.eq( oindex ).removeClass('active');
-				}
+			var enterLabel = function (e) {
+				var index = this.previousSibling ? "label-enter-right" : "label-enter-left";
+				$witch.addClass(index);
 			};
 
-			var leaveLabel = function(e){
-				var index = this.previousSibling ? 1 : 0;
-				var $checked_r = $radios.filter(":checked");
-				if ( 0 === $checked_r.length || $checked_r[0] !== $radios.eq( index )[0] ) {
-					$labels.eq( index ).removeClass('active');
-				}
+			var leaveLabel = function (e) {
+				var index = this.previousSibling ? "label-enter-right" : "label-enter-left";
+				$witch.removeClass(index);
 			};
 
 			// If the plugin uses label switching at all, add the event handlers.
-			if ( opts.hasOwnProperty("text") || opts.hasOwnProperty("callback") ) {
-				if ( opts.animation > 0 ) {
+			if (opts.hasOwnProperty("text") || opts.hasOwnProperty("callback")) {
+				if (opts.animation > 0) {
 					$radios.on("change", delaySwitchIt);
 				} else {
 					$radios.on("change", switchIt);
@@ -97,11 +88,10 @@
 			}
 
 			// Add radio button event listeners.
-			$radios.on( "focus", focusRadio );
-			$radios.on( "blur", blurRadio );
-			$radios.hover( enterRadio, leaveRadio );
-			$labels.hover( enterLabel, leaveLabel );
-
+			$radios.on("focus", focusRadio);
+			$radios.on("blur", blurRadio);
+			$radios.hover(enterRadio, leaveRadio);
+			$labels.hover(enterLabel, leaveLabel);
 		});
 	};
 })(jQuery);
@@ -116,6 +106,8 @@
 		return this.each(function () {
 			var $toggler = $(this);
 			var toggle = function (e) {
+				e.preventDefault();
+
 				var $elem = $(this);
 				if (!$elem.is(opts.sel)) {
 					$elem = $elem.closest(opts.sel);
@@ -126,8 +118,22 @@
 					var pair = targets[i].split(":"),
 						tar = pair[0],
 						tclass = pair.length > 1 ? pair[1] : "hidden",
+						fchar = tclass.charAt(0),
 						$target = jQuery(tar);
-					$target.toggleClass(tclass);
+					// If the first character is + or - then the user is forcing the class to be added or removed.
+					if ( fchar.match(/[a-zA-Z]/) === null && ( '+' === fchar || '-' === fchar ) ) {
+						if ( '+' === fchar ) {
+							// Add the class.
+							tclass = tclass.slice(1);
+							$target.addClass(tclass);
+						} else if ( '-' === fchar ) {
+							// Remove the class.
+							tclass = tclass.slice(1);
+							$target.removeClass(tclass);
+						}
+					} else {
+						$target.toggleClass(tclass);
+					}
 					// If a specific entry point is set, focus on that.
 					if ($target.hasClass(tclass)) {
 						$elem.removeClass("active").removeClass("hide-cla-title-el");
