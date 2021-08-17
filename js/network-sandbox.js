@@ -112,15 +112,24 @@
 				if (!$elem.is(opts.sel)) {
 					$elem = $elem.closest(opts.sel);
 				}
-				var targets = $elem.attr("data-target");
-				targets = targets.split(",");
-				for (var i = 0; i < targets.length; i++) {
-					var pair = targets[i].split(":"),
+				var targets = $elem.attr("data-target").split(",");
+				var num_targets = targets.length;
+				var changeClass = function(){
+					var item = targets.shift(),
+						pair = item.split(':'),
 						tar = pair[0],
 						tclass = pair.length > 1 ? pair[1] : "hidden",
 						fchar = tclass.charAt(0),
+						timeout = tclass.match(/\(\d+m?s\)$/),
 						$target = jQuery(tar);
+					console.log(item);
 					// If the first character is + or - then the user is forcing the class to be added or removed.
+					if ( timeout ) {
+						timeout = timeout[0].slice(1,-1);
+						var factor = 'm' === timeout.charAt( timeout.length - 2 ) ? 1 : 1000;
+						timeout = parseInt(timeout) * factor;
+						tclass = tclass.replace(timeout, '');
+					}
 					if ( fchar.match(/[a-zA-Z]/) === null && ( '+' === fchar || '-' === fchar ) ) {
 						if ( '+' === fchar ) {
 							// Add the class.
@@ -147,7 +156,18 @@
 					} else {
 						$elem.addClass("active").addClass("hide-cla-title-el");
 					}
-				}
+
+					if ( targets.length > 0 ) {
+						if ( timeout ) {
+							window.setTimeout( changeClass, timeout );
+						} else {
+							changeClass();
+						}
+					}
+				};
+
+				// Execute chain of class changes.
+				changeClass();
 			};
 			$toggler.on("click", toggle);
 		});

@@ -62,7 +62,7 @@
 		box-shadow: $drop-shadow;
 		opacity: 1;
 		text-align: center;
-		transition: opacity .3s;
+		transition: opacity 1.3s;
 
 		&::before {
 			content: "";
@@ -81,6 +81,10 @@
 			pointer-events: none;
 		}
 
+		&.d-hidden {
+			display: none;
+		}
+
 		* {
 			line-height: inherit;
 			font-size: inherit;
@@ -97,6 +101,25 @@
 
 		a {
 			color: #FFF;
+		}
+
+		.close {
+			position: absolute;
+			right: 4px;
+			top: 4px;
+			padding: 0;
+			display: block;
+			width: 26px;
+			height: 26px;
+
+			&:hover svg circle {
+				stroke-width: 3;
+				r: 11;
+			}
+
+			svg {
+				color: currentColor;
+			}
 		}
 
 		.overview {
