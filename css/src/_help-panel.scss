@@ -1,4 +1,4 @@
-@mixin help-button() {
+@mixin help-panel() {
 	$font-size: 13px !default;
 	$drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.33) !default;
 
@@ -60,9 +60,7 @@
 		border-radius: 13px;
 		letter-spacing: 0.3px;
 		box-shadow: $drop-shadow;
-		opacity: 1;
 		text-align: center;
-		transition: opacity 1.3s;
 
 		&::before {
 			content: "";
@@ -76,12 +74,6 @@
 		}
 
 		&.hidden {
-			display: block;
-			opacity: 0;
-			pointer-events: none;
-		}
-
-		&.d-hidden {
 			display: none;
 		}
 
@@ -103,7 +95,7 @@
 			color: #FFF;
 		}
 
-		.close {
+		.close-btn {
 			position: absolute;
 			right: 4px;
 			top: 4px;

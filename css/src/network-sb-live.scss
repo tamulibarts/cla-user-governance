@@ -3,7 +3,7 @@
 @import "foundation";
 @import "settings";
 @import "switch";
-@import "help-button";
+@import "help-panel";
 @import "cla_title";
 
 #wpadminbar {
@@ -23,7 +23,7 @@
 	}
 
 	.help-button {
-		@include help-button();
+		@include help-panel();
 
 		vertical-align: top;
 		line-height: 32px;

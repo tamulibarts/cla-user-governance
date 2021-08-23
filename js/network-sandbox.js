@@ -94,91 +94,73 @@
 			$labels.hover(enterLabel, leaveLabel);
 		});
 	};
-})(jQuery);
+})(jQuery);(function ($) {
 
-// Liberal Arts Information Technology
-// Toggler Plugin
-// GPL-2.0+
-// Zachary Watkins, zwatkins2@tamu.edu
-(function ($) {
-	$.fn.laittoggler = function (options) {
-		var opts = $.extend({}, options);
-		return this.each(function () {
-			var $toggler = $(this);
-			var toggle = function (e) {
-				e.preventDefault();
+	$.fn.laithelp = function (options) {
 
-				var $elem = $(this);
-				if (!$elem.is(opts.sel)) {
-					$elem = $elem.closest(opts.sel);
-				}
-				var targets = $elem.attr("data-target").split(",");
-				var num_targets = targets.length;
-				var changeClass = function(){
-					var item = targets.shift(),
-						pair = item.split(':'),
-						tar = pair[0],
-						tclass = pair.length > 1 ? pair[1] : "hidden",
-						fchar = tclass.charAt(0),
-						timeout = tclass.match(/\(\d+m?s\)$/),
-						$target = jQuery(tar);
-					console.log(item);
-					// If the first character is + or - then the user is forcing the class to be added or removed.
-					if ( timeout ) {
-						timeout = timeout[0].slice(1,-1);
-						var factor = 'm' === timeout.charAt( timeout.length - 2 ) ? 1 : 1000;
-						timeout = parseInt(timeout) * factor;
-						tclass = tclass.replace(timeout, '');
-					}
-					if ( fchar.match(/[a-zA-Z]/) === null && ( '+' === fchar || '-' === fchar ) ) {
-						if ( '+' === fchar ) {
-							// Add the class.
-							tclass = tclass.slice(1);
-							$target.addClass(tclass);
-						} else if ( '-' === fchar ) {
-							// Remove the class.
-							tclass = tclass.slice(1);
-							$target.removeClass(tclass);
-						}
-					} else {
-						$target.toggleClass(tclass);
-					}
-					// If a specific entry point is set, focus on that.
-					if ($target.hasClass(tclass)) {
-						$elem.removeClass("active").removeClass("hide-cla-title-el");
-						if (jQuery.contains($target[0], $elem[0])) {
-							if ($elem.attr("data-entry-point")) {
-								jQuery($elem.attr("data-entry-point")).focus();
-							} else {
-								$elem.focus();
-							}
-						}
-					} else {
-						$elem.addClass("active").addClass("hide-cla-title-el");
-					}
+		var opts = $.extend({
+			panel: '.help-panel',
+			button: 'a',
+			close: '.close',
+			subpanel: false,
+			subpanel_button: false
+		}, options);
 
-					if ( targets.length > 0 ) {
-						if ( timeout ) {
-							window.setTimeout( changeClass, timeout );
-						} else {
-							changeClass();
-						}
-					}
-				};
+		return this.each( function() {
+			var $parent = $(this),
+			    $button = $parent.find( opts.button ).first();
+			opts.button_el = $button;
+			opts.panel_el = $parent.find( opts.panel ).first();
+			opts.close_el = $parent.find( opts.close );
+			$parent.data( 'laithelp', opts );
+			opts.button_el.on( 'click', $.fn.laithelp.toggleTopPanel.bind( $parent ) );
+			opts.close_el.on( 'click', $.fn.laithelp.closeTopPanel.bind( $parent ) );
 
-				// Execute chain of class changes.
-				changeClass();
-			};
-			$toggler.on("click", toggle);
+			if ( opts.subpanel && opts.subpanel_button ) {
+				opts.subpanel_els = opts.panel_el.find( opts.subpanel );
+				opts.subpanel_button_els = opts.panel_el.find( opts.subpanel_button );
+				opts.subpanel_button_els.on( 'click', $.fn.laithelp.toggleSubPanel.bind( $parent ) );
+			}
 		});
+
 	};
+
+	$.fn.laithelp.toggleTopPanel = function(e) {
+		e.preventDefault();
+		var opts = this.data('laithelp');
+		opts.panel_el.toggleClass('hidden');
+		opts.button_el.toggleClass('active');
+		opts.button_el.toggleClass('hide-cla-title-el');
+	};
+
+	$.fn.laithelp.closeTopPanel = function(e) {
+		e.preventDefault();
+		var opts = this.data('laithelp');
+		opts.panel_el.addClass('hidden');
+		opts.button_el
+			.removeClass('active')
+			.removeClass('hide-cla-title-el')
+			.focus()
+			.blur();
+	};
+
+	$.fn.laithelp.toggleSubPanel = function(e) {
+		e.preventDefault();
+		var opts = this.data('laithelp');
+		console.log(e);
+	};
+
 })(jQuery);
+
 
 // Initialize use of the plugins.
 (function($){
 	var destination = undefined === wpugnsbdest ? false : wpugnsbdest;
 	var $menu_node = $("#wp-admin-bar-wpug_network_sandbox_link");
-	$menu_node.find(".toggler").laittoggler({ sel: ".toggler" });
+	$menu_node.find(".help-button").laithelp({
+		subpanel: '.help-subpanel',
+		subpanel_button: '.actions .action'
+	});
 
 	$menu_node.find(".switch-a")
 		.laitswitch({
