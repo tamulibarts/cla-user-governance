@@ -72,5 +72,21 @@ class User_Governance {
 		// Disallow users from self-registering on multisite.
 		add_filter( 'option_users_can_register', '__return_false' );
 
+		// Hide the Advanced Custom Fields menu item for users who cannot edit options.
+		add_filter('acf/settings/show_admin', array( $this, 'user_manages_options' ) );
+
+	}
+
+	/**
+	 * Return whether or not the current user can manage options.
+	 *
+	 * @param bool $show Whether or not to show the menu item.
+	 *
+	 * @return bool
+	 */
+	public function user_manages_options( $show ) {
+
+		return current_user_can('manage_options');
+
 	}
 }
