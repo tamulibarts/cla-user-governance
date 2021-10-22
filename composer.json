@@ -5,7 +5,15 @@
     "authors": [
         {
             "name": "Zachary Watkins",
-            "email": "watkinza@gmail.com"
+            "email": "zwatkins2@tamu.edu",
+            "homepage": "https://github.com/zachwatkins",
+            "role": "Software Developer"
+        },
+        {
+            "name": "Marcy Heathman",
+            "email": "heathman@tamu.edu",
+            "homepage": "https://www.linkedin.com/in/marcy-heathman-20a026b3/",
+            "role": "Content Governance Strategist, User Experience, Support, and Training Specialist, Accessibility Consultant"
         }
     ],
     "minimum-stability": "stable",

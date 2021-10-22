@@ -9,11 +9,23 @@
     "fixphp": "npm run configphpcs && vendor/bin/phpcbf --standard=WordPress ./*.php ./src ./fields",
     "configphpcs": "vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs"
   },
-  "author": "Zachary Watkins",
+  "author": "Zachary Watkins <zwatkins2@tamu.edu> (https://github.com/zachwatkins)",
+  "contributors": [
+    {
+      "name": "Zachary Watkins",
+      "email": "zwatkins2@tamu.edu",
+      "url": "https://github.com/zachwatkins"
+    },
+    {
+      "name": "Marcy Heathman",
+      "email": "heathman@tamu.edu",
+      "url": "https://www.linkedin.com/in/marcy-heathman-20a026b3/"
+    }
+  ],
   "license": "GPL-2.0+",
   "bugs": {
     "url": "https://github.tamu.edu/liberalarts-web/wp-user-governance/issues",
-    "email": "watkinza@gmail.com"
+    "email": "liberalartsit@tamu.edu"
   },
   "dependencies": {
     "autoprefixer": "^9.2.1",

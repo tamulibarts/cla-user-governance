@@ -3,3 +3,4 @@ vendor
 css/*.css
 css/*.css.map
 /sandbox/*.sql
+*.sql
